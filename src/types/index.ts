@@ -17,7 +17,6 @@ export interface ProductInfo {
   };
   keyFeatures: string[];
   launchContext: LaunchContext;
-  flowType: string;
 }
 
 export interface PatternInfo {
@@ -25,15 +24,30 @@ export interface PatternInfo {
   rationale: string;
 }
 
+export type UxPattern =
+  | 'Setup Wizard'
+  | 'Feature Tour'
+  | 'Progressive Personalization'
+  | 'Just-in-Time Tooltip'
+  | 'Empty State Coaching';
+
+export type LayoutType =
+  | 'full_screen'
+  | 'modal_form'
+  | 'tooltip_overlay'
+  | 'split_screen'
+  | 'swipeable_cards';
+
 export interface OnboardingStep {
   id: string;
   stepName: string;
   uxGoal: string;
   userAction: string;
-  layout: string;
+  uxPattern: UxPattern;
+  patternPurpose: string;
+  layoutType: LayoutType;
+  layoutPurpose: string;
   rationale: string;
-  pattern: string;
-  patternRationale: string;
   headline?: string;
   subtext?: string;
   cta?: string;

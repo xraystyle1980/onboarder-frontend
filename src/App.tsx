@@ -342,13 +342,13 @@ export default function App() {
                       variant="underlined"
                       classNames={{
                         tabList: "gap-6 w-full relative rounded-none p-0",
-                        cursor: "w-full bg-purple-600",
+                        cursor: "w-full bg-slate-600",
                         tab: "max-w-fit px-0 h-12",
-                        tabContent: "group-data-[selected=true]:text-purple-600 text-lg",
+                        tabContent: "group-data-[selected=true]:text-slate-600 text-lg",
                       }}
                     >
                       <Tab key="summary" title={<span className="hidden sm:inline">Onboarding Summary</span>} />
-                      <Tab key="uxContext" title={<span className="hidden sm:inline">UX Design Context</span>} />
+                      {/* <Tab key="uxContext" title={<span className="hidden sm:inline">UX Design Context</span>} /> */}
                       <Tab key="narrative" title={<span className="hidden sm:inline">UX Narrative</span>} />
                     </Tabs>
                   </div>

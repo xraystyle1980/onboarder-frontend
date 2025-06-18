@@ -7,7 +7,9 @@ interface FlowCardContentProps {
   subtext: string;
   cta?: string;
   ctaType?: string;
-  pattern?: string;
+  uxPattern: string;
+  patternPurpose: string;
+  layoutPurpose: string;
 }
 
 export const FlowCardContent: React.FC<FlowCardContentProps> = React.memo(({
@@ -15,11 +17,13 @@ export const FlowCardContent: React.FC<FlowCardContentProps> = React.memo(({
   subtext,
   cta,
   ctaType,
-  pattern
+  uxPattern,
+  patternPurpose,
+  layoutPurpose
 }) => {
   return (
-    <>
-      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+    <section className="p-4 border-b rounded-b-3xl border-gray-200 bg-white">
+      <h3 className="text-2xl font-semibold text-gray-900 mb-2">
         {headline}
       </h3>
       <p className="text-gray-700 text-base mb-4">
@@ -36,22 +40,14 @@ export const FlowCardContent: React.FC<FlowCardContentProps> = React.memo(({
             className="font-medium"
           >
             {cta}
+            {ctaType && (
+              <span className="text-gray-400">({ctaType})</span>
+            )}
           </Button>
-          {ctaType && (
-            <p className="text-sm text-gray-500 mt-2 text-center">
-              <em>☝️ When user clicks: <span className="font-medium text-gray-900">{ctaType}</span></em>
-            </p>
-          )}
         </div>
       )}
 
-      {pattern && (
-        <div className="flex items-center text-sm text-gray-500 mb-6">
-          <Icon icon="lucide:info" width={16} height={16} className="mr-1" />
-          <span>Pattern: {pattern}</span>
-        </div>
-      )}
-    </>
+    </section>
   );
 });
 

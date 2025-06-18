@@ -7,6 +7,10 @@ interface FlowCardTabsProps {
   uxGoal: string;
   userAction: string;
   rationale: string;
+  uxPattern: string;
+  patternPurpose: string;
+  layoutType: string;
+  layoutPurpose: string;
 }
 
 export const FlowCardTabs: React.FC<FlowCardTabsProps> = React.memo(({
@@ -14,25 +18,29 @@ export const FlowCardTabs: React.FC<FlowCardTabsProps> = React.memo(({
   onTabChange,
   uxGoal,
   userAction,
-  rationale
+  rationale,
+  uxPattern,
+  patternPurpose,
+  layoutType,
+  layoutPurpose
 }) => {
   const renderTabContent = () => {
     switch (selectedTab) {
       case "goal":
         return (
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-sm">
             {uxGoal}
           </p>
         );
       case "action":
         return (
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-sm">
             {userAction}
           </p>
         );
       case "rationale":
         return (
-          <p className="text-gray-700 text-base">
+          <p className="text-slate-700 text-sm">
             {rationale}
           </p>
         );
@@ -42,18 +50,18 @@ export const FlowCardTabs: React.FC<FlowCardTabsProps> = React.memo(({
   };
 
   return (
-    <>
+    <section className="p-4 bg-slate-50">
       <Tabs
         selectedKey={selectedTab}
         onSelectionChange={(key) => onTabChange(key as string)}
         aria-label="Onboarding step details"
         color="primary"
-        variant="underlined"
+        variant="solid"
         classNames={{
-          tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider justify-center",
-          cursor: "w-full bg-purple-600",
-          tab: "max-w-fit px-0 h-12",
-          tabContent: "group-data-[selected=true]:text-purple-600 font-semibold",
+          tabList: "gap-2 w-full relative rounded-none border-divider justify-center bg-slate-100 rounded-xl",
+          cursor: "w-full bg-white",
+          tab: "max-w-fit px-3",
+          tabContent: "group-data-[selected=true]:text-slate-600 text-sm",
         }}
       >
         <Tab key="goal" title="Goal" />
@@ -63,7 +71,7 @@ export const FlowCardTabs: React.FC<FlowCardTabsProps> = React.memo(({
       <div className="mt-4">
         {renderTabContent()}
       </div>
-    </>
+    </section>
   );
 });
 

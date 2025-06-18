@@ -1,6 +1,6 @@
 import { ChipProps } from "@heroui/react";
 
-export type LayoutType = 'modal' | 'full screen' | 'tooltip' | 'embedded' | 'default';
+export type LayoutType = 'full_screen' | 'modal_form' | 'tooltip_overlay' | 'split_screen' | 'swipeable_cards' | 'default';
 
 export interface FlowCardStyle {
   stepChip: ChipProps;
@@ -8,7 +8,7 @@ export interface FlowCardStyle {
 }
 
 const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
-  modal: {
+  modal_form: {
     stepChip: {
       size: "md",
       color: "primary",
@@ -21,7 +21,7 @@ const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
       className: "bg-purple-100 text-purple-700 font-medium"
     }
   },
-  "full screen": {
+  full_screen: {
     stepChip: {
       size: "md",
       color: "secondary",
@@ -34,7 +34,7 @@ const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
       className: "bg-blue-100 text-blue-700 font-medium"
     }
   },
-  tooltip: {
+  tooltip_overlay: {
     stepChip: {
       size: "md",
       color: "default",
@@ -47,7 +47,7 @@ const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
       className: "bg-gray-100 text-gray-700 font-medium"
     }
   },
-  embedded: {
+  split_screen: {
     stepChip: {
       size: "md",
       color: "success",
@@ -58,6 +58,19 @@ const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
       variant: "flat",
       color: "success",
       className: "bg-green-100 text-green-700 font-medium"
+    }
+  },
+  swipeable_cards: {
+    stepChip: {
+      size: "md",
+      color: "warning",
+      className: "bg-yellow-600 text-white font-semibold"
+    },
+    typeChip: {
+      size: "md",
+      variant: "flat",
+      color: "warning",
+      className: "bg-yellow-100 text-yellow-700 font-medium"
     }
   },
   default: {

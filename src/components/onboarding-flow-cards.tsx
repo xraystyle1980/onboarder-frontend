@@ -43,11 +43,15 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
 
   return (
     <section className="p-6">
-      <h3 className="text-2xl font-semibold mb-8">
-        <span className="bg-gradient-text-2">
-          Onboarding Flow
+      <div className="flex items-center gap-4 mb-8">
+        <h3 className="text-2xl font-semibold">
+          <span className="bg-gradient-text-2">Onboarding Flow</span>
+        </h3>
+        {/* The pattern below matches the value in the onboarding summary tab under 'Flow Type' */}
+        <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-sm font-medium border border-purple-200">
+          Pattern: {flow.pattern.pattern}
         </span>
-      </h3>
+      </div>
     
       <div className="relative w-full max-w-full mx-auto">
         {showLeft && (
