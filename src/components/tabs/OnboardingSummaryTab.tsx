@@ -85,12 +85,12 @@ export function OnboardingSummaryTab({ flow, onDownload }: OnboardingSummaryTabP
           label="Onboarding Goals"
           className="col-span-full"
         >
-          <div className="flex flex-col md:flex-row items-center gap-2">
+          <div className="flex flex-col md:flex-row items-start gap-2">
             <SummaryCard
               icon="lucide:zap"
               iconColor="text-purple-500"
               label="Education"
-              className="border-none shadow-none"
+              className="border-none shadow-none w-full"
             >
               {flow.productInfo.onboardingGoal.education}
             </SummaryCard>
@@ -98,7 +98,7 @@ export function OnboardingSummaryTab({ flow, onDownload }: OnboardingSummaryTabP
               icon="lucide:zap"
               iconColor="text-purple-500"
               label="Feature Setup"
-              className="border-none shadow-none"
+              className="border-none shadow-none w-full"
             >
               {flow.productInfo.onboardingGoal.featureSetup}
             </SummaryCard>
@@ -106,7 +106,7 @@ export function OnboardingSummaryTab({ flow, onDownload }: OnboardingSummaryTabP
               icon="lucide:zap"
               iconColor="text-purple-500"
               label="Activation"
-              className="border-none shadow-none"
+              className="border-none shadow-none w-full"
             >
               {flow.productInfo.onboardingGoal.activation}
             </SummaryCard>
@@ -115,62 +115,62 @@ export function OnboardingSummaryTab({ flow, onDownload }: OnboardingSummaryTabP
       </div>
 
       {/* --- UX Design Context content moved from UXDesignContextTab --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"> */}
         {/* Launch Context - Timing */}
-        <SummaryCard
+        {/* <SummaryCard
           icon="lucide:hourglass"
           iconColor="text-blue-500"
           label="Launch Timing"
         >
           {flow.productInfo.launchContext.timing}
-        </SummaryCard>
+        </SummaryCard> */}
 
         {/* Launch Context - Signup Strategy */}
-        <SummaryCard
+        {/* <SummaryCard
           icon="lucide:user-plus"
           iconColor="text-green-500"
           label="Signup Strategy"
         >
           {flow.productInfo.launchContext.signupStrategy}
-        </SummaryCard>
+        </SummaryCard> */}
 
         {/* Launch Context - Friction Reduction */}
-        <SummaryCard
+        {/* <SummaryCard
           icon="lucide:minimize"
           iconColor="text-orange-500"
           label="Friction Reduction"
         >
           {flow.productInfo.launchContext.frictionReduction}
-        </SummaryCard>
+        </SummaryCard> */}
 
         {/* Launch Context - Value Reinforcement */}
-        <SummaryCard
+        {/* <SummaryCard
           icon="lucide:award"
           iconColor="text-purple-500"
           label="Value Reinforcement"
         >
           {flow.productInfo.launchContext.valueReinforcement}
-        </SummaryCard>
+        </SummaryCard> */}
 
         {/* Recommended Pattern */}
-        <SummaryCard
+        {/* <SummaryCard
           icon="lucide:puzzle"
           iconColor="text-indigo-500"
           label="Recommended Pattern"
         >
           {flow.pattern.pattern}
-        </SummaryCard>
+        </SummaryCard> */}
 
         {/* Pattern Rationale - Full Width */}
-        <SummaryCard
+        {/* <SummaryCard
           icon="lucide:lightbulb"
           iconColor="text-yellow-500"
           label="Pattern Rationale"
           className="col-span-full"
         >
           {flow.pattern.rationale}
-        </SummaryCard>
-      </div>
+        </SummaryCard> */}
+      {/* </div> */}
     </section>
   );
 }

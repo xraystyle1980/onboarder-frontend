@@ -54,6 +54,20 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
         <Icon icon="lucide:x" width={20} height={20} />
       </Button>
       <h4 className="text-xl text-center mb-6 mt-1">{safePrompt.charAt(0).toUpperCase() + safePrompt.slice(1)}</h4>
+      <div className="flex w-full justify-center">
+        {isNewlyGenerated && (
+          <Button 
+            color="success"
+            variant="solid"
+            size="md"
+            className="w-full md:w-[60%] my-2"
+            startContent={<Icon icon="lucide:save" width={20} height={20} />}
+            onPress={() => onSaveFlow(safePrompt, flow)}
+          >
+            Save Flow
+          </Button>
+        )}
+      </div>
       <div className="flex gap-4 mt-4">
         <div>
           <Dropdown shouldBlockScroll={false}>
@@ -72,9 +86,9 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
               onAction={onDownload}
               variant="light"
               itemClasses={{
-                base: "data-[hover=true]:bg-gray-100 data-[hover=true]:text-gray-900",
-                title: "text-gray-900",
-                description: "text-gray-500"
+                base: "data-[hover=true]:bg-gray-100 data-[hover=true]:text-slate-900",
+                title: "text-slate-900",
+                description: "text-slate-500"
               }}
             >
               <DropdownItem 
@@ -105,17 +119,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
           Create Wireframes
         </Button>
 
-        {isNewlyGenerated && (
-          <Button 
-            color="success"
-            variant="solid"
-            size="md"
-            startContent={<Icon icon="lucide:save" width={20} height={20} />}
-            onPress={() => onSaveFlow(safePrompt, flow)}
-          >
-            Save Flow
-          </Button>
-        )}
+        
       </div>
     </div>
   );

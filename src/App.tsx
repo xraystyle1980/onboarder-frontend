@@ -119,12 +119,6 @@ export default function App() {
       if (loginBtn) loginBtn.click();
       return;
     }
-    if (userFlowCount >= 5 && !isFromPending) {
-      setToastMsg("You have reached your free save limit (5 flows). Delete a flow to save more.");
-      setToastType("error");
-      setShowToast(true);
-      return;
-    }
     // Save flow
     const { error } = await saveUserFlow({
       userId: user.id,
@@ -376,7 +370,12 @@ export default function App() {
             </div>
           </footer>
           {showToast && (
-            <Toast message={toastMsg} type={toastType} onClose={() => setShowToast(false)} />
+            <Toast
+              message={toastMsg}
+              type={toastType as 'info' | 'success' | 'error'}
+              onClose={() => setShowToast(false)}
+              className="animate-slide-in-right font-medium text-slate-900"
+            />
           )}
         </div>
       </ErrorBoundary>

@@ -29,16 +29,21 @@ export const FlowCard: React.FC<FlowCardProps> = React.memo(({
           layoutType={step.layoutType}
           patternPurpose={step.patternPurpose}
           layoutPurpose={step.layoutPurpose}
+          modalType={step.modalType}
         />
         
         <FlowCardContent 
           headline={step.headline || step.stepName}
           subtext={step.subtext || step.rationale}
+          marketingCopy={step.marketingCopy}
           cta={step.cta}
           ctaType={step.ctaType}
           uxPattern={step.uxPattern}
           patternPurpose={step.patternPurpose}
           layoutPurpose={step.layoutPurpose}
+          layoutType={step.layoutType}
+          modalType={step.modalType}
+          inputFields={step.inputFields}
         />
 
         <FlowCardTabs

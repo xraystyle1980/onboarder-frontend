@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 
-export default function Toast({ message, type = 'info', onClose }) {
+interface ToastProps {
+  message: string;
+  type?: 'info' | 'success' | 'error';
+  onClose: () => void;
+  className?: string;
+}
+
+export default function Toast({ message, type = 'info', onClose, className = '' }: ToastProps) {
   useEffect(() => {
     const timer = setTimeout(onClose, 3500);
     return () => clearTimeout(timer);
@@ -9,7 +16,7 @@ export default function Toast({ message, type = 'info', onClose }) {
   const color = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500';
 
   return (
-    <div className={`fixed top-6 right-6 z-50 px-4 py-3 rounded shadow text-white ${color}`}>
+    <div className={`fixed top-6 right-6 z-50 px-4 py-3 rounded shadow text-white ${color} ${className}`}>
       {message}
     </div>
   );

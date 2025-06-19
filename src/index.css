@@ -44,15 +44,15 @@ html {
 }
 
 .summary-label {
-  @apply font-semibold leading-6 text-gray-700;
+  @apply font-semibold leading-6 text-slate-700;
 }
 
 .summary-content {
-  @apply text-lg text-gray-900;
+  @apply text-lg text-slate-900;
 }
 
 .summary-onboarding-content {
-  @apply text-base text-gray-800;
+  @apply text-base text-slate-800;
 }
 
 .summary-onboarding-content strong {

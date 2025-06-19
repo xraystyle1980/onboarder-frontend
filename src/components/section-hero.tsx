@@ -41,7 +41,7 @@ export default function SectionHero({
             <textarea
               value={inputText}
               onChange={(e) => onInputChange(e.target.value)}
-              className="self-stretch rounded-xl border border-solid border-x-white/50 border-y-white/50 bg-white/70 p-4 text-base leading-6 text-gray-900 resize-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+              className="self-stretch rounded-xl border border-solid border-x-white/50 border-y-white/50 bg-white/70 p-4 text-base leading-6 text-slate-900 resize-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
               rows={4}
               placeholder='A fitness tracking app called "FitTrack Pro" that helps users set up their fitness goals, connect devices, and understand key features. Target audience is health-conscious adults aged 25-45.'
               disabled={isGenerating}

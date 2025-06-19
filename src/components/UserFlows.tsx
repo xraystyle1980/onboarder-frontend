@@ -51,7 +51,7 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
   return (
     <div className="grid gap-4 grid-cols-1 p-4">
       {flows.length === 0 ? (
-        <div className="col-span-full text-center text-gray-500">No flows found.</div>
+        <div className="col-span-full text-center text-slate-500">No flows found.</div>
       ) : (
         flows.map(flow => (
           <FlowCard key={flow.id} flow={flow} onDelete={handleDelete} onSelect={onSelectFlow} />

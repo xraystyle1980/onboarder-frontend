@@ -26,7 +26,7 @@ export default function LoginForm({ onClose }: { onClose: () => void }) {
         className="border p-2 rounded"
       />
       <button type="submit" className="bg-blue-600 text-white py-2 rounded">Send Magic Link</button>
-      <button type="button" onClick={onClose} className="text-gray-500">Cancel</button>
+      <button type="button" onClick={onClose} className="text-slate-500">Cancel</button>
       {message && <p className="text-center text-sm mt-2">{message}</p>}
     </form>
   );

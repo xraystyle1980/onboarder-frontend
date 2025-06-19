@@ -30,7 +30,7 @@ export default function FlowCard({ flow, onDelete, onSelect }) {
       <div className="flex justify-between items-start">
         <div>
           <div className="font-semibold text-lg">{flow.product_name || 'Untitled Flow'}</div>
-          <div className="text-gray-500 text-sm mb-2">{flow.prompt ? flow.prompt.charAt(0).toUpperCase() + flow.prompt.slice(1) : ''}</div>
+          <div className="text-slate-500 text-sm mb-2">{flow.prompt ? flow.prompt.charAt(0).toUpperCase() + flow.prompt.slice(1) : ''}</div>
         </div>
         <div className="relative" ref={menuRef} onClick={e => e.stopPropagation()}>
           <Button
@@ -55,7 +55,7 @@ export default function FlowCard({ flow, onDelete, onSelect }) {
           )}
         </div>
       </div>
-      <div className="text-xs text-gray-400 mt-2">{new Date(flow.created_at).toLocaleString()}</div>
+      <div className="text-xs text-slate-400 mt-2">{new Date(flow.created_at).toLocaleString()}</div>
     </div>
   );
 } 

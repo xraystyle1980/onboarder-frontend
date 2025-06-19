@@ -44,7 +44,7 @@ const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
       size: "md",
       variant: "flat",
       color: "default",
-      className: "bg-gray-100 text-gray-700 font-medium"
+      className: "bg-gray-100 text-slate-700 font-medium"
     }
   },
   split_screen: {
@@ -83,7 +83,7 @@ const flowCardStyles: Record<LayoutType, FlowCardStyle> = {
       size: "md",
       variant: "flat",
       color: "default",
-      className: "bg-gray-100 text-gray-700 font-medium"
+      className: "bg-gray-100 text-slate-700 font-medium"
     }
   }
 };

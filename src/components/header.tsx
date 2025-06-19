@@ -38,7 +38,7 @@ function Header({ onShowMyFlows }) {
             <div className="flex h-8 w-8 flex-col items-center justify-center rounded-lg border-solid border-gray-200 px-[9px] py-[8.8px] [background-image:linear-gradient(90deg,_#9333ea,_#2563eb)]" >
               <Icon icon="lucide:sparkles" className="h-3.5 w-3.5" />
             </div>
-            <div className="text-xl font-bold leading-7 text-gray-900">
+            <div className="text-xl font-bold leading-7 text-slate-900">
               Onboarder
             </div>
           </div>
@@ -49,7 +49,7 @@ function Header({ onShowMyFlows }) {
               <Dropdown>
                 <DropdownTrigger>
                   <button className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition">
-                    <span className="text-gray-700">{user.email}</span>
+                    <span className="text-slate-700">{user.email}</span>
                     <Icon icon="lucide:chevron-down" className="w-4 h-4" />
                   </button>
                 </DropdownTrigger>
@@ -89,7 +89,7 @@ function Header({ onShowMyFlows }) {
           <div className="md:hidden">
             <button
               onClick={toggleMobileMenu}
-              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
+              className="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -110,14 +110,14 @@ function Header({ onShowMyFlows }) {
             <a
               href="#"
               onClick={closeMobileMenu}
-              className="block px-3 py-2 text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+              className="block px-3 py-2 text-base text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-md transition-colors"
             >
               Examples
             </a>
             <a
               href="#"
               onClick={closeMobileMenu}
-              className="block px-3 py-2 text-base text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+              className="block px-3 py-2 text-base text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-md transition-colors"
             >
               Docs
             </a>

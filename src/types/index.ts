@@ -38,6 +38,32 @@ export type LayoutType =
   | 'split_screen'
   | 'swipeable_cards';
 
+export type ModalType = 
+  | 'welcome'      // Introduction modal
+  | 'form'         // Input collection modal
+  | 'confirmation' // Confirmation/success modal
+  | 'summary';     // Review/summary modal
+
+export type InputFieldType =
+  | 'text'
+  | 'email'
+  | 'number'
+  | 'select'
+  | 'multiselect'
+  | 'checkbox'
+  | 'radio'
+  | 'textarea'
+  | 'date';
+
+export interface InputField {
+  type: InputFieldType;
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+  options?: string[];  // For select/multiselect/radio
+  validation?: string; // Validation rules
+}
+
 export interface OnboardingStep {
   id: string;
   stepName: string;
@@ -50,8 +76,11 @@ export interface OnboardingStep {
   rationale: string;
   headline?: string;
   subtext?: string;
+  marketingCopy?: string;
   cta?: string;
   ctaType?: string;
+  modalType?: ModalType;        // Type of modal if layoutType is 'modal_form'
+  inputFields?: InputField[];   // Required input fields for form modals
 }
 
 export interface IntegrationOverview {

@@ -37,10 +37,12 @@ export const sampleOnboardingFlow: OnboardingFlow = {
       uxPattern: "Setup Wizard",
       patternPurpose: "This step marks the beginning of the linear Setup Wizard pattern, guiding users through a series of steps.",
       layoutType: "modal_form",
+      modalType: "welcome",
       layoutPurpose: "A modal form provides a focused, interruption-free welcome that sets the stage for onboarding.",
       rationale: "Welcoming users helps to create a positive first impression and prepares them for the onboarding process",
       headline: "Begin Your Journey!",
       subtext: "Discover how FreelancePM can streamline your projects and simplify your freelancing life.",
+      marketingCopy: "Join thousands of freelancers who have transformed their project management with our intuitive platform. FreelancePM combines powerful task tracking with seamless client collaboration, helping you deliver projects on time and within budget while maintaining professional relationships.",
       cta: "Start",
       ctaType: "next page"
     },
@@ -51,12 +53,38 @@ export const sampleOnboardingFlow: OnboardingFlow = {
       userAction: "Fill in the project details and click 'Create'",
       uxPattern: "Setup Wizard",
       patternPurpose: "This step is a part of the sequential process in the Setup Wizard, leading users through the core features.",
-      layoutType: "full_screen",
-      layoutPurpose: "Full screen layout allows users to focus on project creation without distractions.",
+      layoutType: "modal_form",
+      modalType: "form",
+      inputFields: [
+        {
+          type: "text",
+          label: "Project Name",
+          placeholder: "Enter project name",
+          required: true
+        },
+        {
+          type: "select",
+          label: "Project Type",
+          options: ["Client Work", "Personal Project", "Team Project"],
+          required: true
+        },
+        {
+          type: "textarea",
+          label: "Project Description",
+          placeholder: "Brief description of your project",
+          required: false
+        },
+        {
+          type: "date",
+          label: "Expected Start Date",
+          required: true
+        }
+      ],
+      layoutPurpose: "A modal form provides focused input collection for essential project details.",
       rationale: "Creating a project is the core functionality of FreelancePM and the starting point for users to manage their work",
       headline: "Create Your First Project",
       subtext: "Let's jump right in! Set up your first project to see how easy managing your workflows can be.",
-      cta: "Create",
+      cta: "Create Project",
       ctaType: "submit"
     },
     {
@@ -71,6 +99,7 @@ export const sampleOnboardingFlow: OnboardingFlow = {
       rationale: "Inviting clients is essential for freelancers to collaborate and share progress, fostering user engagement",
       headline: "Invite Your Clients",
       subtext: "Connect with your clients by inviting them to collaborate and stay updated on project progress.",
+      marketingCopy: "Build trust and transparency with your clients through real-time collaboration. Our client portal gives them visibility into project progress without overwhelming them with technical details. Professional communication has never been easier.",
       cta: "Invite",
       ctaType: "submit"
     },
@@ -86,6 +115,7 @@ export const sampleOnboardingFlow: OnboardingFlow = {
       rationale: "Task management is a fundamental feature that users need to understand to effectively use FreelancePM",
       headline: "Track Your Tasks",
       subtext: "Learn to create and manage tasks efficiently to keep your projects on deadline and budget.",
+      marketingCopy: "Never miss a deadline again with our intelligent task management system. Set priorities, track time, and get automated reminders that keep you on track. Your productivity will soar while your stress levels drop.",
       cta: "Assign",
       ctaType: "submit"
     },
@@ -97,10 +127,12 @@ export const sampleOnboardingFlow: OnboardingFlow = {
       uxPattern: "Setup Wizard",
       patternPurpose: "This final step in the Setup Wizard gives users a sense of completion and prepares them for active product use.",
       layoutType: "modal_form",
+      modalType: "summary",
       layoutPurpose: "A modal form provides a concise summary and a clear call to action to finish onboarding.",
       rationale: "Providing a summary helps users see what they've accomplished and reinforces the value of the product",
       headline: "Review and Launch",
       subtext: "Take a moment to review your project setup. Ready to take control of your freelancing career?",
+      marketingCopy: "Congratulations! You've just set up your first project in FreelancePM. You're now part of a community of successful freelancers who manage their work smarter, not harder. Your journey to better project management starts now.",
       cta: "Finish",
       ctaType: "dismiss"
     }
