@@ -34,24 +34,30 @@ function Header({ onShowMyFlows }) {
       <div className="flex items-center justify-center container mx-auto" >
         <div className="flex flex-grow items-center justify-between px-8" >
           {/* Logo Section */}
-          <div className="flex items-center justify-center gap-3" >
+          <a href="/" className="flex items-center justify-center gap-3 no-underline">
             <div className="flex h-8 w-8 flex-col items-center justify-center rounded-lg border-solid border-gray-200 px-[9px] py-[8.8px] [background-image:linear-gradient(90deg,_#9333ea,_#2563eb)]" >
-              <Icon icon="lucide:sparkles" className="h-3.5 w-3.5" />
+              <Icon icon="lucide:sparkles" className="h-3.5 w-3.5 text-white" />
             </div>
             <div className="text-xl font-bold leading-7 text-slate-900">
-              Onboarder
+              Onboarder<span className="text-slate-400">.design</span>
             </div>
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-center gap-8 border-solid border-gray-200" >
             {user ? (
               <Dropdown>
                 <DropdownTrigger>
-                  <button className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 transition">
+                <Button
+            fullWidth
+            variant="bordered"
+            color="default"
+            size="md"
+            className="font-medium"
+          >
                     <span className="text-slate-700">{user.email}</span>
                     <Icon icon="lucide:chevron-down" className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem
@@ -107,7 +113,7 @@ function Header({ onShowMyFlows }) {
       {isMobileMenuOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-            <a
+            {/* <a
               href="#"
               onClick={closeMobileMenu}
               className="block px-3 py-2 text-base text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-md transition-colors"
@@ -120,21 +126,36 @@ function Header({ onShowMyFlows }) {
               className="block px-3 py-2 text-base text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-md transition-colors"
             >
               Docs
-            </a>
+            </a> */}
             {user ? (
-              <Button
-                onPress={async () => {
-                  closeMobileMenu();
-                  await supabase.auth.signOut();
-                }}
-                variant="light"
-                color="default"
-                size="sm"
-                fullWidth
-                className="text-left px-3 py-2 rounded-md text-base transition-colors"
-              >
-                Sign Out
-              </Button>
+              <>
+                <Button
+                  onPress={() => {
+                    closeMobileMenu();
+                    if (onShowMyFlows) onShowMyFlows();
+                  }}
+                  variant="light"
+                  color="default"
+                  size="sm"
+                  fullWidth
+                  className="text-left px-3 py-2 rounded-md text-base transition-colors"
+                >
+                  My Flows
+                </Button>
+                <Button
+                  onPress={async () => {
+                    closeMobileMenu();
+                    await supabase.auth.signOut();
+                  }}
+                  variant="light"
+                  color="default"
+                  size="sm"
+                  fullWidth
+                  className="text-left px-3 py-2 rounded-md text-base transition-colors"
+                >
+                  Sign Out
+                </Button>
+              </>
             ) : (
               <Button
                 onPress={() => { closeMobileMenu(); setShowLogin(true); }}

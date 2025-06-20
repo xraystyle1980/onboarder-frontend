@@ -25,7 +25,7 @@ export default function SectionHero({
           <div className="flex flex-col gap-4 self-stretch border-solid border-gray-200 text-center max-w-full">
             <div className="flex items-start justify-center break-words">
               <h1 className="font-bold text-center text-6xl max-md:text-4xl max-md:leading-[50px]">
-                <span className="text-white">{"Generate UX Flows ​"}</span>
+                <span className="text-white">{"Design Onboarding UX ​"}</span>
                 <span className="bg-gradient-text-1">
                   Instantly
                 </span>

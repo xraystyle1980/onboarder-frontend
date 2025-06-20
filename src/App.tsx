@@ -115,7 +115,7 @@ export default function App() {
       setToastType("info");
       setShowToast(true);
       // Optionally, trigger login modal here
-      const loginBtn = document.querySelector('button:contains("Sign In")');
+      const loginBtn = document.querySelector<HTMLButtonElement>('button:contains("Sign In")');
       if (loginBtn) loginBtn.click();
       return;
     }
@@ -327,8 +327,8 @@ export default function App() {
                 <>
                   {/* Tabs and Download Button Row */}
                   <div className="flex-col md:flex-row flex mt-8 mb-6 justify-center items-center border-b border-divider">
-
                     <Tabs
+                      aria-label="Onboarding Flow Tabs"
                       selectedKey={selectedMainTab}
                       onSelectionChange={(key) => setSelectedMainTab(key as string)}
                       aria-label="Onboarding Sections"
@@ -341,19 +341,14 @@ export default function App() {
                         tabContent: "group-data-[selected=true]:text-slate-600 text-lg",
                       }}
                     >
-                      <Tab key="summary" title={<span className="hidden sm:inline">Onboarding Summary</span>} />
-                      {/* <Tab key="uxContext" title={<span className="hidden sm:inline">UX Design Context</span>} /> */}
-                      <Tab key="narrative" title={<span className="hidden sm:inline">UX Narrative</span>} />
+                      <Tab key="summary" title={<span className="sm:inline">Summary</span>} />
+                      <Tab key="narrative" title={<span className="sm:inline">Narrative</span>} />
                     </Tabs>
                   </div>
 
                   <div className="relative">
                     <div className={getTabTransitionClass("summary")}>
                       <OnboardingSummaryTab flow={displayFlow} />
-                    </div>
-
-                    <div className={getTabTransitionClass("uxContext")}>
-                      <UXDesignContextTab flow={displayFlow} />
                     </div>
 
                     <div className={getTabTransitionClass("narrative")}>
