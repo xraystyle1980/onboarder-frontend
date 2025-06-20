@@ -42,7 +42,7 @@ interface SavedFlow {
   created_at: string;
 }
 
-const EXAMPLE_PROMPT = "A fitness tracking app called \"FitTrack Pro\" that helps users set up their fitness goals, connect devices, and understand key features. Target audience is health-conscious adults aged 25-45.";
+const EXAMPLE_PROMPT = "A project management app called \"FreelancePM\" that helps freelancers create projects, invite clients, and track tasks. Target audience is independent contractors and solo professionals aged 25-50.";
 
 export default function App() {
   const [inputText, setInputText] = useState("");
