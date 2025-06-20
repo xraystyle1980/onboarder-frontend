@@ -109,6 +109,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
           </Dropdown>
         </div>
         
+        {/* Temporarily commented out for initial launch - will be re-enabled after feedback
         <Button
           variant="solid"
           color="primary"
@@ -118,6 +119,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
         >
           Create Wireframes
         </Button>
+        */}
 
         
       </div>
