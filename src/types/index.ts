@@ -1,3 +1,5 @@
+import { User } from '@supabase/supabase-js';
+
 export interface LaunchContext {
   timing: string;
   signupStrategy: string;
@@ -10,18 +12,16 @@ export interface ProductInfo {
   targetAudience: string;
   productType: string;
   coreUserGoal: string;
-  onboardingGoal: {
-    education: string;
-    featureSetup: string;
-    activation: string;
-  };
+  onboardingGoal: OnboardingGoal;
   keyFeatures: string[];
   launchContext: LaunchContext;
+  flowType: string;
 }
 
 export interface PatternInfo {
   pattern: string;
   rationale: string;
+  citation?: string;
 }
 
 export type UxPattern =
@@ -38,11 +38,7 @@ export type LayoutType =
   | 'split_screen'
   | 'swipeable_cards';
 
-export type ModalType = 
-  | 'welcome'      // Introduction modal
-  | 'form'         // Input collection modal
-  | 'confirmation' // Confirmation/success modal
-  | 'summary';     // Review/summary modal
+export type ModalType = 'welcome' | 'form' | 'confirmation' | 'summary';
 
 export type InputFieldType =
   | 'text'
@@ -56,12 +52,12 @@ export type InputFieldType =
   | 'date';
 
 export interface InputField {
-  type: InputFieldType;
   label: string;
-  placeholder?: string;
+  type: string;
   required?: boolean;
-  options?: string[];  // For select/multiselect/radio
-  validation?: string; // Validation rules
+  placeholder?: string;
+  options?: string[];
+  validation?: any;
 }
 
 export interface OnboardingStep {
@@ -69,22 +65,24 @@ export interface OnboardingStep {
   stepName: string;
   uxGoal: string;
   userAction: string;
-  uxPattern: UxPattern;
+  uxPattern: string;
   patternPurpose: string;
   layoutType: LayoutType;
   layoutPurpose: string;
   rationale: string;
-  headline?: string;
-  subtext?: string;
+  headline: string;
+  subtitle: string;
   marketingCopy?: string;
-  cta?: string;
-  ctaType?: string;
-  modalType?: ModalType;        // Type of modal if layoutType is 'modal_form'
-  inputFields?: InputField[];   // Required input fields for form modals
+  cta: string;
+  ctaType: string;
+  modalType?: ModalType;
+  inputFields?: InputField[];
+  featureCallouts?: FeatureCallouts;
+  flowEnd?: boolean;
 }
 
 export interface IntegrationOverview {
-  narrative: string | string[];
+  narrative: string;
   implementationNotes: string;
 }
 
@@ -98,7 +96,41 @@ export interface OnboardingFlow {
   productInfo: ProductInfo;
   pattern: PatternInfo;
   steps: OnboardingStep[];
+  featureCallouts: FeatureCallouts;
   integrationOverview: IntegrationOverview;
   copy: CopyGuidelines;
   generatedAt: string;
+}
+
+export interface OnboardingGoal {
+  education: string;
+  featureSetup: string;
+  activation: string;
+}
+
+export interface FeatureCallout {
+  title: string;
+  description: string;
+}
+
+export interface FeatureCallouts {
+  features: FeatureCallout[];
+}
+
+export interface UserProfile {
+  id: string;
+  email?: string;
+  auth_user_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AppState {
+  onboardingFlow: OnboardingFlow | null;
+  isLoading: boolean;
+  error: string | null;
+  currentStepIndex: number;
+  user: User | null;
+  profile: UserProfile | null;
+  showSampleData: boolean;
 } 

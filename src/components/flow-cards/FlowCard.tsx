@@ -34,7 +34,7 @@ export const FlowCard: React.FC<FlowCardProps> = React.memo(({
         
         <FlowCardContent 
           headline={step.headline || step.stepName}
-          subtext={step.subtext || step.rationale}
+          subtitle={step.subtitle || step.rationale}
           marketingCopy={step.marketingCopy}
           cta={step.cta}
           ctaType={step.ctaType}

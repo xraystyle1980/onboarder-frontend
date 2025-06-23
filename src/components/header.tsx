@@ -71,7 +71,19 @@ function Header({ onShowMyFlows }) {
                   <DropdownItem
                     key="sign-out"
                     onClick={async () => {
-                      await supabase.auth.signOut();
+                      try {
+                        console.log('Attempting to sign out...');
+                        const { error } = await supabase.auth.signOut();
+                        if (error) {
+                          console.error('Sign out error:', error);
+                          alert('Sign out failed: ' + error.message);
+                        } else {
+                          console.log('Sign out successful');
+                        }
+                      } catch (err) {
+                        console.error('Sign out exception:', err);
+                        alert('Sign out failed: ' + err.message);
+                      }
                     }}
                     className="text-red-600"
                   >
@@ -145,7 +157,19 @@ function Header({ onShowMyFlows }) {
                 <Button
                   onPress={async () => {
                     closeMobileMenu();
-                    await supabase.auth.signOut();
+                    try {
+                      console.log('Attempting to sign out (mobile)...');
+                      const { error } = await supabase.auth.signOut();
+                      if (error) {
+                        console.error('Sign out error:', error);
+                        alert('Sign out failed: ' + error.message);
+                      } else {
+                        console.log('Sign out successful');
+                      }
+                    } catch (err) {
+                      console.error('Sign out exception:', err);
+                      alert('Sign out failed: ' + err.message);
+                    }
                   }}
                   variant="light"
                   color="default"

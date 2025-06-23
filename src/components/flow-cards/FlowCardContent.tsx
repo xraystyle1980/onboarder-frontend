@@ -5,7 +5,7 @@ import { LayoutType, ModalType, InputField } from '../../types';
 
 interface FlowCardContentProps {
   headline: string;
-  subtext: string;
+  subtitle: string;
   marketingCopy?: string;
   cta?: string;
   ctaType?: string;
@@ -19,7 +19,7 @@ interface FlowCardContentProps {
 
 export const FlowCardContent: React.FC<FlowCardContentProps> = React.memo(({
   headline,
-  subtext,
+  subtitle,
   marketingCopy,
   cta,
   ctaType,
@@ -36,7 +36,7 @@ export const FlowCardContent: React.FC<FlowCardContentProps> = React.memo(({
         {headline}
       </h3>
       <h4 className="text-slate-700 text-sm mb-4">
-        {subtext}
+        {subtitle}
       </h4>
       {marketingCopy && layoutType !== 'modal_form' && (
         <p className="text-slate-700 text-sm mb-4">

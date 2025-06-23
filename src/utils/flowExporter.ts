@@ -58,8 +58,8 @@ const generateMarkdown = (flow: OnboardingFlow, includeAllTabs: boolean): string
     if (step.headline) {
       sections.push(`**Headline:** ${step.headline}\n`);
     }
-    if (step.subtext) {
-      sections.push(`**Subtext:** ${step.subtext}\n`);
+    if (step.subtitle) {
+      sections.push(`**Subtitle:** ${step.subtitle}\n`);
     }
     if (step.cta) {
       sections.push(`**CTA:** ${step.cta} (${step.ctaType})\n`);
