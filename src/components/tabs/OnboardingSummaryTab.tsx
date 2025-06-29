@@ -1,176 +1,112 @@
 import React from "react";
-import { Card, Chip, Button } from "@heroui/react";
+import { Accordion, AccordionItem } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { OnboardingFlow } from "../../types";
-import { SummaryCard } from '../cards/SummaryCard';
+import { SummarySectionCard } from "../shared/SummarySectionCard";
+import { accordionItemClassNames } from "../shared/accordionTheme";
+import { IconBox } from "../shared/IconBox";
+import { Pill } from "../shared/Pill";
 
 interface OnboardingSummaryTabProps {
   flow: OnboardingFlow;
   onDownload: (format: 'markdown' | 'html' | 'json') => void;
 }
 
-export function OnboardingSummaryTab({ flow, onDownload }: OnboardingSummaryTabProps) {
+export function OnboardingSummaryTab({ flow }: OnboardingSummaryTabProps) {
   return (
-    <section>
-      <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-semibold mb-8">
-          <span className="bg-gradient-text-2">
-            Onboarding Summary
-          </span>
-        </h3>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-        <SummaryCard
-          icon="lucide:package"
-          iconColor="text-blue-500"
-          label="Product Name"
+    <section className="pt-4">
+      <h2 className="text-3xl text-foreground mb-8">Onboarding Summary</h2>
+      {/* Top row: Product Name & Core User Goal in a single card */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <SummarySectionCard
+          icon={<Icon icon="lucide:package" className="text-primary-400" width={32} height={32} />}
+          title={flow.productInfo.productName}
+          className="col-span-1 lg:col-span-2 mb-6"
         >
-          {flow.productInfo.productName}
-        </SummaryCard>
-
-        <SummaryCard
-          icon="lucide:users-round"
-          iconColor="text-green-500"
-          label="Target Audience"
-        >
-          {flow.productInfo.targetAudience}
-        </SummaryCard>
-
-        <SummaryCard
-          icon="lucide:target"
-          iconColor="text-orange-500"
-          label="Core User Goal"
-        >
-          {flow.productInfo.coreUserGoal}
-        </SummaryCard>
-
-        <SummaryCard
-          icon="lucide:layers"
-          iconColor="text-purple-500"
-          label="Product Type"
-        >
-          {flow.productInfo.productType}
-        </SummaryCard>
-
-        <SummaryCard
-          icon="lucide:git-pull-request"
-          iconColor="text-indigo-500"
-          label="Pattern"
-        >
-          {flow.pattern.pattern}
-        </SummaryCard>
-
-        <SummaryCard
-          icon="lucide:key"
-          iconColor="text-pink-500"
-          label="Key Features"
-        >
-          <div className="flex flex-wrap items-center gap-3">
-            {flow.productInfo.keyFeatures.map((feature, index) => (
-              <Chip
-                key={index}
-                variant="flat"
-                color="primary"
-                className="summary-feature-chip max-w-[200px]"
-              >
-                <span className="truncate">{feature}</span>
-              </Chip>
-            ))}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Product Info (left) */}
+            <div className="flex flex-row items-center gap-4 flex-1 pb-6 lg:pb-0 lg:pr-8">
+              <div>
+                <Pill className="capitalize">
+                    <span className="text-lg">{flow.productInfo.productType}</span>
+                </Pill>
+              </div>
+            </div>
+            {/* Core User Goal (right) */}
+            <div className="flex flex-row items-center gap-4 flex-1 rounded-xl bg-card p-6">
+              <IconBox
+                icon={<Icon icon="lucide:target" width={24} height={24} className="text-sky-500" />}
+                size={48}
+              />
+              <div>
+                <div className="text-foreground text-lg">Core User Goal</div>
+                <div className="text-muted-foreground text-base">{flow.productInfo.coreUserGoal}</div>
+              </div>
+            </div>
           </div>
-        </SummaryCard>
-
-        <SummaryCard
-          icon="lucide:rocket"
-          iconColor="text-yellow-500"
-          label="Onboarding Goals"
-          className="col-span-full"
+        </SummarySectionCard>
+      </div>
+      {/* Second row: Target Audience & Onboarding Pattern */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <SummarySectionCard
+          icon={<Icon icon="lucide:users-round" className="text-secondary-500" width={24} height={24} />}
+          title="Target Audience"
         >
-          <div className="flex flex-col md:flex-row items-start gap-2">
-            <SummaryCard
-              icon="lucide:zap"
-              iconColor="text-purple-500"
-              label="Education"
-              className="border-none shadow-none w-full"
+          <div className="text-muted-foreground text-base">{flow.productInfo.targetAudience}</div>
+        </SummarySectionCard>
+        <SummarySectionCard
+          icon={<Icon icon="lucide:git-pull-request" className="text-primary-700" width={24} height={24} />}
+          title="Onboarding Pattern"
+        >
+          <div className="text-muted-foreground text-base">{flow.pattern.pattern}</div>
+        </SummarySectionCard>
+      </div>
+      {/* Third row: Key Features & Onboarding Goals (Accordion) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        {/* Key Features */}
+        <SummarySectionCard
+          icon={<Icon icon="lucide:key" className="text-primary-500" width={22} height={22} />}
+          title="Key Features"
+        >
+          <ul className="space-y-4 text-lg text-muted-foreground">
+            {flow.productInfo.keyFeatures.map((feature, idx) => (
+              <li key={idx} className="flex items-center gap-2 text-foreground">
+                <Icon icon="lucide:check-circle" className="text-primary-400" width={18} height={18} />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </SummarySectionCard>
+        {/* Onboarding Goals Accordion */}
+        <SummarySectionCard
+          icon={<Icon icon="lucide:rocket" className="text-primary-700" width={22} height={22} />}
+          title="Onboarding Goals"
+        >
+          <Accordion variant="light" showDivider={true} className="w-full">
+            <AccordionItem 
+              key="education" 
+              title={<span className="flex items-center gap-2"><Icon icon="lucide:zap" className="text-yellow-400" width={18} height={18} />Education</span>}
+              classNames={accordionItemClassNames}
             >
               {flow.productInfo.onboardingGoal.education}
-            </SummaryCard>
-            <SummaryCard
-              icon="lucide:zap"
-              iconColor="text-purple-500"
-              label="Feature Setup"
-              className="border-none shadow-none w-full"
+            </AccordionItem>
+            <AccordionItem 
+              key="featureSetup" 
+              title={<span className="flex items-center gap-2"><Icon icon="lucide:zap" className="text-yellow-400" width={18} height={18} />Feature Setup</span>}
+              classNames={accordionItemClassNames}
             >
               {flow.productInfo.onboardingGoal.featureSetup}
-            </SummaryCard>
-            <SummaryCard
-              icon="lucide:zap"
-              iconColor="text-purple-500"
-              label="Activation"
-              className="border-none shadow-none w-full"
+            </AccordionItem>
+            <AccordionItem 
+              key="activation" 
+              title={<span className="flex items-center gap-2"><Icon icon="lucide:zap" className="text-yellow-400" width={18} height={18} />Activation</span>}
+              classNames={accordionItemClassNames}
             >
               {flow.productInfo.onboardingGoal.activation}
-            </SummaryCard>
-          </div>
-        </SummaryCard>
+            </AccordionItem>
+          </Accordion>
+        </SummarySectionCard>
       </div>
-
-      {/* --- UX Design Context content moved from UXDesignContextTab --- */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"> */}
-        {/* Launch Context - Timing */}
-        {/* <SummaryCard
-          icon="lucide:hourglass"
-          iconColor="text-blue-500"
-          label="Launch Timing"
-        >
-          {flow.productInfo.launchContext.timing}
-        </SummaryCard> */}
-
-        {/* Launch Context - Signup Strategy */}
-        {/* <SummaryCard
-          icon="lucide:user-plus"
-          iconColor="text-green-500"
-          label="Signup Strategy"
-        >
-          {flow.productInfo.launchContext.signupStrategy}
-        </SummaryCard> */}
-
-        {/* Launch Context - Friction Reduction */}
-        {/* <SummaryCard
-          icon="lucide:minimize"
-          iconColor="text-orange-500"
-          label="Friction Reduction"
-        >
-          {flow.productInfo.launchContext.frictionReduction}
-        </SummaryCard> */}
-
-        {/* Launch Context - Value Reinforcement */}
-        {/* <SummaryCard
-          icon="lucide:award"
-          iconColor="text-purple-500"
-          label="Value Reinforcement"
-        >
-          {flow.productInfo.launchContext.valueReinforcement}
-        </SummaryCard> */}
-
-        {/* Recommended Pattern */}
-        {/* <SummaryCard
-          icon="lucide:puzzle"
-          iconColor="text-indigo-500"
-          label="Recommended Pattern"
-        >
-          {flow.pattern.pattern}
-        </SummaryCard> */}
-
-        {/* Pattern Rationale - Full Width */}
-        {/* <SummaryCard
-          icon="lucide:lightbulb"
-          iconColor="text-yellow-500"
-          label="Pattern Rationale"
-          className="col-span-full"
-        >
-          {flow.pattern.rationale}
-        </SummaryCard> */}
-      {/* </div> */}
     </section>
   );
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Accordion, AccordionItem } from "@heroui/react";
 import { ModalType } from '../../types';
+import { accordionItemClassNames } from '../shared/accordionTheme';
+import { IconBox } from '../shared/IconBox';
+import { Icon } from '@iconify/react';
 
 interface FlowCardHeaderProps {
   stepNumber: number;
@@ -8,6 +11,9 @@ interface FlowCardHeaderProps {
   patternPurpose: string;
   layoutPurpose: string;
   modalType?: ModalType;
+  rationale?: string;
+  uxGoal?: string;
+  userAction?: string;
 }
 
 // Utility to replace underscores and capitalize each word
@@ -15,35 +21,6 @@ function formatLayoutType(str: string) {
   return str
     .replace(/_/g, ' ')
     .replace(/\b\w/g, char => char.toUpperCase());
-}
-
-// Utility to get background color based on layout type
-function getLayoutBackgroundColor(layoutType: string): string {
-  const colorMap: { [key: string]: string } = {
-    'full_screen': 'bg-blue-50',
-    'modal_form': 'bg-green-50',
-    'tooltip_overlay': 'bg-purple-50',
-    'split_screen': 'bg-orange-50',
-    'swipeable_cards': 'bg-indigo-50'
-  };
-
-  // Convert layoutType to lowercase for case-insensitive matching
-  const normalizedType = layoutType.toLowerCase();
-  
-  // Try exact match first
-  if (colorMap[normalizedType]) {
-    return colorMap[normalizedType];
-  }
-  
-  // Try partial matching for layout types that might contain these keywords
-  for (const [key, color] of Object.entries(colorMap)) {
-    if (normalizedType.includes(key)) {
-      return color;
-    }
-  }
-  
-  // Default fallback
-  return 'bg-slate-50';
 }
 
 // Utility to get a human-readable label for modal type
@@ -92,41 +69,68 @@ export const FlowCardHeader: React.FC<FlowCardHeaderProps> = React.memo(({
   layoutType,
   patternPurpose,
   layoutPurpose,
-  modalType
+  modalType,
+  rationale,
+  uxGoal,
+  userAction
 }) => {
-  const layoutBackgroundColor = getLayoutBackgroundColor(layoutType);
   const combinedTitle = getCombinedTitle(layoutType, modalType);
   const combinedDescription = getCombinedDescription(layoutPurpose, modalType);
   
   return (
-    <div className="flex flex-col w-full bg-red-400 px-0 gap-0 py-0">
-      <Accordion isCompact variant="light" showDivider={true} className="w-full px-0">
+    <div className="flex flex-col w-full px-0 gap-0 py-0">
+      <Accordion isCompact showDivider={true} className="w-full px-2">
         <AccordionItem 
           key="step" 
           title={`Step ${stepNumber}`}
-          classNames={{
-            base: "bg-slate-200",
-            heading: "my-0 px-4",
-            title: "text-slate-700 text-sm",
-            content: "text-sm text-slate-600 pt-1 pb-3 px-5"
-          }}
+          classNames={accordionItemClassNames}
         >
-          <div>{patternPurpose}</div>
+          {(patternPurpose || rationale) && (
+            <div className="flex flex-col gap-2">
+              {patternPurpose && <p className="text-muted-foreground text-sm">{patternPurpose}</p>}
+              {rationale && <p className="text-muted-foreground text-sm">{rationale}</p>}
+            </div>
+          )}
         </AccordionItem>
-      </Accordion>
 
-      <Accordion isCompact variant="light" showDivider={true} className="w-full px-0">
         <AccordionItem 
           key="layout" 
           title={combinedTitle}
-          classNames={{
-            base: layoutBackgroundColor,
-            heading: "my-0 px-4",
-            title: "text-slate-700 text-sm",
-            content: "text-sm text-slate-600 pt-1 pb-3 px-5"
-          }}
+          classNames={accordionItemClassNames}
         >
-          <div>{combinedDescription}</div>
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="text-muted-foreground text-sm">{combinedDescription}</p>
+            </div>
+            {(uxGoal || userAction) && (
+              <ul className="space-y-4 text-sm text-muted-foreground">
+                {uxGoal && (
+                  <li className="flex gap-4">
+                    <IconBox
+                      icon={<Icon icon="lucide:target" className="text-primary-500" width={20} height={20} />}
+                      size={32}
+                    />
+                    <div className="flex flex-col">
+                      <div className="text-foreground">Goal</div> 
+                      <span className="text-muted-foreground">{uxGoal}</span>
+                    </div>
+                  </li>
+                )}
+                {userAction && (
+                  <li className="flex gap-4">
+                    <IconBox
+                      icon={<Icon icon="lucide:mouse-pointer" className="text-primary-500" width={20} height={20} />}
+                      size={32}
+                    />
+                    <div className="flex flex-col">
+                      <div className="text-foreground">Action</div> 
+                      <span className="text-muted-foreground">{userAction}</span>
+                    </div>
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
         </AccordionItem>
       </Accordion>
     </div>

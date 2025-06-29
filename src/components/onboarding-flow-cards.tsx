@@ -4,6 +4,7 @@ import { OnboardingStep, OnboardingFlow } from "../types";
 import { FlowCard } from "./flow-cards/FlowCard";
 import { useFlowCardTabs } from "../hooks/useFlowCardTabs";
 import { CARD_WIDTH } from "../utils/constants";
+import { Pill } from "./shared/Pill";
 
 interface OnboardingFlowCardsProps {
   flow: OnboardingFlow;
@@ -44,32 +45,32 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
   return (
     <section className="p-6">
       <div className="flex items-center gap-4 mb-8">
-        <h3 className="text-2xl font-semibold">
-          <span className="bg-gradient-text-2">Onboarding Flow</span>
-        </h3>
+      
+        <h2 className="text-3xl text-foreground">Screens</h2>
+
         {/* The pattern below matches the value in the onboarding summary tab under 'Flow Type' */}
-        <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-medium border border-purple-200 top-1 relative">
+        <Pill>
           {flow.pattern.pattern}
-        </span>
+        </Pill>
       </div>
     
       <div className="relative w-full max-w-full mx-auto">
         {showLeft && (
           <button
-            className="absolute left-[0px] top-1/2 -translate-y-1/2 z-30 bg-white/80 hover:bg-white shadow rounded-full p-2 transition-colors border border-gray-200"
+            className="absolute left-[-48px] top-1/2 -translate-y-1/2 z-30 bg-gradient-orange-pink border-none hover:bg-accent/90 rounded-full p-2 transition-colors border shadow-xl"
             onClick={() => scrollBy(-CARD_WIDTH * 1.5)}
             aria-label="Scroll left"
           >
-            <Icon icon="lucide:chevron-left" width={24} height={24} />
+            <Icon icon="lucide:chevron-left" width={24} height={24} className="text-black" />
           </button>
         )}
         {showRight && (
           <button
-            className="absolute right-[0px] top-1/2 -translate-y-1/2 z-30 bg-white/80 hover:bg-white shadow rounded-full p-2 transition-colors border border-gray-200"
+            className="absolute right-[-48px] top-1/2 -translate-y-1/2 z-30 bg-gradient-orange-pink border-none hover:bg-accent/90 rounded-full p-2 transition-colors border shadow-xl"
             onClick={() => scrollBy(CARD_WIDTH * 1.5)}
             aria-label="Scroll right"
           >
-            <Icon icon="lucide:chevron-right" width={24} height={24} />
+            <Icon icon="lucide:chevron-right" width={24} height={24} className="text-black" />
           </button>
         )}
         <div

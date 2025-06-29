@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Chip } from "@heroui/react";
+import { Card, Accordion, AccordionItem } from "@heroui/react";
+import { Icon } from "@iconify/react";
 import { OnboardingFlow } from '../../types';
-import { SummaryCard } from '../cards/SummaryCard';
+import { SummarySectionCard } from '../shared/SummarySectionCard';
+import { accordionItemClassNames } from '../shared/accordionTheme';
 
 interface UXNarrativeTabProps {
   flow: OnboardingFlow;
@@ -10,85 +12,80 @@ interface UXNarrativeTabProps {
 export const UXNarrativeTab: React.FC<UXNarrativeTabProps> = ({ flow }) => {
   return (
     <section>
-      <h3 className="text-2xl font-semibold mb-8">
-        <span className="bg-gradient-text-2">
-          UX Narrative
-        </span>
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-        {/* Integration Overview - Narrative */}
-        <SummaryCard
-          icon="lucide:file-text"
-          iconColor="text-emerald-500"
-          label="Integration Narrative"
-          className="col-span-full"
-        >
-          {typeof flow.integrationOverview.narrative === 'string'
-            ? flow.integrationOverview.narrative.split('\n').map((paragraph, index) => (
-                <p key={index} className="mb-4 last:mb-0">
-                  {paragraph}
-                </p>
-              ))
-            : Array.isArray(flow.integrationOverview.narrative)
+      <h3 className="text-2xl font-semibold mb-8 text-foreground">UX Narrative</h3>
+      <SummarySectionCard className="p-0">
+        <Accordion defaultExpandedKeys={["integration"]} showDivider={true} className="w-full">
+          {/* Integration Narrative */}
+          <AccordionItem
+            key="integration"
+            title={<span className="flex items-center gap-2"><Icon icon="lucide:layers" className="text-primary-500" width={22} height={22} /><span className="font-bold text-lg">Integration Narrative</span></span>}
+            classNames={accordionItemClassNames}
+          >
+            {Array.isArray(flow.integrationOverview.narrative)
               ? flow.integrationOverview.narrative.map((paragraph, index) => (
                   <p key={index} className="mb-4 last:mb-0">
                     {paragraph}
                   </p>
                 ))
-              : <p>{String(flow.integrationOverview.narrative)}</p>
-          }
-        </SummaryCard>
-
-        {/* Implementation Notes */}
-        <SummaryCard
-          icon="lucide:clipboard-list"
-          iconColor="text-cyan-500"
-          label="Implementation Notes"
-        >
-          {flow.integrationOverview.implementationNotes.split('\n').map((line, index) => (
-            <p key={index} className="mb-2 last:mb-0">{line}</p>
-          ))}
-        </SummaryCard>
-
-        {/* Copy Guidelines - Tone */}
-        <SummaryCard
-          icon="lucide:volume-2"
-          iconColor="text-rose-500"
-          label="Tone"
-        >
-          {flow.copy.tone}
-        </SummaryCard>
-
-        {/* Copy Guidelines - Voice */}
-        <SummaryCard
-          icon="lucide:mic"
-          iconColor="text-pink-500"
-          label="Voice"
-        >
-          {flow.copy.voice}
-        </SummaryCard>
-
-        {/* Copy Guidelines - Key Phrases */}
-        <SummaryCard
-          icon="lucide:quote"
-          iconColor="text-violet-500"
-          label="Key Phrases"
-          className="col-span-full"
-        >
-          <div className="flex flex-wrap gap-2">
-            {flow.copy.keyPhrases.map((phrase, index) => (
-              <Chip
-                key={index}
-                variant="flat"
-                color="primary"
-                className="summary-feature-chip"
+              : typeof flow.integrationOverview.narrative === 'string'
+                ? flow.integrationOverview.narrative.split('\n').map((paragraph, index) => (
+                    <p key={index} className="mb-4 last:mb-0">
+                      {paragraph}
+                    </p>
+                  ))
+                : <p>{String(flow.integrationOverview.narrative)}</p>
+            }
+          </AccordionItem>
+          {/* Implementation Details */}
+          <AccordionItem
+            key="implementation"
+            title={<span className="flex items-center gap-2"><Icon icon="lucide:settings" className="text-primary-500" width={22} height={22} /><span className="font-bold text-lg">Implementation</span></span>}
+            classNames={accordionItemClassNames}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <SummarySectionCard
+                icon={<Icon icon="lucide:calendar-check" className="text-primary-500" width={22} height={22} />}
+                title="Notes"
+                className="bg-background-secondary rounded-xl p-6"
               >
-                {phrase}
-              </Chip>
-            ))}
-          </div>
-        </SummaryCard>
-      </div>
+                <div className="text-muted-foreground text-base">
+                  {flow.integrationOverview.implementationNotes}
+                </div>
+              </SummarySectionCard>
+              <SummarySectionCard
+                icon={<Icon icon="lucide:volume-2" className="text-primary-500" width={22} height={22} />}
+                title="Tone"
+                className="bg-background-secondary rounded-xl p-6"
+              >
+                <div className="text-muted-foreground text-base">
+                  {flow.copy.tone}
+                </div>
+              </SummarySectionCard>
+              <SummarySectionCard
+                icon={<Icon icon="lucide:mic" className="text-primary-500" width={22} height={22} />}
+                title="Voice"
+                className="bg-background-secondary rounded-xl p-6"
+              >
+                <div className="text-muted-foreground text-base">
+                  {flow.copy.voice}
+                </div>
+              </SummarySectionCard>
+            </div>
+          </AccordionItem>
+          {/* Key Phrases */}
+          <AccordionItem
+            key="keyphrases"
+            title={<span className="flex items-center gap-2"><Icon icon="lucide:key" className="text-primary-500" width={22} height={22} /><span className="font-bold text-lg">Key Phrases</span></span>}
+            classNames={accordionItemClassNames}
+          >
+            <ul className="list-disc pl-6 space-y-1">
+              {flow.copy.keyPhrases.map((phrase, index) => (
+                <li key={index}>{phrase}</li>
+              ))}
+            </ul>
+          </AccordionItem>
+        </Accordion>
+      </SummarySectionCard>
     </section>
   );
 }; 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from "@iconify/react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@heroui/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Card, CardBody } from "@heroui/react";
 import { OnboardingFlow } from '../../types';
 
 interface GeneratedFlowCardProps {
@@ -40,86 +40,95 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
       alert('Error copying flow to clipboard. Please try again.');
     }
   };
-  
+
   return (
-    <div className="bg-slate-100 rounded-3xl px-8 pb-8 pt-10 max-w-2xl mx-auto my-8 flex flex-col items-center relative">
-      <Button
-        isIconOnly
-        variant="light"
-        size="sm"
-        onPress={onClose}
-        aria-label="Clear generated flow"
-        className="absolute right-4 top-4"
-      >
-        <Icon icon="lucide:x" width={20} height={20} />
-      </Button>
-      <h4 className="text-xl text-center mb-6 mt-1">{safePrompt.charAt(0).toUpperCase() + safePrompt.slice(1)}</h4>
-      <div className="flex w-full justify-center">
-        {isNewlyGenerated && (
-          <Button 
-            color="success"
-            variant="solid"
-            size="md"
-            className="w-full md:w-[60%] my-2"
-            startContent={<Icon icon="lucide:save" width={20} height={20} />}
-            onPress={() => onSaveFlow(safePrompt, flow)}
-          >
-            Save Flow
-          </Button>
-        )}
-      </div>
-      <div className="flex gap-4 mt-4">
-        <div>
-          <Dropdown shouldBlockScroll={false}>
-            <DropdownTrigger>
-              <Button
-                fullWidth
-                variant="light"
-                size="md"
-                startContent={<Icon icon="lucide:download" width={20} />}
-              >
-                Download Flow
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu 
-              aria-label="Download options" 
-              onAction={onDownload}
-              variant="light"
-              itemClasses={{
-                base: "data-[hover=true]:bg-gray-100 data-[hover=true]:text-slate-900",
-                title: "text-slate-900",
-                description: "text-slate-500"
-              }}
-            >
-              <DropdownItem 
-                key="markdown" 
-                textValue="Markdown"
-                startContent={<Icon icon="logos:markdown" width={20} height={20} />}
-              >
-                Markdown
-              </DropdownItem>
-              <DropdownItem 
-                key="json" 
-                textValue="JSON"
-                startContent={<Icon icon="vscode-icons:file-type-json" width={20} height={20} />}
-              >
-                JSON
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-        
+    <Card className="gradient-bg-card rounded-3xl px-0 max-w-5xl mx-auto mb-8 flex flex-col items-center relative border border-border">
+      <CardBody className="p-0 w-full">
+        {/* Close Button */}
         <Button
-          variant="solid"
-          color="primary"
-          size="md"
-          startContent={<Icon icon="lucide:figma" width={20} />}
-          onClick={handleCreateWireframe}
+          isIconOnly
+          variant="light"
+          size="sm"
+          onPress={onClose}
+          aria-label="Clear generated flow"
+          className="absolute right-4 top-4 z-10"
         >
-          Create Wireframes
+          <Icon icon="lucide:x" width={20} height={20} className="text-muted-foreground" />
         </Button>
-       
-      </div>
-    </div>
+        {/* Prompt Section */}
+        <div className="flex flex-row items-center justify-between w-full p-8 pb-6 gap-4">
+          <div className="flex flex-col flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              <Icon icon="mdi:format-quote-open" width={20} height={20} className="text-sky-400" />
+              <span className="uppercase tracking-wide text-xs text-sky-400 font-semibold">Prompt</span>
+            </div>
+            <p className="mb-0 text-lg md:text-xl font-normal text-foreground leading-snug break-words">
+              {safePrompt}
+            </p>
+          </div>
+          <div className="flex flex-row items-center gap-3 ml-4 shrink-0">
+            <Dropdown shouldBlockScroll={false}>
+              <DropdownTrigger>
+                <Button
+                  isIconOnly
+                  variant="bordered"
+                  size="lg"
+                  className="rounded-xl"
+                  startContent={<Icon icon="lucide:download" width={22} height={22} className="text-muted-foreground" />}
+                  aria-label="Download Flow"
+                />
+              </DropdownTrigger>
+              <DropdownMenu 
+                aria-label="Download options" 
+                onAction={onDownload}
+                variant="light"
+                itemClasses={{
+                  base: "data-[hover=true]:bg-gray-100 data-[hover=true]:text-foreground",
+                  title: "text-foreground",
+                  description: "text-muted-foreground"
+                }}
+              >
+                <DropdownItem 
+                  key="markdown" 
+                  textValue="Markdown"
+                  startContent={<Icon icon="logos:markdown" width={20} height={20} className="text-muted-foreground" />}
+                >
+                  Markdown
+                </DropdownItem>
+                <DropdownItem 
+                  key="json" 
+                  textValue="JSON"
+                  startContent={<Icon icon="vscode-icons:file-type-json" width={20} height={20} className="text-muted-foreground" />}
+                >
+                  JSON
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Button
+              isIconOnly
+              variant="bordered"
+              size="lg"
+              className="rounded-xl"
+              startContent={<Icon icon="lucide:figma" width={22} height={22} className="text-muted-foreground" />}
+              aria-label="Create Wireframes"
+              onClick={handleCreateWireframe}
+            />
+            
+            {isNewlyGenerated && (
+              <Button 
+                color="primary"
+                variant="solid"
+                size="lg"
+                className="rounded-xl px-6 font-semibold btn-secondary"
+                startContent={<Icon icon="lucide:save" width={20} height={20} className="text-black" />}
+                onPress={() => onSaveFlow(safePrompt, flow)}
+              >
+                Save Flow
+              </Button>
+            )}
+          </div>
+        </div>
+      </CardBody>
+    </Card>
   );
 }; 

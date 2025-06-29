@@ -204,25 +204,17 @@ export default function App() {
     downloadLink.click();
     
     // Cleanup
-    window.URL.revokeObjectURL(url);
     document.body.removeChild(downloadLink);
+    window.URL.revokeObjectURL(url);
   };
 
-  // Handler to load a saved flow
   const handleSelectSavedFlow = (flow: SavedFlow) => {
     setCurrentFlow(flow.flow_json);
-    setSubmittedPrompt(flow.prompt || "");
-    setShowUserFlowsDrawer(false);
-    setShowSampleFlow(false);
-    setIsNewlyGenerated(false);
+    setSubmittedPrompt(flow.prompt);
     setCurrentFlowId(flow.id);
+    setIsNewlyGenerated(false);
+    setShowUserFlowsDrawer(false);
   };
-
-  useEffect(() => {
-    if (showSampleFlow) {
-      setIsNewlyGenerated(false);
-    }
-  }, [showSampleFlow]);
 
   return (
     <>
@@ -230,12 +222,14 @@ export default function App() {
       <ErrorBoundary>
         <div className="min-h-screen bg-background flex flex-col">
           <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} />
-          <SectionHero 
+          <SectionHero
             inputText={inputText}
             onInputChange={setInputText}
             onGenerate={handleGenerate}
             onClear={handleClear}
             isGenerating={isGenerating}
+            isExample={showSampleFlow}
+            onToggleExample={setShowSampleFlow}
           />
           <div className="container mx-auto pb-20">
             {/* Drawer for My Flows */}
@@ -268,23 +262,6 @@ export default function App() {
                 </DrawerBody>
               </DrawerContent>
             </Drawer>
-
-            {!submittedPrompt && !currentFlow && (
-              <div className="items-center flex flex-col gap-2 m-6">
-                <div className="items-center flex gap-4 max-w-[600px]">
-                  <h3 className="text-center text-2xl">Try generating your own UX flow — or toggle the example below to preview a sample result.</h3>
-                </div>
-                <div className="mb-6 mt-4 flex items-center justify-center gap-4 bg-slate-100 rounded-full p-6">
-                  <span className="text-lg">Example flow</span>
-                  <Switch
-                    size="lg"
-                    color="primary"
-                    isSelected={showSampleFlow}
-                    onValueChange={setShowSampleFlow}
-                  />              
-                </div>
-              </div>
-            )}
 
             {/* Main logic for generating and generated flow states */}
             {isGenerating && (
@@ -326,19 +303,17 @@ export default function App() {
               {!isGenerating && hasFlowToDisplay && (
                 <>
                   {/* Tabs and Download Button Row */}
-                  <div className="flex-col md:flex-row flex mt-8 mb-6 justify-center items-center border-b border-divider">
+                  <div className="flex-col md:flex-row flex mt-8 mb-6 justify-start items-center border-b border-divider">
                     <Tabs
-                      aria-label="Onboarding Flow Tabs"
                       selectedKey={selectedMainTab}
                       onSelectionChange={(key) => setSelectedMainTab(key as string)}
-                      aria-label="Onboarding Sections"
                       color="primary"
                       variant="underlined"
                       classNames={{
                         tabList: "gap-6 w-full relative rounded-none p-0",
-                        cursor: "w-full bg-slate-600",
+                        cursor: "w-full bg-sky-400",
                         tab: "max-w-fit px-0 h-12",
-                        tabContent: "group-data-[selected=true]:text-slate-600 text-lg",
+                        tabContent: "group-data-[selected=true]:text-white text-lg",
                       }}
                     >
                       <Tab key="summary" title={<span className="sm:inline">Summary</span>} />
@@ -348,7 +323,7 @@ export default function App() {
 
                   <div className="relative">
                     <div className={getTabTransitionClass("summary")}>
-                      <OnboardingSummaryTab flow={displayFlow} />
+                      <OnboardingSummaryTab flow={displayFlow} onDownload={handleDownload} />
                     </div>
 
                     <div className={getTabTransitionClass("narrative")}>

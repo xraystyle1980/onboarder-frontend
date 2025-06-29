@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card, CardBody } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 interface SummaryCardProps {
@@ -17,14 +18,16 @@ export const SummaryCard: React.FC<SummaryCardProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`summary-result-card ${className}`}>
-      <div className="flex items-center gap-1 self-stretch">
-        <Icon icon={icon} width={20} height={20} className={`summary-icon ${iconColor}`} />
-        <div className="summary-label">{label}</div>
-      </div>
-      <div className="summary-content">
-        {children}
-      </div>
-    </div>
+    <Card className={`bg-card text-card-foreground border border-border ${className}`}>
+      <CardBody className="p-6">
+        <div className="flex items-center gap-2 mb-3">
+          <Icon icon={icon} width={20} height={20} className={`${iconColor} mr-1`} />
+          <div className="font-semibold text-foreground">{label}</div>
+        </div>
+        <div className="text-foreground">
+          {children}
+        </div>
+      </CardBody>
+    </Card>
   );
 }; 

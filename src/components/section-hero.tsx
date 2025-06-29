@@ -1,7 +1,14 @@
 "use client";
-import React from "react";
-import { Button } from "@heroui/react";
+import React, { useState } from "react";
+import { Button, Switch, cn } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import magicWand from '@iconify/icons-lucide/sparkles';
+import MdiIcon from '@mdi/react';
+import { mdiAutoFix } from '@mdi/js';
+import { mdiRobot } from '@mdi/js';
+import { Pill } from "./shared/Pill";
+
+
 
 interface SectionHeroProps {
   inputText: string;
@@ -9,6 +16,8 @@ interface SectionHeroProps {
   onGenerate: () => void;
   onClear: () => void;
   isGenerating: boolean;
+  isExample: boolean;
+  onToggleExample: (checked: boolean) => void;
 }
 
 export default function SectionHero({
@@ -17,58 +26,93 @@ export default function SectionHero({
   onGenerate,
   onClear,
   isGenerating,
+  isExample,
+  onToggleExample,
 }: SectionHeroProps) {
   return (
-    <div className="relative flex flex-col items-center overflow-clip [background-image:linear-gradient(90deg,_#00000033,_#00000033),linear-gradient(90deg,_#667eea,_#764ba2)]">
-      <div className="max-w-screen-md mx-auto">
-        <div className="flex flex-col items-start justify-center gap-[29px] border-solid border-gray-200 p-4 sm:p-8">
-          <div className="flex flex-col gap-4 self-stretch border-solid border-gray-200 text-center max-w-full">
-            <div className="flex items-start justify-center break-words">
-              <h1 className="font-bold text-center text-6xl max-md:text-4xl max-md:leading-[50px]">
-                <span className="text-white">{"Design Onboarding UX ​"}</span>
-                <span className="bg-gradient-text-1">
-                  Instantly
-                </span>
-              </h1>
-            </div>
-            <div className="flex items-start justify-center break-words">
-              <h2 className="text-3xl text-center text-white/90">
-                Transform your product ideas into structured onboarding flows with AI-powered UX insights
-              </h2>
-            </div>
-          </div>
-          <div className="flex flex-col items-start justify-center gap-[23px] rounded-2xl border border-solid border-x-white/20 border-y-white/20 bg-black/30 p-8 w-full max-w-full">
-            <textarea
-              value={inputText}
-              onChange={(e) => onInputChange(e.target.value)}
-              className="self-stretch rounded-xl border border-solid border-x-white/50 border-y-white/50 bg-white/70 p-4 text-base leading-6 text-slate-900 resize-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-              rows={4}
-              placeholder='A project management app called "FreelancePM" that helps freelancers create projects, invite clients, and track tasks. Target audience is independent contractors and solo professionals aged 25-50.'
-              disabled={isGenerating}
-            />
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-[11px] border-solid border-gray-200 min-[1430px]:flex-nowrap w-full">
-              <div className="flex items-center gap-4 flex-wrap justify-center">
-                <div className="flex flex-wrap items-center justify-center gap-[7px] border-solid border-gray-200 min-[1430px]:flex-nowrap flex-grow">
-                  <Icon icon="lucide:wand-2" className="h-3.5 w-[11px] text-indigo-500" />
-                  <div className="w-auto text-sm text-white break-words">
-                    Onboarder will analyze and generate your UX flow
-                  </div>
-                </div>
-                <Button
-                  variant="solid"
-                  color="primary"
-                  size="md"
-                  onPress={onGenerate}
-                  isDisabled={!inputText.trim() || isGenerating}
-                  startContent={<Icon icon="lucide:wand-2" width={16} />}
-                >
-                  {isGenerating ? "Generating..." : "Generate Onboarding"}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="gap-2 relative flex flex-col items-center overflow-clip hero-radial-bg pt-16 pb-4 px-4 lg:px-0">
+      <div className="mb-3">
+        <Pill>
+          <MdiIcon path={mdiRobot} size={0.9} color="#0369a1" />
+          AI-Powered UX Generation
+        </Pill>
       </div>
+      {/* Headline */}
+      <div className="w-full max-w-3xl text-center text-[60px] font-bold leading-[60px] mb-6">
+        <span className="text-white block">Design Onboarding UX</span>
+        <span className="gradient-orange-pink block">Instantly</span>
+      </div>
+      {/* Subheading */}
+      <div className="flex items-center justify-center w-full max-w-3xl mx-auto mb-7">
+        <p className="text-2xl leading-8 text-white text-center w-full">
+          <span className="font-semibold text-sky-400">Kickstart your UX. </span>
+          <span className="font-regular text-slate-300">Just describe your product and we'll generate a user-facing onboarding flow you can build on.</span>
+        </p>
+      </div>
+
+
+      {/* Prompt Box */}
+      <div className="flex flex-col justify-end w-full max-w-5xl pt-3">
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            if (!inputText.trim()) return; // browser will show required message
+            onGenerate();
+          }}
+          className="flex flex-col items-start justify-end gap-4 rounded-3xl border-2 border-solid border-blue-600/50 px-8 pb-3.5 bg-black/30 [background-image:radial-gradient(#f725850f,_#0b0b140f),radial-gradient(#7c3aed14,_#0b0b1414),radial-gradient(#00e5ff16,_#0b0b1416),linear-gradient(90deg,_#0b0b14,_#0b0b14)]"
+        >
+          {/* Prompt label */}
+          <div className="flex items-center justify-center relative top-[-1rem]">
+            <Pill>✨ Describe your product</Pill>
+          </div>
+          {/* Prompt text area */}
+          <textarea
+            id="product-description"
+            name="product-description"
+            value={inputText}
+            onChange={(e) => onInputChange(e.target.value)}
+            required
+            aria-label="Describe your product"
+            className="bg-transparent text-2xl self-stretch rounded-xl border border-none p-4 leading-normal text-white/30 focus:text-white placeholder-white/30 transition-colors selection:bg-sky-500/30 resize-none mb-2"
+            rows={3}
+            placeholder='A project management app called "FreelancePM" that helps freelancers create projects, invite clients, and track tasks. Target audience is independent contractors and solo professionals aged 25-50.'
+            disabled={isGenerating}
+          />
+          {/* Example toggle and Generate button row */}
+          <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-3 border-t border-solid border-neutral-600/50 py-4 w-full">
+            <div className="flex items-center gap-3 w-full text-sm">
+              <Switch
+                isSelected={isExample}
+                onValueChange={onToggleExample}
+                classNames={{
+                  label: [
+                    "text-sky-700", // OFF state
+                    "group-data-[selected=true]:text-sky-500" // ON state
+                  ].join(" ")
+                }}
+              >
+                 Example
+              </Switch>
+              <span className="text-sky-500 text-sm">
+                Try your own flow or toggle the example
+              </span>
+            </div>
+            <Button
+              variant="solid"
+              color="primary"
+              size="lg"
+              className="btn-primary flex items-center gap-3 px-12 py-5 rounded-2xl drop-shadow-lg"
+              startContent={<span><MdiIcon path={mdiAutoFix} size={1.25} /></span>}
+              type="submit"
+              isDisabled={isGenerating}
+            >
+              <span className="text-lg leading-6">{isGenerating ? "Generating..." : "Generate Flow"}</span>
+            </Button>
+          </div>
+        </form>
+      </div>
+
+
     </div>
   );
 }

@@ -15,6 +15,7 @@ import {
 import LoginForm from "./LoginForm";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 import { supabase } from "../supabaseClient";
+import { FigmaIcon, UserIcon } from "./shared/CustomIcons";
 
 function Header({ onShowMyFlows }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -29,18 +30,42 @@ function Header({ onShowMyFlows }) {
     setIsMobileMenuOpen(false);
   };
 
+  // Extracted nav buttons for reuse
+  const navButtons = (
+    <>
+      <Button
+        variant="solid"
+        color="default"
+        size="md"
+        className="btn-utility"
+        startContent={<FigmaIcon />}
+      >
+        <span className="utility-btn-text">Try the plugin</span>
+      </Button>
+      <Button
+        variant="solid"
+        color="default"
+        size="md"
+        className="btn-utility"
+        startContent={<UserIcon />}
+        onPress={() => setShowLogin(true)}
+      >
+        <span className="utility-btn-text">Sign in</span>
+      </Button>
+    </>
+  );
+
   return (
-    <header className="font-poppins flex w-full flex-col bg-white py-3">
+    <header className="flex w-full flex-col bg-deep-night py-3">
       <div className="flex items-center justify-center container mx-auto" >
         <div className="flex flex-grow items-center justify-between px-8" >
           {/* Logo Section */}
           <a href="/" className="flex items-center justify-center gap-3 no-underline">
-            <div className="flex h-8 w-8 flex-col items-center justify-center rounded-lg border-solid border-gray-200 px-[9px] py-[8.8px] [background-image:linear-gradient(90deg,_#9333ea,_#2563eb)]" >
-              <Icon icon="lucide:sparkles" className="h-3.5 w-3.5 text-white" />
-            </div>
-            <div className="text-xl font-bold leading-7 text-slate-900">
-              Onboarder<span className="text-slate-400">.design</span>
-            </div>
+            <img 
+              src="/Onboader-Logo.svg" 
+              alt="Onboarder Logo" 
+              className="header-logo"
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -48,15 +73,15 @@ function Header({ onShowMyFlows }) {
             {user ? (
               <Dropdown>
                 <DropdownTrigger>
-                <Button
-            fullWidth
-            variant="bordered"
-            color="default"
-            size="md"
-            className="font-medium"
-          >
-                    <span className="text-slate-700">{user.email}</span>
-                    <Icon icon="lucide:chevron-down" className="w-4 h-4" />
+                  <Button
+                    fullWidth
+                    variant="bordered"
+                    color="default"
+                    size="md"
+                    className="font-medium"
+                  >
+                    <span className="text-user-email">{user.email}</span>
+                    <Icon icon="lucide:chevron-down" className="nav-icon" />
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
@@ -85,21 +110,17 @@ function Header({ onShowMyFlows }) {
                         alert('Sign out failed: ' + err.message);
                       }
                     }}
-                    className="text-red-600"
+                    className="text-sign-out"
                   >
                     Sign Out
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             ) : (
-              <Button
-                variant="solid"
-                color="primary"
-                size="md"
-                onPress={() => setShowLogin(true)}
-              >
-                Sign In
-              </Button>
+              <div className="flex gap-4">
+                {/* Example of different button variants with icons */}
+                {navButtons}
+              </div>
             )}
           </div>
 
@@ -112,9 +133,9 @@ function Header({ onShowMyFlows }) {
             >
               <span className="sr-only">Open main menu</span>
               {isMobileMenuOpen ? (
-                <Icon icon="lucide:x" className="w-6 h-6" />
+                <Icon icon="lucide:x" className="mobile-menu-icon" />
               ) : (
-                <Icon icon="lucide:menu" className="w-6 h-6" />
+                <Icon icon="lucide:menu" className="mobile-menu-icon" />
               )}
             </button>
           </div>
@@ -123,22 +144,10 @@ function Header({ onShowMyFlows }) {
 
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-            {/* <a
-              href="#"
-              onClick={closeMobileMenu}
-              className="block px-3 py-2 text-base text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-md transition-colors"
-            >
-              Examples
-            </a>
-            <a
-              href="#"
-              onClick={closeMobileMenu}
-              className="block px-3 py-2 text-base text-slate-600 hover:text-slate-900 hover:bg-gray-50 rounded-md transition-colors"
-            >
-              Docs
-            </a> */}
+        <div className="md:hidden transition-all duration-300 ease-in-out transform scale-y-100 origin-top"
+          style={{ maxHeight: isMobileMenuOpen ? '500px' : '0', overflow: 'hidden' }}
+        >
+          <div className="mobile-menu-container flex flex-col gap-3">
             {user ? (
               <>
                 <Button
@@ -150,7 +159,7 @@ function Header({ onShowMyFlows }) {
                   color="default"
                   size="sm"
                   fullWidth
-                  className="text-left px-3 py-2 rounded-md text-base transition-colors"
+                  className="mobile-menu-button"
                 >
                   My Flows
                 </Button>
@@ -175,31 +184,24 @@ function Header({ onShowMyFlows }) {
                   color="default"
                   size="sm"
                   fullWidth
-                  className="text-left px-3 py-2 rounded-md text-base transition-colors"
+                  className="mobile-menu-button"
                 >
                   Sign Out
                 </Button>
               </>
             ) : (
-              <Button
-                onPress={() => { closeMobileMenu(); setShowLogin(true); }}
-                variant="solid"
-                color="primary"
-                size="md"
-                fullWidth
-                className="text-left px-3 py-2 rounded-md text-base transition-colors"
-              >
-                Sign In
-              </Button>
+              <div className="flex flex-col gap-3">
+                {navButtons}
+              </div>
             )}
           </div>
         </div>
       )}
       {showLogin && (
         <Modal isOpen={showLogin} onOpenChange={setShowLogin}>
-          <ModalContent>
-            <ModalHeader>Sign In</ModalHeader>
-            <ModalBody>
+          <ModalContent className="dark-card-body">
+            <ModalHeader className="dark-card-body">Sign In</ModalHeader>
+            <ModalBody className="dark-card-body">
               <LoginForm onClose={() => setShowLogin(false)} />
             </ModalBody>
           </ModalContent>

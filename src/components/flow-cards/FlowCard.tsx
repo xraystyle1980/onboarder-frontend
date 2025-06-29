@@ -22,14 +22,17 @@ export const FlowCard: React.FC<FlowCardProps> = React.memo(({
   onTabChange 
 }) => {
   return (
-    <Card className="min-w-[340px] max-w-[340px] border border-default-200 bg-slate-50 shadow-none">
-      <CardBody className="p-0">
+    <Card className="min-w-[340px] max-w-[340px] bg-card text-card-foreground border border-border shadow-none">
+      <CardBody className="p-0 justify-between">
         <FlowCardHeader 
           stepNumber={index + 1} 
           layoutType={step.layoutType}
           patternPurpose={step.patternPurpose}
           layoutPurpose={step.layoutPurpose}
           modalType={step.modalType}
+          rationale={step.rationale}
+          uxGoal={step.uxGoal}
+          userAction={step.userAction}
         />
         
         <FlowCardContent 
@@ -44,6 +47,8 @@ export const FlowCard: React.FC<FlowCardProps> = React.memo(({
           layoutType={step.layoutType}
           modalType={step.modalType}
           inputFields={step.inputFields}
+          uxGoal={step.uxGoal}
+          userAction={step.userAction}
         />
 
         <FlowCardTabs
