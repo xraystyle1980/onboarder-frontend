@@ -22,7 +22,7 @@ export const FlowCard: React.FC<FlowCardProps> = React.memo(({
   onTabChange 
 }) => {
   return (
-    <Card className="min-w-[340px] max-w-[340px] bg-card text-card-foreground border border-border shadow-none">
+    <Card className="min-w-[340px] max-w-[340px] bg-card text-card-foreground border border-border shadow-3xl">
       <CardBody className="p-0 justify-between">
         <FlowCardHeader 
           stepNumber={index + 1} 

@@ -1,14 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Switch, cn } from "@heroui/react";
-import { Icon } from "@iconify/react";
-import magicWand from '@iconify/icons-lucide/sparkles';
 import MdiIcon from '@mdi/react';
-import { mdiAutoFix } from '@mdi/js';
 import { mdiRobot } from '@mdi/js';
 import { Pill } from "./shared/Pill";
-
-
+import { Player } from '@lordicon/react';
+import wandIcon from '../lottie/wired-outline-2844-magic-wand-hover-pinch.json';
 
 interface SectionHeroProps {
   inputText: string;
@@ -29,11 +26,24 @@ export default function SectionHero({
   isExample,
   onToggleExample,
 }: SectionHeroProps) {
+  const playerRef = useRef<Player>(null);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+
+  const handleMouseEnter = () => {
+    if (playerRef.current && isPlayerReady) {
+      playerRef.current.playFromBeginning();
+    }
+  };
+
+  const handlePlayerReady = () => {
+    setIsPlayerReady(true);
+  };
+
   return (
     <div className="gap-2 relative flex flex-col items-center overflow-clip hero-radial-bg pt-16 pb-4 px-4 lg:px-0">
-      <div className="mb-3">
+      <div className="mt-4 mb-5">
         <Pill>
-          <MdiIcon path={mdiRobot} size={0.9} color="#0369a1" />
+          {/* <MdiIcon path={mdiRobot} size={0.9} color="#0369a1" /> */}
           AI-Powered UX Generation
         </Pill>
       </div>
@@ -98,16 +108,24 @@ export default function SectionHero({
               </span>
             </div>
             <Button
-              variant="solid"
-              color="primary"
-              size="lg"
-              className="btn-primary flex items-center gap-3 px-12 py-5 rounded-2xl drop-shadow-lg"
-              startContent={<span><MdiIcon path={mdiAutoFix} size={1.25} /></span>}
+              className="btn-primary flex items-center gap-3 px-12 py-7 rounded-2xl drop-shadow-lg"
               type="submit"
               isDisabled={isGenerating}
+              onMouseEnter={handleMouseEnter}
+              startContent={
+                <div className="mr-2 transform scale-x-[-1]">
+                  <Player
+                    ref={playerRef}
+                    icon={wandIcon}
+                    size={20}
+                    onReady={handlePlayerReady}
+                  />
+                </div>
+              }
             >
               <span className="text-lg leading-6">{isGenerating ? "Generating..." : "Generate Flow"}</span>
             </Button>
+          
           </div>
         </form>
       </div>

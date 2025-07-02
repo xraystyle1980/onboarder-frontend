@@ -47,11 +47,11 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
         {/* Close Button */}
         <Button
           isIconOnly
-          variant="light"
+          variant="solid"
           size="sm"
           onPress={onClose}
           aria-label="Clear generated flow"
-          className="absolute right-4 top-4 z-10"
+          className="btn-utility absolute right-4 top-4 z-10"
         >
           <Icon icon="lucide:x" width={20} height={20} className="text-muted-foreground" />
         </Button>
@@ -67,38 +67,51 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
             </p>
           </div>
           <div className="flex flex-row items-center gap-3 ml-4 shrink-0">
-            <Dropdown shouldBlockScroll={false}>
+            <Dropdown 
+              shouldBlockScroll={false}
+              backdrop="blur"
+              placement="bottom-end"
+            >
               <DropdownTrigger>
                 <Button
                   isIconOnly
                   variant="bordered"
                   size="lg"
-                  className="rounded-xl"
+                  className="rounded-xl border-border hover:bg-background-muted"
                   startContent={<Icon icon="lucide:download" width={22} height={22} className="text-muted-foreground" />}
-                  aria-label="Download Flow"
+                  aria-label="Download flow options"
                 />
               </DropdownTrigger>
               <DropdownMenu 
-                aria-label="Download options" 
+                aria-label="Download flow options" 
                 onAction={onDownload}
-                variant="light"
+                variant="flat"
+                color="default"
+                className="min-w-[200px]"
                 itemClasses={{
-                  base: "data-[hover=true]:bg-gray-100 data-[hover=true]:text-foreground",
-                  title: "text-foreground",
-                  description: "text-muted-foreground"
+                  base: "data-[hover=true]:bg-background-muted data-[hover=true]:text-foreground",
+                  title: "text-foreground font-medium",
+                  description: "text-muted-foreground text-sm",
+                  shortcut: "text-muted-foreground text-xs"
+                }}
+                classNames={{
+                  base: "",
+                  list: "py-2"
                 }}
               >
                 <DropdownItem 
                   key="markdown" 
-                  textValue="Markdown"
-                  startContent={<Icon icon="logos:markdown" width={20} height={20} className="text-muted-foreground" />}
+                  textValue="Download as Markdown"
+                  description="Export flow as Markdown document"
+                  startContent={<Icon icon="mdi:language-markdown" width={20} height={20} className="text-muted-foreground" />}
                 >
                   Markdown
                 </DropdownItem>
                 <DropdownItem 
                   key="json" 
-                  textValue="JSON"
-                  startContent={<Icon icon="vscode-icons:file-type-json" width={20} height={20} className="text-muted-foreground" />}
+                  textValue="Download as JSON"
+                  description="Export flow as JSON data"
+                  startContent={<Icon icon="mdi:code-json" width={20} height={20} className="text-muted-foreground" />}
                 >
                   JSON
                 </DropdownItem>
@@ -108,9 +121,9 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
               isIconOnly
               variant="bordered"
               size="lg"
-              className="rounded-xl"
+              className="rounded-xl border-border hover:bg-background-muted"
               startContent={<Icon icon="lucide:figma" width={22} height={22} className="text-muted-foreground" />}
-              aria-label="Create Wireframes"
+              aria-label="Create wireframes in Figma"
               onClick={handleCreateWireframe}
             />
             
@@ -119,8 +132,8 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
                 color="primary"
                 variant="solid"
                 size="lg"
-                className="rounded-xl px-6 font-semibold btn-secondary"
-                startContent={<Icon icon="lucide:save" width={20} height={20} className="text-black" />}
+                className="rounded-xl px-6 font-semibold bg-accent text-accent-foreground hover:bg-accent/90"
+                startContent={<Icon icon="lucide:save" width={20} height={20} className="text-accent-foreground" />}
                 onPress={() => onSaveFlow(safePrompt, flow)}
               >
                 Save Flow

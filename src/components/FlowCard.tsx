@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Button } from "@heroui/react";
+import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 export default function FlowCard({ flow, onDelete, onSelect }) {
@@ -24,38 +24,63 @@ export default function FlowCard({ flow, onDelete, onSelect }) {
 
   return (
     <div
-      className="bg-white rounded shadow p-4 flex flex-col relative cursor-pointer hover:ring-2 hover:ring-blue-400 transition"
+      className="bg-card border border-border rounded-lg p-4 flex flex-col relative cursor-pointer hover:bg-background-muted transition-colors group"
       onClick={() => onSelect && onSelect(flow)}
     >
       <div className="flex justify-between items-start">
-        <div>
-          <div className="font-semibold text-lg">{flow.product_name || 'Untitled Flow'}</div>
-          <div className="text-slate-500 text-sm mb-2">{flow.prompt ? flow.prompt.charAt(0).toUpperCase() + flow.prompt.slice(1) : ''}</div>
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-lg text-card-foreground mb-1 truncate">
+            {flow.product_name || 'Untitled Flow'}
+          </div>
+          <div className="text-muted-foreground text-sm mb-3 line-clamp-2">
+            {flow.prompt ? flow.prompt.charAt(0).toUpperCase() + flow.prompt.slice(1) : 'No description available'}
+          </div>
         </div>
-        <div className="relative" ref={menuRef} onClick={e => e.stopPropagation()}>
-          <Button
-            isIconOnly
-            variant="light"
-            color="default"
-            size="sm"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Open menu"
-          >
-            <Icon icon="lucide:more-vertical" className="w-5 h-5" />
-          </Button>
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow z-10">
-              <button
-                className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+        <div className="relative ml-4" ref={menuRef} onClick={e => e.stopPropagation()}>
+          <Dropdown isOpen={menuOpen} onOpenChange={setMenuOpen}>
+            <DropdownTrigger>
+              <Button
+                isIconOnly
+                variant="bordered"
+                color="default"
+                size="sm"
+                aria-label="Open menu"
+                className="text-muted-foreground hover:bg-background-muted opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <Icon icon="lucide:more-vertical" width={16} height={16} />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu 
+              aria-label="Flow actions"
+              variant="flat"
+              color="default"
+              className="min-w-[120px]"
+              itemClasses={{
+                base: "data-[hover=true]:bg-background-muted data-[hover=true]:text-foreground",
+                title: "text-foreground font-medium"
+              }}
+              classNames={{
+                base: "bg-popover border border-border shadow-lg",
+                list: "py-1"
+              }}
+            >
+              <DropdownItem
+                key="delete"
+                textValue="Delete flow"
+                description="Permanently delete this flow"
+                startContent={<Icon icon="lucide:trash-2" width={16} height={16} className="text-red-500" />}
+                className="text-red-500"
                 onClick={() => { setMenuOpen(false); onDelete(flow.id); }}
               >
                 Delete
-              </button>
-            </div>
-          )}
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
-      <div className="text-xs text-slate-400 mt-2">{new Date(flow.created_at).toLocaleString()}</div>
+      <div className="text-xs text-muted-foreground mt-auto pt-2 border-t border-border/50">
+        Created {new Date(flow.created_at).toLocaleDateString()} at {new Date(flow.created_at).toLocaleTimeString()}
+      </div>
     </div>
   );
 } 

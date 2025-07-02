@@ -44,18 +44,48 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
     onDeleteFlow(flowId);
   };
 
-  if (!user) return <div className="text-center py-8">Please sign in to view your flows.</div>;
-  if (loading) return <div className="text-center py-8">Loading...</div>;
-  if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+  if (!user) return (
+    <div className="flex items-center justify-center py-12">
+      <div className="text-center">
+        <div className="text-muted-foreground text-lg mb-2">Please sign in to view your flows</div>
+        <div className="text-muted-foreground text-sm">Your saved flows will appear here</div>
+      </div>
+    </div>
+  );
+  
+  if (loading) return (
+    <div className="flex items-center justify-center py-12">
+      <div className="text-center">
+        <div className="text-muted-foreground text-lg mb-2">Loading your flows...</div>
+        <div className="text-muted-foreground text-sm">Please wait</div>
+      </div>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="flex items-center justify-center py-12">
+      <div className="text-center">
+        <div className="text-red-500 text-lg mb-2">Error loading flows</div>
+        <div className="text-muted-foreground text-sm">{error}</div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="grid gap-4 grid-cols-1 p-4">
+    <div className="p-6">
       {flows.length === 0 ? (
-        <div className="col-span-full text-center text-slate-500">No flows found.</div>
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="text-muted-foreground text-lg mb-2">No flows found</div>
+            <div className="text-muted-foreground text-sm">Create your first flow to get started</div>
+          </div>
+        </div>
       ) : (
-        flows.map(flow => (
-          <FlowCard key={flow.id} flow={flow} onDelete={handleDelete} onSelect={onSelectFlow} />
-        ))
+        <div className="space-y-4">
+          {flows.map(flow => (
+            <FlowCard key={flow.id} flow={flow} onDelete={handleDelete} onSelect={onSelectFlow} />
+          ))}
+        </div>
       )}
     </div>
   );

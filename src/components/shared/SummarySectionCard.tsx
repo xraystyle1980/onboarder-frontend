@@ -14,7 +14,7 @@ export const SummarySectionCard = ({
   className?: string;
   iconClass?: string;
 }) => (
-  <Card className={`bg-card border border-border rounded-xl p-6 ${className}`}>
+  <Card className={`bg-card border border-border shadow-3xl rounded-xl p-6 ${className}`}>
     <CardHeader className="flex items-center gap-2 mb-2 p-0 bg-transparent border-none">
       {icon && icon}
       {title && <span className="text-foreground text-xl font-bold">{title}</span>}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import {
   Tabs,
   Tab,
@@ -18,7 +19,6 @@ import { OnboardingFlowCards } from "./components/onboarding-flow-cards";
 import Header from "./components/header";
 import SectionHero from "./components/section-hero";
 import { OnboardingSummaryTab } from "./components/tabs/OnboardingSummaryTab";
-import { UXDesignContextTab } from "./components/tabs/UXDesignContextTab";
 import { UXNarrativeTab } from "./components/tabs/UXNarrativeTab";
 import { sampleOnboardingFlow } from "./sampleOnboardingFlow";
 import { OnboardingFlow } from "./types";
@@ -33,6 +33,11 @@ import Toast from "./components/shared/Toast";
 import UserFlows from "./components/UserFlows";
 import { GeneratingFlowCard, GeneratedFlowCard } from "./components/flow-header-cards";
 import { MetaTags } from './components/MetaTags';
+import LoginForm from './components/LoginForm';
+import AuthCallback from './components/AuthCallback';
+import ResetPasswordForm from './components/ResetPasswordForm';
+import ProtectedRoute from './components/ProtectedRoute';
+import UserProfile from './components/UserProfile';
 
 interface SavedFlow {
   id: string;
@@ -44,7 +49,8 @@ interface SavedFlow {
 
 const EXAMPLE_PROMPT = "A project management app called \"FreelancePM\" that helps freelancers create projects, invite clients, and track tasks. Target audience is independent contractors and solo professionals aged 25-50.";
 
-export default function App() {
+// Main App Component with Authentication
+function MainApp() {
   const [inputText, setInputText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentFlow, setCurrentFlow] = useState<OnboardingFlow | null>(null);
@@ -114,9 +120,6 @@ export default function App() {
       setToastMsg("Sign in to save your flow!");
       setToastType("info");
       setShowToast(true);
-      // Optionally, trigger login modal here
-      const loginBtn = document.querySelector<HTMLButtonElement>('button:contains("Sign In")');
-      if (loginBtn) loginBtn.click();
       return;
     }
     // Save flow
@@ -165,7 +168,6 @@ export default function App() {
       setError(err.message || 'Streaming error');
     } finally {
       setIsGenerating(false);
-      // setLoadingSteps([]);
     }
   };
 
@@ -232,36 +234,49 @@ export default function App() {
             onToggleExample={setShowSampleFlow}
           />
           <div className="container mx-auto pb-20">
-            {/* Drawer for My Flows */}
-            <Drawer isOpen={showUserFlowsDrawer} onOpenChange={setShowUserFlowsDrawer} placement="right" size="md" hideCloseButton={true}>
-              <DrawerContent>
-                <DrawerHeader className="flex justify-between items-center">
-                  <span>My Flows</span>
-                  <Button
-                    isIconOnly
-                    variant="light"
-                    size="sm"
-                    onPress={() => setShowUserFlowsDrawer(false)}
-                    aria-label="Close drawer"
-                  >
-                    <Icon icon="lucide:x" width={20} height={20} />
-                  </Button>
-                </DrawerHeader>
-                <DrawerBody>
-                  <UserFlows 
-                    onSelectFlow={handleSelectSavedFlow}
-                    onDeleteFlow={(deletedFlowId: string) => {
-                      if (currentFlowId && currentFlowId === deletedFlowId) {
-                        setCurrentFlow(null);
-                        setSubmittedPrompt(null);
-                        setIsNewlyGenerated(false);
-                        setCurrentFlowId(null);
-                      }
-                    }}
-                  />
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
+            {/* Drawer for My Flows - Only show if user is authenticated */}
+            {user && (
+              <Drawer 
+                isOpen={showUserFlowsDrawer} 
+                onOpenChange={setShowUserFlowsDrawer} 
+                placement="right" 
+                size="md" 
+                hideCloseButton={true}
+                classNames={{
+                  base: "bg-background border-l border-border",
+                  wrapper: "bg-background/80 backdrop-blur-sm"
+                }}
+              >
+                <DrawerContent className="bg-background border-l border-border">
+                  <DrawerHeader className="flex justify-between items-center border-b border-border bg-background">
+                    <span className="text-foreground font-semibold text-lg">My Flows</span>
+                    <Button
+                      isIconOnly
+                      variant="light"
+                      size="sm"
+                      onPress={() => setShowUserFlowsDrawer(false)}
+                      aria-label="Close drawer"
+                      className="text-muted-foreground hover:bg-background-muted"
+                    >
+                      <Icon icon="lucide:x" width={20} height={20} />
+                    </Button>
+                  </DrawerHeader>
+                  <DrawerBody className="bg-background p-0">
+                    <UserFlows 
+                      onSelectFlow={handleSelectSavedFlow}
+                      onDeleteFlow={(deletedFlowId: string) => {
+                        if (currentFlowId && currentFlowId === deletedFlowId) {
+                          setCurrentFlow(null);
+                          setSubmittedPrompt(null);
+                          setIsNewlyGenerated(false);
+                          setCurrentFlowId(null);
+                        }
+                      }}
+                    />
+                  </DrawerBody>
+                </DrawerContent>
+              </Drawer>
+            )}
 
             {/* Main logic for generating and generated flow states */}
             {isGenerating && (
@@ -350,5 +365,26 @@ export default function App() {
         </div>
       </ErrorBoundary>
     </>
+  );
+}
+
+
+
+// Main App Router
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Auth callback routes */}
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordForm />} />
+        
+        {/* Public routes */}
+        <Route path="/" element={<MainApp />} />
+        
+        {/* Catch all route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }

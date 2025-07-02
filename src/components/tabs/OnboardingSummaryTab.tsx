@@ -33,7 +33,7 @@ export function OnboardingSummaryTab({ flow }: OnboardingSummaryTabProps) {
               </div>
             </div>
             {/* Core User Goal (right) */}
-            <div className="flex flex-row items-center gap-4 flex-1 rounded-xl bg-card p-6">
+            <div className="flex flex-row border border-border shadow-3xl items-center gap-4 flex-1 rounded-xl bg-card p-6">
               <IconBox
                 icon={<Icon icon="lucide:target" width={24} height={24} className="text-sky-500" />}
                 size={48}

@@ -42,24 +42,64 @@ html {
 
 /* Custom Button Variants with Icon Support */
 .btn-primary {
-  @apply font-medium shadow-sm focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 transition-colors py-8;
+  @apply font-medium shadow-sm focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 transition-colors;
   background: linear-gradient(90deg, #FB923C 0%, #EC4899 100%);
   color: black;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s;
+}
+
+.btn-primary:hover {
+  background-position: 100% 0%;
+  color: black;
+  transform: scale(1.03);
+  box-shadow: 0 6px 24px 0 rgba(236,72,153,0.14);
 }
 
 .btn-secondary {
   @apply font-medium shadow-sm focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 transition-colors;
   background: linear-gradient(90deg, #0EA5E9 0%, #8B5CF6 100%);
   color: black;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s;
+}
+
+.btn-secondary:hover {
+  background-position: 100% 0%;
+  color: black;
+  transform: scale(1.03);
+  box-shadow: 0 6px 24px 0 rgba(139,92,246,0.14);
 }
 
 .btn-utility {
   @apply bg-transparent text-white font-medium transition-colors;
   @apply hover:bg-utility-800 active:bg-utility-900;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s;
+}
+
+.btn-utility:hover {
+  background-position: 100% 0%;
+  color: white;
+  transform: scale(1.03);
+  box-shadow: 0 6px 24px 0 rgba(59,130,246,0.10);
 }
 
 .btn-bordered {
   @apply border border-primary-600 text-primary-700 bg-white font-semibold hover:bg-primary-50 active:bg-primary-100 focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 transition-colors;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s;
+}
+
+.btn-bordered:hover {
+  background-position: 100% 0%;
+  color: var(--color-primary-700);
+  transform: scale(1.03);
+  box-shadow: 0 6px 24px 0 rgba(14,165,233,0.10);
 }
 
 /* Icon styling for button variants */
@@ -209,13 +249,13 @@ html {
   --color-card: rgba(255, 255, 255, 0.02);
   --color-card-foreground: #f9fafb;
   
-  --color-popover: #111827;
+  --color-popover: #101019;
   --color-popover-foreground: #f9fafb;
   
-  --color-border: #374151;
+  --color-border: #29313D;
   --color-input: #374151;
   
-  --color-accent: #3b82f6;
+  --color-accent: #374151;
   --color-accent-foreground: #ffffff;
   
   --color-ring: #3b82f6;
@@ -586,4 +626,19 @@ small {
 
 .hero-radial-bg {
   background: radial-gradient(48.83% 48.56% at 16.46% 24.17%, rgba(0, 229, 255, 0.09) 0%, rgba(11, 11, 20, 0.09) 100%), #0B0B14;
+}
+
+@keyframes modal-pop-in-elastic {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-animate-in {
+  animation: modal-pop-in-elastic 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
