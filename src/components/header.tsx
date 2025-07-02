@@ -13,7 +13,7 @@ import {
   Button
 } from "@heroui/react";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
-import { FigmaIcon, UserIcon } from "./shared/CustomIcons";
+import { FigmaIcon, UserIcon, MyFlowsIcon } from "./shared/CustomIcons";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
 
@@ -46,7 +46,7 @@ function Header({ onShowMyFlows }) {
         variant="solid"
         color="default"
         size="md"
-        className="btn-utility"
+        className="btn-utility px-3 py-0.5 rounded-full"
         startContent={<FigmaIcon />}
       >
         <span className="utility-btn-text">Try the plugin</span>
@@ -55,8 +55,8 @@ function Header({ onShowMyFlows }) {
         variant="solid"
         color="default"
         size="md"
-        className="btn-utility"
-        startContent={<Icon icon="lucide:folder" width={18} height={18} />}
+        className="btn-utility px-3 py-0.5 rounded-full"
+        startContent={<MyFlowsIcon />}
         onPress={handleShowMyFlows}
       >
         <span className="utility-btn-text">My Flows</span>
@@ -65,7 +65,7 @@ function Header({ onShowMyFlows }) {
         variant="solid"
         color="default"
         size="md"
-        className="btn-utility"
+        className="btn-utility px-3 py-0.5 rounded-full"
         startContent={<UserIcon />}
         onPress={() => setShowLogin(true)}
       >
@@ -91,7 +91,7 @@ function Header({ onShowMyFlows }) {
         color="default"
         size="md"
         className="btn-utility"
-        startContent={<Icon icon="lucide:folder" width={18} height={18} />}
+        startContent={<MyFlowsIcon />}
         onPress={handleShowMyFlows}
       >
         <span className="utility-btn-text">My Flows</span>
@@ -101,7 +101,7 @@ function Header({ onShowMyFlows }) {
   );
 
   return (
-    <header className="flex w-full flex-col bg-background border-b border-border py-3">
+    <header className="fixed top-0 left-0 right-0 z-50 flex w-full flex-col bg-background border-b border-border py-3">
       <div className="flex items-center justify-center container mx-auto" >
         <div className="flex flex-grow items-center justify-between px-8" >
           {/* Logo Section */}
@@ -116,11 +116,11 @@ function Header({ onShowMyFlows }) {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-center gap-4" >
             {user ? (
-              <div className="flex gap-4">
+              <div className="flex gap-4 items-center">
                 {signedInButtons}
               </div>
             ) : (
-              <div className="flex gap-4">
+              <div className="flex gap-4 items-center">
                 {navButtons}
               </div>
             )}
@@ -148,7 +148,7 @@ function Header({ onShowMyFlows }) {
 
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden transition-all duration-300 ease-in-out transform scale-y-100 origin-top"
+        <div className="md:hidden transition-all duration-300 ease-in-out transform scale-y-100 origin-top z-50"
           style={{ maxHeight: isMobileMenuOpen ? '500px' : '0', overflow: 'hidden' }}
         >
           <div className="mobile-menu-container flex flex-col gap-3 p-4 border-t border-border bg-background">

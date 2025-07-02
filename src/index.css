@@ -74,18 +74,12 @@ html {
 }
 
 .btn-utility {
-  @apply bg-transparent text-white font-medium transition-colors;
-  @apply hover:bg-utility-800 active:bg-utility-900;
-  background-size: 200% 100%;
-  background-position: 0% 0%;
-  transition: background-position 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s;
+  @apply bg-transparent text-white font-medium transition-colors rounded-md;
+  transition: background-color 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s;
 }
 
 .btn-utility:hover {
-  background-position: 100% 0%;
-  color: white;
-  transform: scale(1.03);
-  box-shadow: 0 6px 24px 0 rgba(59,130,246,0.10);
+  @apply bg-utility-800;
 }
 
 .btn-bordered {
@@ -291,18 +285,18 @@ html {
   --color-secondary-900: #0f172a;
   --color-secondary-950: #020617;
   
-  /* Utility brand colors (Zinc-based) - Dark theme optimized */
-  --color-utility-50: #fafafa;
-  --color-utility-100: #f4f4f5;
-  --color-utility-200: #e4e4e7;
-  --color-utility-300: #d4d4d8;
-  --color-utility-400: #a1a1aa;
-  --color-utility-500: #71717a;
-  --color-utility-600: #52525b;
-  --color-utility-700: #3f3f46;
-  --color-utility-800: #27272a;
-  --color-utility-900: #18181b;
-  --color-utility-950: #09090b;
+  /* Utility brand colors (Slate-based) - Dark theme optimized */
+  --color-utility-50: #f8fafc;
+  --color-utility-100: #f1f5f9;
+  --color-utility-200: #e2e8f0;
+  --color-utility-300: #cbd5e1;
+  --color-utility-400: #94a3b8;
+  --color-utility-500: #64748b;
+  --color-utility-600: #475569;
+  --color-utility-700: #334155;
+  --color-utility-800: #1e293b;
+  --color-utility-900: #0f172a;
+  --color-utility-950: #020617;
 }
 
 /* Light theme color variables (commented out for future use) */
@@ -615,13 +609,6 @@ small {
   100% {
     background-position: 0% center;
   }
-}
-
-.btn-utility .utility-btn-text {
-  @apply text-white transition-colors;
-}
-.btn-utility:hover .utility-btn-text {
-  @apply text-white;
 }
 
 .hero-radial-bg {

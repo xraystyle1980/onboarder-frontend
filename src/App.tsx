@@ -224,7 +224,8 @@ function MainApp() {
       <ErrorBoundary>
         <div className="min-h-screen bg-background flex flex-col">
           <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} />
-          <SectionHero
+          <div className="pt-20">
+            <SectionHero
             inputText={inputText}
             onInputChange={setInputText}
             onGenerate={handleGenerate}
@@ -233,6 +234,7 @@ function MainApp() {
             isExample={showSampleFlow}
             onToggleExample={setShowSampleFlow}
           />
+          </div>
           <div className="container mx-auto pb-20">
             {/* Drawer for My Flows - Only show if user is authenticated */}
             {user && (

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 import { Icon } from '@iconify/react';
+import { Button } from '@heroui/react';
 
 export default function UserProfile() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +20,14 @@ export default function UserProfile() {
 
   return (
     <div className="relative">
+
+
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/10 transition-colors"
         disabled={loading}
       >
-        <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-medium">
+        <div className="w-6 h-6 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-medium">
           {getUserInitials(user.email || '')}
         </div>
         <span className="text-sm text-foreground hidden sm:block">
@@ -40,6 +43,8 @@ export default function UserProfile() {
         </svg>
       </button>
 
+
+
       {isOpen && (
         <div className="absolute right-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg z-50">
           <div className="p-4 border-b border-border">
@@ -48,10 +53,10 @@ export default function UserProfile() {
                 {getUserInitials(user.email || '')}
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-sm font-medium text-foreground mb-0">
                   {user.user_metadata?.full_name || 'User'}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground mb-0">
                   {user.email}
                 </p>
               </div>
@@ -59,14 +64,19 @@ export default function UserProfile() {
           </div>
           
           <div className="p-2 space-y-1">
-            <button
-              onClick={handleSignOut}
-              className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors flex items-center gap-2"
-              disabled={loading}
+            <Button
+              onPress={handleSignOut}
+              isDisabled={loading}
+              className="w-full btn-utility flex space-between"
+              variant="light"
+              endContent={
+                <div className="flex justify-center">
+                  <Icon icon="lucide:log-out" width={16} height={16} />
+                </div>
+              }
             >
-              <Icon icon="lucide:log-out" width={16} height={16} />
               {loading ? 'Signing out...' : 'Sign out'}
-            </button>
+            </Button>
           </div>
         </div>
       )}

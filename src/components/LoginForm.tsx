@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 import { Player } from '@lordicon/react';
 import wandIcon from '../lottie/wired-outline-177-envelope-send-hover-flying.json';
+import { Link } from '@heroui/react';
 
 interface LoginFormProps {
   onClose: () => void;
@@ -229,79 +230,100 @@ export default function LoginForm({
           </div>
         </button>
         
-        <button 
-          type="button" 
-          onClick={onClose} 
+        <Link
+          as="button"
+          type="button"
+          onPress={onClose}
+          isDisabled={loading}
           className={cancelButtonClass}
-          disabled={loading}
+          color="foreground"
+          underline="hover"
         >
           Cancel
-        </button>
+        </Link>
 
         {/* Mode switching links */}
         <div className="text-center space-y-2">
           {mode === 'signin' && (
             <div className="space-y-2">
-              <button
+              <Link
+                as="button"
                 type="button"
-                onClick={() => setMode('magic-link')}
-                className="text-sm text-accent hover:underline"
-                disabled={loading}
+                onPress={() => setMode('magic-link')}
+                isDisabled={loading}
+                color="primary"
+                underline="hover"
+                className="text-sm"
               >
                 Sign in with magic link
-              </button>
+              </Link>
               <div className="text-xs text-muted-foreground">or</div>
-              <button
+              <Link
+                as="button"
                 type="button"
-                onClick={() => setMode('signup')}
-                className="text-sm text-accent hover:underline"
-                disabled={loading}
+                onPress={() => setMode('signup')}
+                isDisabled={loading}
+                color="primary"
+                underline="hover"
+                className="text-sm"
               >
                 Create new account
-              </button>
+              </Link>
               <div className="text-xs text-muted-foreground">or</div>
-              <button
+              <Link
+                as="button"
                 type="button"
-                onClick={() => setMode('forgot-password')}
-                className="text-sm text-accent hover:underline"
-                disabled={loading}
+                onPress={() => setMode('forgot-password')}
+                isDisabled={loading}
+                color="primary"
+                underline="hover"
+                className="text-sm"
               >
                 Forgot your password?
-              </button>
+              </Link>
             </div>
           )}
 
           {mode === 'signup' && (
-            <button
+            <Link
+              as="button"
               type="button"
-              onClick={() => setMode('signin')}
-              className="text-sm text-accent hover:underline"
-              disabled={loading}
+              onPress={() => setMode('signin')}
+              isDisabled={loading}
+              color="primary"
+              underline="hover"
+              className="text-sm"
             >
               Already have an account? Sign in
-            </button>
+            </Link>
           )}
 
           {mode === 'magic-link' && (
-            <button
+            <Link
+              as="button"
               type="button"
-              onClick={() => setMode('signin')}
-              className="text-sm text-accent hover:underline"
-              disabled={loading}
+              onPress={() => setMode('signin')}
+              isDisabled={loading}
+              color="primary"
+              underline="hover"
+              className="text-sm"
             >
               Prefer password? Sign in with password
-            </button>
+            </Link>
           )}
 
           {mode === 'forgot-password' && (
-            <button
+            <Link
+              as="button"
               type="button"
-              onClick={() => setMode('signin')}
-              className="text-sm text-accent hover:underline"
-              disabled={loading}
+              onPress={() => setMode('signin')}
+              isDisabled={loading}
+              color="primary"
+              underline="hover"
+              className="text-sm"
             >
               Remember your password? Sign in
-            </button>
+            </Link>
           )}
         </div>
 

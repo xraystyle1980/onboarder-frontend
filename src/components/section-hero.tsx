@@ -4,8 +4,8 @@ import { Button, Switch, cn } from "@heroui/react";
 import MdiIcon from '@mdi/react';
 import { mdiRobot } from '@mdi/js';
 import { Pill } from "./shared/Pill";
-import { Player } from '@lordicon/react';
-import wandIcon from '../lottie/wired-outline-2844-magic-wand-hover-pinch.json';
+import Lottie from 'lottie-react';
+import robotIcon from '../lottie/robot-hover.json';
 
 interface SectionHeroProps {
   inputText: string;
@@ -26,17 +26,33 @@ export default function SectionHero({
   isExample,
   onToggleExample,
 }: SectionHeroProps) {
-  const playerRef = useRef<Player>(null);
+  const playerRef = useRef<any>(null);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const handleMouseEnter = () => {
-    if (playerRef.current && isPlayerReady) {
-      playerRef.current.playFromBeginning();
+    console.log('Mouse enter triggered');
+    console.log('Player ref:', playerRef.current);
+    console.log('Is player ready:', isPlayerReady);
+    
+    if (playerRef.current) {
+      console.log('Playing animation...');
+      playerRef.current.goToAndPlay(0);
+    } else {
+      console.log('Player ref is null');
     }
   };
 
   const handlePlayerReady = () => {
+    console.log('Player ready set to true');
     setIsPlayerReady(true);
+  };
+
+  const handleAnimationComplete = () => {
+    console.log('Animation completed');
+    // Animation completed, reset for next hover
+    if (playerRef.current) {
+      playerRef.current.goToAndStop(0, true);
+    }
   };
 
   return (
@@ -113,12 +129,14 @@ export default function SectionHero({
               isDisabled={isGenerating}
               onMouseEnter={handleMouseEnter}
               startContent={
-                <div className="mr-2 transform scale-x-[-1]">
-                  <Player
-                    ref={playerRef}
-                    icon={wandIcon}
-                    size={20}
-                    onReady={handlePlayerReady}
+                <div className="mr-2">
+                  <Lottie
+                    lottieRef={playerRef}
+                    animationData={robotIcon}
+                    style={{ width: 48, height: 48 }}
+                    onComplete={handleAnimationComplete}
+                    loop={false}
+                    autoplay={false}
                   />
                 </div>
               }
