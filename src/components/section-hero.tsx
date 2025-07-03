@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Button, Switch, cn } from "@heroui/react";
-import MdiIcon from '@mdi/react';
-import { mdiRobot } from '@mdi/js';
 import { Pill } from "./shared/Pill";
 import Lottie from 'lottie-react';
 import robotIcon from '../lottie/robot-hover.json';
@@ -56,8 +54,8 @@ export default function SectionHero({
   };
 
   return (
-    <div className="gap-2 relative flex flex-col items-center overflow-clip hero-radial-bg pt-16 pb-4 px-4 lg:px-0">
-      <div className="mt-4 mb-5">
+    <div className="container mx-auto gap-2 relative flex flex-col items-center overflow-clip pt-5 lg:pt-16 pb-4">
+      <div className="mt-0 mb-4 lg:mt-4 lg:mb-5">
         <Pill>
           {/* <MdiIcon path={mdiRobot} size={0.9} color="#0369a1" /> */}
           AI-Powered UX Generation
@@ -69,7 +67,7 @@ export default function SectionHero({
         <span className="gradient-orange-pink block">Instantly</span>
       </div>
       {/* Subheading */}
-      <div className="flex items-center justify-center w-full max-w-3xl mx-auto mb-7">
+      <div className="w-full max-w-3xl mx-auto flex items-center justify-center mb-7">
         <p className="text-2xl leading-8 text-white text-center w-full">
           <span className="font-semibold text-sky-400">Kickstart your UX. </span>
           <span className="font-regular text-slate-300">Just describe your product and we'll generate a user-facing onboarding flow you can build on.</span>
@@ -78,7 +76,7 @@ export default function SectionHero({
 
 
       {/* Prompt Box */}
-      <div className="flex flex-col justify-end w-full max-w-5xl pt-3">
+      <div className="w-full max-w-5xl mx-auto flex flex-col justify-end pt-3">
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -133,7 +131,7 @@ export default function SectionHero({
                   <Lottie
                     lottieRef={playerRef}
                     animationData={robotIcon}
-                    style={{ width: 48, height: 48 }}
+                    style={{ width: 40, height: 40 }}
                     onComplete={handleAnimationComplete}
                     loop={false}
                     autoplay={false}

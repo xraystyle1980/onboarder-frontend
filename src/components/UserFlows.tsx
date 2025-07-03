@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 import { getUserFlows, deleteUserFlow } from '../services/flows';
-import FlowCard from './FlowCard';
+import SavedFlowCard from './SavedFlowCard';
 import { OnboardingFlow } from '../types';
 
 interface SavedFlow {
@@ -83,7 +83,7 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
       ) : (
         <div className="space-y-4">
           {flows.map(flow => (
-            <FlowCard key={flow.id} flow={flow} onDelete={handleDelete} onSelect={onSelectFlow} />
+            <SavedFlowCard key={flow.id} flow={flow} onDelete={handleDelete} onSelect={onSelectFlow} />
           ))}
         </div>
       )}

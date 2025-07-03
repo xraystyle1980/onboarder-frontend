@@ -1,19 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import {
-  Tabs,
-  Tab,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Switch,
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  Button
-} from "@heroui/react";
+import { Tabs, Tab, Drawer, DrawerContent, DrawerHeader, DrawerBody, Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { OnboardingFlowCards } from "./components/onboarding-flow-cards";
 import Header from "./components/header";
@@ -26,18 +13,14 @@ import { exportFlow } from "./utils/flowExporter";
 import { onboardingService } from "./services/api";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useTabTransition } from "./hooks/useTabTransition";
-import { LoadingSpinner } from "./components/LoadingSpinner";
 import { useSupabaseAuth } from "./hooks/useSupabaseAuth";
 import { saveUserFlow, getUserFlows } from "./services/flows";
 import Toast from "./components/shared/Toast";
 import UserFlows from "./components/UserFlows";
-import { GeneratingFlowCard, GeneratedFlowCard } from "./components/flow-header-cards";
+import { GeneratingFlowCard, GeneratedFlowCard } from "./components/generating-flow-card";
 import { MetaTags } from './components/MetaTags';
-import LoginForm from './components/LoginForm';
 import AuthCallback from './components/AuthCallback';
 import ResetPasswordForm from './components/ResetPasswordForm';
-import ProtectedRoute from './components/ProtectedRoute';
-import UserProfile from './components/UserProfile';
 
 interface SavedFlow {
   id: string;
@@ -224,7 +207,7 @@ function MainApp() {
       <ErrorBoundary>
         <div className="min-h-screen bg-background flex flex-col">
           <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} />
-          <div className="pt-20">
+          <div className="pt-16 hero-radial-bg">
             <SectionHero
             inputText={inputText}
             onInputChange={setInputText}
@@ -235,87 +218,91 @@ function MainApp() {
             onToggleExample={setShowSampleFlow}
           />
           </div>
-          <div className="container mx-auto pb-20">
-            {/* Drawer for My Flows - Only show if user is authenticated */}
-            {user && (
-              <Drawer 
-                isOpen={showUserFlowsDrawer} 
-                onOpenChange={setShowUserFlowsDrawer} 
-                placement="right" 
-                size="md" 
-                hideCloseButton={true}
-                classNames={{
-                  base: "bg-background border-l border-border",
-                  wrapper: "bg-background/80 backdrop-blur-sm"
-                }}
-              >
-                <DrawerContent className="bg-background border-l border-border">
-                  <DrawerHeader className="flex justify-between items-center border-b border-border bg-background">
-                    <span className="text-foreground font-semibold text-lg">My Flows</span>
-                    <Button
-                      isIconOnly
-                      variant="light"
-                      size="sm"
-                      onPress={() => setShowUserFlowsDrawer(false)}
-                      aria-label="Close drawer"
-                      className="text-muted-foreground hover:bg-background-muted"
-                    >
-                      <Icon icon="lucide:x" width={20} height={20} />
-                    </Button>
-                  </DrawerHeader>
-                  <DrawerBody className="bg-background p-0">
-                    <UserFlows 
-                      onSelectFlow={handleSelectSavedFlow}
-                      onDeleteFlow={(deletedFlowId: string) => {
-                        if (currentFlowId && currentFlowId === deletedFlowId) {
-                          setCurrentFlow(null);
-                          setSubmittedPrompt(null);
-                          setIsNewlyGenerated(false);
-                          setCurrentFlowId(null);
-                        }
-                      }}
-                    />
-                  </DrawerBody>
-                </DrawerContent>
-              </Drawer>
-            )}
+          
+          {/* Drawer for My Flows - Only show if user is authenticated */}
+          {user && (
+            <Drawer 
+              isOpen={showUserFlowsDrawer} 
+              onOpenChange={setShowUserFlowsDrawer} 
+              placement="right" 
+              size="md" 
+              hideCloseButton={true}
+              classNames={{
+                base: "bg-background border-l border-border",
+                wrapper: "bg-background/80 backdrop-blur-sm"
+              }}
+            >
+              <DrawerContent className="bg-background border-l border-border">
+                <DrawerHeader className="flex justify-between items-center border-b border-border bg-background">
+                  <span className="text-foreground font-semibold text-lg">My Flows</span>
+                  <Button
+                    isIconOnly
+                    variant="light"
+                    size="sm"
+                    onPress={() => setShowUserFlowsDrawer(false)}
+                    aria-label="Close drawer"
+                    className="text-muted-foreground hover:bg-background-muted"
+                  >
+                    <Icon icon="lucide:x" width={20} height={20} />
+                  </Button>
+                </DrawerHeader>
+                <DrawerBody className="bg-background p-0">
+                  <UserFlows 
+                    onSelectFlow={handleSelectSavedFlow}
+                    onDeleteFlow={(deletedFlowId: string) => {
+                      if (currentFlowId && currentFlowId === deletedFlowId) {
+                        setCurrentFlow(null);
+                        setSubmittedPrompt(null);
+                        setIsNewlyGenerated(false);
+                        setCurrentFlowId(null);
+                      }
+                    }}
+                  />
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+          )}
 
-            {/* Main logic for generating and generated flow states */}
-            {isGenerating && (
-              <GeneratingFlowCard 
-                prompt={submittedPrompt} 
-                steps={loadingSteps}
-                currentProgressMessage={currentProgressMessage}
-              />
-            )}
+          {/* Main logic for generating and generated flow states */}
+          {isGenerating && (
+            <GeneratingFlowCard 
+              prompt={submittedPrompt} 
+              steps={loadingSteps}
+              currentProgressMessage={currentProgressMessage}
+            />
+          )}
 
-            {!isGenerating && displayFlow && (
-              <GeneratedFlowCard 
-                prompt={showSampleFlow ? EXAMPLE_PROMPT : submittedPrompt} 
-                flow={displayFlow}
-                isNewlyGenerated={isNewlyGenerated}
-                onSaveFlow={handleSaveFlow}
-                onDownload={handleDownload}
-                onClose={handleClear}
-              />
-            )}
+          {!isGenerating && displayFlow && (
+            <GeneratedFlowCard 
+              prompt={showSampleFlow ? EXAMPLE_PROMPT : submittedPrompt} 
+              flow={displayFlow}
+              isNewlyGenerated={isNewlyGenerated}
+              onSaveFlow={handleSaveFlow}
+              onDownload={handleDownload}
+              onClose={handleClear}
+            />
+          )}
 
-            {!isGenerating && displayFlow && (
-              <OnboardingFlowCards flow={displayFlow} />
-            )}
+        <div className="max-w-full lg:container mx-auto pb-20">
+          {/* Main logic for generating and generated flow states */}
+          {!isGenerating && displayFlow && (
+            <OnboardingFlowCards flow={displayFlow} />
+          )}
 
+          {error && (
+            <div className="text-red-500 text-center mt-4">
+              {error}
+            </div>
+          )}
+        </div>
+        <div className="container mx-auto">
+          <div className="flex flex-col flex-1 md:p-6">
             {error && (
-              <div className="text-red-500 text-center mt-4">
+              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
                 {error}
               </div>
             )}
-
-            <div className="flex flex-col flex-1 md:p-6">
-              {error && (
-                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
-                  {error}
-                </div>
-              )}
+            
 
               {!isGenerating && hasFlowToDisplay && (
                 <>

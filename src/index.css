@@ -40,6 +40,33 @@ html {
   @apply justify-start px-3 py-2 rounded-md text-base transition-colors;
 }
 
+/* Mobile menu slide-in animation */
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.mobile-menu-slide-in {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+.mobile-menu-slide-out {
+  animation: slide-out-right 0.3s ease-out;
+}
+
 /* Custom Button Variants with Icon Support */
 .btn-primary {
   @apply font-medium shadow-sm focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 transition-colors;
@@ -205,10 +232,6 @@ html {
   @apply mr-2;
 }
 
-.scroll-mask {
-  mask-image: linear-gradient(to right, transparent 0px, black 40px, black calc(100% - 40px), transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0px, black 40px, black calc(100% - 40px), transparent 100%);
-}
 
 :root {
   /* Type scale (Major Third) */

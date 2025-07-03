@@ -1,17 +1,7 @@
 "use client";
 import * as React from "react";
 import { Icon } from "@iconify/react";
-import { 
-  Modal, 
-  ModalContent, 
-  ModalHeader, 
-  ModalBody,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Button
-} from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button } from "@heroui/react";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 import { FigmaIcon, UserIcon, MyFlowsIcon } from "./shared/CustomIcons";
 import UserProfile from "./UserProfile";
@@ -19,6 +9,7 @@ import LoginForm from "./LoginForm";
 
 function Header({ onShowMyFlows }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
   const [showLogin, setShowLogin] = React.useState(false);
   const { user, signOut } = useSupabaseAuth();
 
@@ -36,7 +27,11 @@ function Header({ onShowMyFlows }) {
   };
 
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
+    setIsMobileMenuClosing(true);
+    setTimeout(() => {
+      setIsMobileMenuOpen(false);
+      setIsMobileMenuClosing(false);
+    }, 300);
   };
 
   // Extracted nav buttons for reuse
@@ -101,15 +96,15 @@ function Header({ onShowMyFlows }) {
   );
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex w-full flex-col bg-background border-b border-border py-3">
+    <header className="fixed top-0 left-0 right-0 z-50 flex w-full flex-col bg-background border-b border-border py-2 lg:py-3">
       <div className="flex items-center justify-center container mx-auto" >
-        <div className="flex flex-grow items-center justify-between px-8" >
+        <div className="flex flex-grow items-center justify-between px-4 lg:px-8" >
           {/* Logo Section */}
           <a href="/" className="flex items-center justify-center gap-3 no-underline">
             <img 
               src="/Onboader-Logo.svg" 
               alt="Onboarder Logo" 
-              className="header-logo"
+              className="header-logo max-w-40 lg:max-w-full"
             />
           </a>
 
@@ -146,87 +141,111 @@ function Header({ onShowMyFlows }) {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden transition-all duration-300 ease-in-out transform scale-y-100 origin-top z-50"
-          style={{ maxHeight: isMobileMenuOpen ? '500px' : '0', overflow: 'hidden' }}
-        >
-          <div className="mobile-menu-container flex flex-col gap-3 p-4 border-t border-border bg-background">
-            {user ? (
-              <>
+      {/* Mobile Navigation Menu - Right Side Slide In */}
+      {(isMobileMenuOpen || isMobileMenuClosing) && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className={`fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${isMobileMenuClosing ? 'opacity-0' : 'opacity-100'}`}
+            onClick={closeMobileMenu}
+          />
+          
+          {/* Mobile Menu Panel */}
+          <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border z-50 md:hidden ${isMobileMenuClosing ? 'mobile-menu-slide-out' : 'mobile-menu-slide-in'}`}>
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="flex justify-between items-center p-4 border-b border-border">
+                <span className="text-foreground font-semibold text-lg">Menu</span>
                 <Button
-                  onPress={() => {
-                    closeMobileMenu();
-                    if (onShowMyFlows) onShowMyFlows();
-                  }}
+                  isIconOnly
                   variant="light"
-                  color="default"
                   size="sm"
-                  fullWidth
-                  className="mobile-menu-button text-foreground hover:bg-background-muted"
-                  startContent={<Icon icon="lucide:folder" width={18} height={18} className="text-muted-foreground" />}
+                  onPress={closeMobileMenu}
+                  aria-label="Close mobile menu"
+                  className="text-muted-foreground hover:bg-background-muted"
                 >
-                  My Flows
-                </Button>
-                <Button
-                  onPress={async () => {
-                    closeMobileMenu();
-                    await signOut();
-                  }}
-                  variant="light"
-                  color="default"
-                  size="sm"
-                  fullWidth
-                  className="mobile-menu-button text-foreground hover:bg-background-muted"
-                  startContent={<Icon icon="lucide:log-out" width={18} height={18} className="text-muted-foreground" />}
-                >
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <div className="flex flex-col gap-3">
-                <Button
-                  variant="solid"
-                  color="default"
-                  size="sm"
-                  className="btn-utility"
-                  startContent={<FigmaIcon />}
-                  fullWidth
-                >
-                  <span className="utility-btn-text">Try the plugin</span>
-                </Button>
-                <Button
-                  variant="solid"
-                  color="default"
-                  size="sm"
-                  className="btn-utility"
-                  startContent={<Icon icon="lucide:folder" width={18} height={18} />}
-                  onPress={() => {
-                    closeMobileMenu();
-                    handleShowMyFlows();
-                  }}
-                  fullWidth
-                >
-                  <span className="utility-btn-text">My Flows</span>
-                </Button>
-                <Button
-                  variant="solid"
-                  color="default"
-                  size="sm"
-                  className="btn-utility"
-                  startContent={<UserIcon />}
-                  onPress={() => {
-                    closeMobileMenu();
-                    setShowLogin(true);
-                  }}
-                  fullWidth
-                >
-                  <span className="utility-btn-text">Sign in</span>
+                  <Icon icon="lucide:x" width={20} height={20} />
                 </Button>
               </div>
-            )}
+              
+              {/* Menu Content */}
+              <div className="flex-1 p-4 space-y-4">
+                {user ? (
+                  <>
+                    {/* User Profile Section */}
+                    <div className="pb-4 border-b border-border">
+                      <UserProfile />
+                    </div>
+                    
+                    {/* Navigation Buttons */}
+                    <div className="space-y-3">
+                      <Button
+                        variant="solid"
+                        color="default"
+                        size="md"
+                        className="btn-utility w-full justify-start"
+                        startContent={<FigmaIcon />}
+                      >
+                        <span className="utility-btn-text">Try the plugin</span>
+                      </Button>
+                      <Button
+                        variant="solid"
+                        color="default"
+                        size="md"
+                        className="btn-utility w-full justify-start"
+                        startContent={<MyFlowsIcon />}
+                        onPress={() => {
+                          closeMobileMenu();
+                          if (onShowMyFlows) onShowMyFlows();
+                        }}
+                      >
+                        <span className="utility-btn-text">My Flows</span>
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="space-y-3">
+                    <Button
+                      variant="solid"
+                      color="default"
+                      size="md"
+                      className="btn-utility w-full justify-start"
+                      startContent={<FigmaIcon />}
+                    >
+                      <span className="utility-btn-text">Try the plugin</span>
+                    </Button>
+                    <Button
+                      variant="solid"
+                      color="default"
+                      size="md"
+                      className="btn-utility w-full justify-start"
+                      startContent={<MyFlowsIcon />}
+                      onPress={() => {
+                        closeMobileMenu();
+                        handleShowMyFlows();
+                      }}
+                    >
+                      <span className="utility-btn-text">My Flows</span>
+                    </Button>
+                    <Button
+                      variant="solid"
+                      color="default"
+                      size="md"
+                      className="btn-utility w-full justify-start"
+                      startContent={<UserIcon />}
+                      onPress={() => {
+                        closeMobileMenu();
+                        setShowLogin(true);
+                      }}
+                    >
+                      <span className="utility-btn-text">Sign in</span>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
       
       {/* Login Modal */}

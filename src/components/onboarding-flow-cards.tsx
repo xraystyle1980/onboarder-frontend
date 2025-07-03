@@ -43,21 +43,19 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
   };
 
   return (
-    <section className="p-6">
-      <div className="flex items-center gap-4 mb-8">
-      
+    <section className="px-0 lg:px-6">
+      <div className="container mx-auto flex items-center gap-4 mb-8">      
         <h2 className="text-3xl text-foreground">Screens</h2>
-
-        {/* The pattern below matches the value in the onboarding summary tab under 'Flow Type' */}
         <Pill>
           {flow.pattern.pattern}
         </Pill>
       </div>
     
+    
       <div className="relative w-full max-w-full mx-auto">
         {showLeft && (
           <button
-            className="absolute left-[-48px] top-1/2 -translate-y-1/2 z-30 bg-gradient-orange-pink border-none hover:bg-accent/90 rounded-full p-2 transition-colors border shadow-xl"
+            className="hidden lg:block absolute left-[0px] top-1/2 -translate-y-1/2 z-30 bg-gradient-orange-pink border-none hover:bg-accent/90 rounded-full p-2 transition-colors border shadow-xl"
             onClick={() => scrollBy(-CARD_WIDTH * 1.5)}
             aria-label="Scroll left"
           >
@@ -66,7 +64,7 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
         )}
         {showRight && (
           <button
-            className="absolute right-[-48px] top-1/2 -translate-y-1/2 z-30 bg-gradient-orange-pink border-none hover:bg-accent/90 rounded-full p-2 transition-colors border shadow-xl"
+            className="hidden lg:block absolute right-[0px] top-1/2 -translate-y-1/2 z-30 bg-gradient-orange-pink border-none hover:bg-accent/90 rounded-full p-2 transition-colors border shadow-xl"
             onClick={() => scrollBy(CARD_WIDTH * 1.5)}
             aria-label="Scroll right"
           >
@@ -75,7 +73,7 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
         )}
         <div
           ref={scrollRef}
-          className="px-8 flex gap-2 pb-4 overflow-x-auto scroll-smooth w-full scroll-mask"
+          className="px-8 flex gap-2 pb-4 overflow-x-auto scroll-smooth w-full lg:scroll-mask"
         >
           {flow.steps.map((step, index) => (
             <React.Fragment key={step.id}>
@@ -95,6 +93,8 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
           ))}
         </div>
       </div>
+
+
     </section>
   );
 });

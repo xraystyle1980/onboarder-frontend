@@ -42,6 +42,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
   };
 
   return (
+    <section className="container mx-auto">
     <Card className="gradient-bg-card rounded-3xl px-0 max-w-5xl mx-auto mb-8 flex flex-col items-center relative border border-border">
       <CardBody className="p-0 w-full">
         {/* Close Button */}
@@ -69,7 +70,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
           <div className="flex flex-row items-center gap-3 ml-4 shrink-0">
             <Dropdown 
               shouldBlockScroll={false}
-              backdrop="blur"
+              backdrop="transparent"
               placement="bottom-end"
             >
               <DropdownTrigger>
@@ -143,5 +144,6 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
         </div>
       </CardBody>
     </Card>
+    </section>
   );
 }; 

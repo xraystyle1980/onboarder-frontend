@@ -129,5 +129,15 @@ export default {
 		},
 	},
 	darkMode: "class",
-	plugins: [heroui()],
+	plugins: [
+		heroui(),
+		function ({ addUtilities }) {
+			addUtilities({
+				'.scroll-mask': {
+					maskImage: 'linear-gradient(to right, transparent 0px, black 40px, black calc(100% - 40px), transparent 100%)',
+					WebkitMaskImage: 'linear-gradient(to right, transparent 0px, black 40px, black calc(100% - 40px), transparent 100%)',
+				},
+			});
+		},
+	],
 };
