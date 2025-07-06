@@ -90,7 +90,6 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
                 color="default"
                 className="min-w-[200px]"
                 itemClasses={{
-                  base: "data-[hover=true]:bg-background-muted data-[hover=true]:text-foreground",
                   title: "text-foreground font-medium",
                   description: "text-muted-foreground text-sm",
                   shortcut: "text-muted-foreground text-xs"

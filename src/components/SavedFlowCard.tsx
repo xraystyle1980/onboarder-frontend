@@ -46,7 +46,7 @@ export default function SavedFlowCard({ flow, onDelete, onSelect }) {
               color="default"
               className="min-w-[200px]"
               itemClasses={{
-                base: "data-[hover=true]:bg-background-muted data-[hover=true]:text-foreground",
+               
                 title: "text-foreground font-medium",
                 description: "text-muted-foreground text-sm",
                 shortcut: "text-muted-foreground text-xs"
@@ -61,7 +61,7 @@ export default function SavedFlowCard({ flow, onDelete, onSelect }) {
                 textValue="Delete flow"
                 description="Permanently delete this flow"
                 startContent={<Icon icon="lucide:trash-2" width={20} height={20} className="text-red-500" />}
-                className="text-red-500"
+                className="dropdown-item-delete"
               >
                 Delete
               </DropdownItem>
