@@ -25,31 +25,18 @@ export default function SectionHero({
   onToggleExample,
 }: SectionHeroProps) {
   const playerRef = useRef<any>(null);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const handleMouseEnter = () => {
-    console.log('Mouse enter triggered');
-    console.log('Player ref:', playerRef.current);
-    console.log('Is player ready:', isPlayerReady);
-    
     if (playerRef.current) {
-      console.log('Playing animation...');
-      playerRef.current.goToAndPlay(0);
-    } else {
-      console.log('Player ref is null');
+      playerRef.current.setDirection(1);
+      playerRef.current.play();
     }
   };
 
-  const handlePlayerReady = () => {
-    console.log('Player ready set to true');
-    setIsPlayerReady(true);
-  };
-
-  const handleAnimationComplete = () => {
-    console.log('Animation completed');
-    // Animation completed, reset for next hover
+  const handleMouseLeave = () => {
     if (playerRef.current) {
-      playerRef.current.goToAndStop(0, true);
+      playerRef.current.setDirection(-1);
+      playerRef.current.play();
     }
   };
 
@@ -126,13 +113,13 @@ export default function SectionHero({
               type="submit"
               isDisabled={isGenerating}
               onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               startContent={
                 <div className="mr-2">
                   <Lottie
                     lottieRef={playerRef}
                     animationData={robotIcon}
                     style={{ width: 40, height: 40 }}
-                    onComplete={handleAnimationComplete}
                     loop={false}
                     autoplay={false}
                   />
