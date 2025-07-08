@@ -71,7 +71,7 @@ export default function AuthCallback() {
             <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            <h2 className="text-2xl font-bold mb-2">Success!</h2>
+            <h2 className="text-2xl font-medium mb-2">Success!</h2>
             <p className="text-muted-foreground">{message}</p>
           </div>
         ) : (
@@ -79,7 +79,7 @@ export default function AuthCallback() {
             <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-            <h2 className="text-2xl font-bold mb-2">Authentication Failed</h2>
+            <h2 className="text-2xl font-medium mb-2">Authentication Failed</h2>
             <p className="text-muted-foreground mb-4">{message}</p>
             <button
               onClick={() => navigate('/')}

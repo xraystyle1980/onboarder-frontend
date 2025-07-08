@@ -11,14 +11,24 @@ interface UXNarrativeTabProps {
 
 export const UXNarrativeTab: React.FC<UXNarrativeTabProps> = ({ flow }) => {
   return (
-    <section>
-      <h3 className="text-2xl font-semibold mb-8 text-foreground">UX Narrative</h3>
-      <SummarySectionCard className="p-0">
+    <section className="pt-4">
+      <h3 className="text-3xl mb-8 text-foreground">UX Narrative</h3>
+      
+
+
+
+      
+      <SummarySectionCard 
+        className="p-0"
+      >
+        
+        
+        
         <Accordion defaultExpandedKeys={["integration"]} showDivider={true} className="w-full">
           {/* Integration Narrative */}
           <AccordionItem
             key="integration"
-            title={<span className="flex items-center gap-2"><Icon icon="lucide:layers" className="text-primary-500" width={22} height={22} /><span className="font-bold text-lg">Integration Narrative</span></span>}
+            title={<span className="flex items-center gap-2"><Icon icon="lucide:layers" className="text-primary-500" width={22} height={22} /><span className="font-medium text-lg">Integration Narrative</span></span>}
             classNames={accordionItemClassNames}
           >
             {Array.isArray(flow.integrationOverview.narrative)
@@ -39,14 +49,14 @@ export const UXNarrativeTab: React.FC<UXNarrativeTabProps> = ({ flow }) => {
           {/* Implementation Details */}
           <AccordionItem
             key="implementation"
-            title={<span className="flex items-center gap-2"><Icon icon="lucide:settings" className="text-primary-500" width={22} height={22} /><span className="font-bold text-lg">Implementation</span></span>}
+            title={<span className="flex items-center gap-2"><Icon icon="lucide:settings" className="text-primary-500" width={22} height={22} /><span className="font-medium text-lg">Implementation</span></span>}
             classNames={accordionItemClassNames}
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <SummarySectionCard
                 icon={<Icon icon="lucide:calendar-check" className="text-primary-500" width={22} height={22} />}
                 title="Notes"
-                className="bg-background-secondary rounded-xl p-6"
+                className="bg-card rounded-xl p-6"
               >
                 <div className="text-muted-foreground text-base">
                   {flow.integrationOverview.implementationNotes}
@@ -55,7 +65,7 @@ export const UXNarrativeTab: React.FC<UXNarrativeTabProps> = ({ flow }) => {
               <SummarySectionCard
                 icon={<Icon icon="lucide:volume-2" className="text-primary-500" width={22} height={22} />}
                 title="Tone"
-                className="bg-background-secondary rounded-xl p-6"
+                className="bg-card rounded-xl p-6"
               >
                 <div className="text-muted-foreground text-base">
                   {flow.copy.tone}
@@ -64,7 +74,7 @@ export const UXNarrativeTab: React.FC<UXNarrativeTabProps> = ({ flow }) => {
               <SummarySectionCard
                 icon={<Icon icon="lucide:mic" className="text-primary-500" width={22} height={22} />}
                 title="Voice"
-                className="bg-background-secondary rounded-xl p-6"
+                className="bg-card rounded-xl p-6"
               >
                 <div className="text-muted-foreground text-base">
                   {flow.copy.voice}
@@ -72,18 +82,39 @@ export const UXNarrativeTab: React.FC<UXNarrativeTabProps> = ({ flow }) => {
               </SummarySectionCard>
             </div>
           </AccordionItem>
+
+
+
+
           {/* Key Phrases */}
           <AccordionItem
             key="keyphrases"
-            title={<span className="flex items-center gap-2"><Icon icon="lucide:key" className="text-primary-500" width={22} height={22} /><span className="font-bold text-lg">Key Phrases</span></span>}
+            title={<span className="flex items-center gap-2"><Icon icon="lucide:key" className="text-primary-500" width={22} height={22} /><span className="font-medium text-lg">Key Phrases</span></span>}
             classNames={accordionItemClassNames}
           >
-            <ul className="list-disc pl-6 space-y-1">
+            <ul className="space-y-3 text-lg text-muted-foreground">
               {flow.copy.keyPhrases.map((phrase, index) => (
-                <li key={index}>{phrase}</li>
+                <li key={index} className="flex items-center gap-2 text-foreground text-base">
+                  <Icon icon="lucide:quote" className="text-primary-400 mr-1" width={18} height={18} />
+                <span>{phrase}</span>
+              </li>
               ))}
             </ul>
+
+            {/* 
+            {flow.productInfo.keyFeatures.map((feature, idx) => (
+              <li key={idx} className="flex items-center gap-2 text-foreground text-base first:mt-2">
+                <Icon icon="lucide:check-circle" className="text-primary-400 mr-1" width={18} height={18} />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul> */}
+
+
           </AccordionItem>
+
+
+
         </Accordion>
       </SummarySectionCard>
     </section>

@@ -156,7 +156,7 @@ export default function LoginForm({
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="mb-6 text-center">
-        <h2 className="text-2xl font-bold text-foreground">{getModeTitle()}</h2>
+        <h2 className="text-2xl font-medium text-foreground">{getModeTitle()}</h2>
         <p className="text-sm text-muted-foreground mt-2">
           {mode === 'signin' && "Welcome back! Sign in to your account"}
           {mode === 'signup' && "Create your account to get started"}

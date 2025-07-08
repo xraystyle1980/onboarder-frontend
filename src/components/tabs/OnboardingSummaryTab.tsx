@@ -15,14 +15,21 @@ interface OnboardingSummaryTabProps {
 export function OnboardingSummaryTab({ flow }: OnboardingSummaryTabProps) {
   return (
     <section className="pt-4">
-      <h2 className="text-3xl text-foreground mb-8">Onboarding Summary</h2>
+      <h3 className="text-3xl text-foreground mb-8">Onboarding Summary</h3>
       {/* Top row: Product Name & Core User Goal in a single card */}
+      
+      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        
         <SummarySectionCard
           icon={<Icon icon="lucide:package" className="text-primary-400" width={32} height={32} />}
           title={flow.productInfo.productName}
           className="col-span-1 lg:col-span-2 mb-6"
         >
+
+
+
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Product Info (left) */}
             <div className="flex flex-row items-center gap-4 flex-1 pb-6 lg:pb-0 lg:pr-8">
@@ -63,20 +70,26 @@ export function OnboardingSummaryTab({ flow }: OnboardingSummaryTabProps) {
       </div>
       {/* Third row: Key Features & Onboarding Goals (Accordion) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+
+        
         {/* Key Features */}
         <SummarySectionCard
           icon={<Icon icon="lucide:key" className="text-primary-500" width={22} height={22} />}
           title="Key Features"
         >
-          <ul className="space-y-4 text-lg text-muted-foreground">
+          <ul className="space-y-3 text-lg text-muted-foreground">
             {flow.productInfo.keyFeatures.map((feature, idx) => (
-              <li key={idx} className="flex items-center gap-2 text-foreground">
-                <Icon icon="lucide:check-circle" className="text-primary-400" width={18} height={18} />
+              <li key={idx} className="flex items-center gap-2 text-foreground text-base first:mt-2">
+                <Icon icon="lucide:check-circle" className="text-primary-400 mr-1" width={18} height={18} />
                 <span>{feature}</span>
               </li>
             ))}
           </ul>
         </SummarySectionCard>
+
+
+
         {/* Onboarding Goals Accordion */}
         <SummarySectionCard
           icon={<Icon icon="lucide:rocket" className="text-primary-700" width={22} height={22} />}

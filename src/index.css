@@ -15,7 +15,7 @@
 
 html {
   scrollbar-gutter: stable;
-  background-color: #02020b !important;
+  background-color: #0B0B14 !important;
 }
 
 /* Header Component Styles */
@@ -238,7 +238,7 @@ html {
 }
 
 .summary-onboarding-content strong {
-  @apply font-bold;
+  @apply font-medium;
 }
 
 .summary-icon {

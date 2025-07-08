@@ -50,7 +50,7 @@ export default function SectionHero({
       </div>
       {/* Headline */}
       <div className="w-full max-w-3xl text-center mb-6">
-        <h1 className="text-[40px] lg:text-[60px] font-bold leading-[50px] lg:leading-[60px] text-white block">Design Onboarding UX 
+        <h1 className="text-[40px] lg:text-[60px] font-semibold leading-[50px] lg:leading-[60px] text-white block">Design Onboarding UX 
         <span className="inline lg:block gradient-orange-pink"> Instantly</span></h1>
       </div>
       {/* Subheading */}
