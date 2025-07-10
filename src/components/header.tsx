@@ -254,26 +254,22 @@ function Header({ onShowMyFlows }) {
           isOpen={showLogin} 
           onOpenChange={setShowLogin}
           backdrop="blur"
+          hideCloseButton={false}
           classNames={{
             wrapper: "z-[120]",
             base: "bg-popover border border-border shadow-xl rounded-2xl",
             backdrop: "backdrop-blur-md",
-            header: "text-foreground text-xl font-normal px-6 py-4",
-            body: "px-6 py-6 text-foreground",
-            closeButton: "absolute right-3 top-3 z-10 btn-utility rounded-lg transition-all duration-200"
+            body: "px-8 py-8 text-foreground",
+            closeButton: "absolute right-4 top-4 z-10 btn-utility rounded-lg transition-all duration-200"
           }}
         >
           <ModalContent className="modal-animate-in">
-            <ModalHeader>Sign In</ModalHeader>
             <ModalBody>
               <LoginForm 
-                onClose={() => setShowLogin(false)}
                 onSuccess={() => {
                   setShowLogin(false);
                   // If there was a pending flow, it will be saved automatically
                 }}
-                submitButtonClass="py-4 rounded-lg btn-primary w-full"
-                cancelButtonClass="btn-utility rounded-lg px-6 py-3 transition-all duration-200 w-full"
               />
             </ModalBody>
           </ModalContent>

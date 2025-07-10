@@ -3,6 +3,8 @@ import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 import { getUserFlows, deleteUserFlow } from '../services/flows';
 import SavedFlowCard from './SavedFlowCard';
 import { OnboardingFlow } from '../types';
+import { Spinner } from '@heroui/react';
+import { Icon } from '@iconify/react';
 
 interface SavedFlow {
   id: string;
@@ -16,6 +18,13 @@ interface UserFlowsProps {
   onSelectFlow: (flow: SavedFlow) => void;
   onDeleteFlow: (flowId: string) => void;
 }
+
+// Component constants
+const LOADING_STATES = {
+  LOADING: 'loading',
+  ERROR: 'error',
+  SUCCESS: 'success'
+} as const;
 
 export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () => {} }: UserFlowsProps) {
   const { user } = useSupabaseAuth();
@@ -56,6 +65,7 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
   if (loading) return (
     <div className="flex items-center justify-center py-12">
       <div className="text-center">
+        <Spinner size="lg" className="mb-4" />
         <div className="text-muted-foreground text-lg mb-2">Loading your flows...</div>
         <div className="text-muted-foreground text-sm">Please wait</div>
       </div>
@@ -65,6 +75,7 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
   if (error) return (
     <div className="flex items-center justify-center py-12">
       <div className="text-center">
+        <Icon icon="lucide:alert-circle" width={48} height={48} className="text-red-500 mb-4 mx-auto" />
         <div className="text-red-500 text-lg mb-2">Error loading flows</div>
         <div className="text-muted-foreground text-sm">{error}</div>
       </div>
@@ -76,6 +87,7 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
       {flows.length === 0 ? (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
+            <Icon icon="lucide:folder-x" width={48} height={48} className="text-muted-foreground mb-4 mx-auto" />
             <div className="text-muted-foreground text-lg mb-2">No flows found</div>
             <div className="text-muted-foreground text-sm">Create your first flow to get started</div>
           </div>

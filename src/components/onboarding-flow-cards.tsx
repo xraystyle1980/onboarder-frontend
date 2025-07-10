@@ -43,7 +43,7 @@ export const OnboardingFlowCards: React.FC<OnboardingFlowCardsProps> = React.mem
   };
 
   return (
-    <section className="px-0 lg:px-6">
+    <section className="px-3 lg:px-6">
       <div className="container mx-auto flex items-center gap-4 mb-8">      
         <h2 className="text-3xl text-foreground">Screens</h2>
         <Pill>

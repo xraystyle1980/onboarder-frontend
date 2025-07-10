@@ -1,22 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
-import { Player } from '@lordicon/react';
-import wandIcon from '../lottie/wired-outline-177-envelope-send-hover-flying.json';
-import { Link } from '@heroui/react';
+import { Link, Button, Input } from '@heroui/react';
+import { Icon } from '@iconify/react';
 
 interface LoginFormProps {
-  onClose: () => void;
   submitButtonClass?: string;
-  cancelButtonClass?: string;
   onSuccess?: () => void;
 }
 
 type AuthMode = 'signin' | 'signup' | 'magic-link' | 'forgot-password';
 
 export default function LoginForm({ 
-  onClose, 
-  submitButtonClass = "btn-primary font-medium p-0 transition-all duration-200 shadow-sm hover:shadow-md",
-  cancelButtonClass = "btn-utility rounded-lg px-4 py-2.5 transition-all duration-200",
+  submitButtonClass = "btn-primary",
   onSuccess
 }: LoginFormProps) {
   const [mode, setMode] = useState<AuthMode>('signin');
@@ -25,8 +20,6 @@ export default function LoginForm({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
-  const playerRef = useRef<Player>(null);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const {
     signInWithPassword,
@@ -37,15 +30,6 @@ export default function LoginForm({
     error: authError
   } = useSupabaseAuth();
 
-  const handleMouseEnter = () => {
-    if (playerRef.current && isPlayerReady) {
-      playerRef.current.playFromBeginning();
-    }
-  };
-
-  const handlePlayerReady = () => {
-    setIsPlayerReady(true);
-  };
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -130,15 +114,6 @@ export default function LoginForm({
     }
   };
 
-  const getModeTitle = () => {
-    switch (mode) {
-      case 'signin': return 'Sign In';
-      case 'signup': return 'Create Account';
-      case 'magic-link': return 'Magic Link';
-      case 'forgot-password': return 'Reset Password';
-      default: return 'Authentication';
-    }
-  };
 
   const getSubmitButtonText = () => {
     switch (mode) {
@@ -155,42 +130,59 @@ export default function LoginForm({
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="mb-6 text-center">
-        <h2 className="text-2xl font-medium text-foreground">{getModeTitle()}</h2>
-        <p className="text-sm text-muted-foreground mt-2">
-          {mode === 'signin' && "Welcome back! Sign in to your account"}
-          {mode === 'signup' && "Create your account to get started"}
-          {mode === 'magic-link' && "We'll send you a secure link to sign in"}
-          {mode === 'forgot-password' && "We'll send you a link to reset your password"}
-        </p>
+      <div className="mb-8 text-center">
+        <h2 className="text-xl font-medium text-foreground mb-2">
+          {mode === 'signin' && "Sign In to save your flows"}
+          {mode === 'signup' && "Create your account"}
+          {mode === 'magic-link' && "Magic Link Sign In"}
+          {mode === 'forgot-password' && "Reset your password"}
+        </h2>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <input
+          <Input
             type="email"
-            placeholder="Your email"
+            label="Email"
+            labelPlacement="inside"
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
-            className="w-full bg-background border border-border text-foreground rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent transition"
-            disabled={loading}
+            isDisabled={loading}
+            variant="bordered"
+            classNames={{
+              input: "text-foreground",
+              inputWrapper: "bg-background border-border"
+            }}
           />
         </div>
 
         {showPasswordFields && (
           <div>
-            <input
+            <Input
               type="password"
-              placeholder={mode === 'signin' ? 'Your password' : 'Create password'}
+              label="Password"
+              labelPlacement="inside"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full bg-background border border-border text-foreground rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent transition"
-              disabled={loading}
+              isDisabled={loading}
+              variant="bordered"
+              endContent={
+                <Icon 
+                  icon="lucide:lock" 
+                  width={20} 
+                  height={20} 
+                  className="text-muted-foreground" 
+                />
+              }
+              classNames={{
+                input: "text-foreground",
+                inputWrapper: "bg-background border-border"
+              }}
             />
             {mode === 'signup' && (
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-4 mx-2 text-center">
                 Password must be at least 8 characters with uppercase, lowercase, and number
               </p>
             )}
@@ -199,65 +191,60 @@ export default function LoginForm({
 
         {showConfirmPassword && (
           <div>
-            <input
+            <Input
               type="password"
-              placeholder="Confirm password"
+              label="Confirm Password"
+              labelPlacement="inside"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
               required
-              className="w-full bg-background border border-border text-foreground rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent transition"
-              disabled={loading}
+              isDisabled={loading}
+              variant="bordered"
+              endContent={
+                <Icon 
+                  icon="lucide:lock-keyhole" 
+                  width={20} 
+                  height={20} 
+                  className="text-muted-foreground" 
+                />
+              }
+              classNames={{
+                input: "text-foreground",
+                inputWrapper: "bg-background border-border"
+              }}
             />
           </div>
         )}
 
-        <button 
-          type="submit" 
-          className={`${submitButtonClass} w-full py-3`}
-          onMouseEnter={handleMouseEnter}
-          disabled={loading}
-        >
-          <div className="flex items-center justify-center gap-3">
-            <div className="mr-2">
-              <Player
-                ref={playerRef}
-                icon={wandIcon}
-                size={20}
-                onReady={handlePlayerReady}
-              />
-            </div>
-            <span>{loading ? 'Loading...' : getSubmitButtonText()}</span>
+        {/* Forgot Password Link - positioned above sign in button for signin mode */}
+        {mode === 'signin' && (
+          <div className="text-left mx-2 mb-2">
+            <Link
+              as="button"
+              type="button"
+              onPress={() => setMode('forgot-password')}
+              isDisabled={loading}
+              underline="hover"
+              className="text-sm text-muted-foreground hover:text-sky-500"
+            >
+              Forgot your password?
+            </Link>
           </div>
-        </button>
-        
-        <Link
-          as="button"
-          type="button"
-          onPress={onClose}
-          isDisabled={loading}
-          className={cancelButtonClass}
-          color="foreground"
-          underline="hover"
-        >
-          Cancel
-        </Link>
+        )}
 
-        {/* Mode switching links */}
-        <div className="text-center space-y-2">
-          {mode === 'signin' && (
-            <div className="space-y-2">
-              <Link
-                as="button"
-                type="button"
-                onPress={() => setMode('magic-link')}
-                isDisabled={loading}
-                color="primary"
-                underline="hover"
-                className="text-sm"
-              >
-                Sign in with magic link
-              </Link>
-              <div className="text-xs text-muted-foreground">or</div>
+        <Button
+          type="submit" 
+          className={`${submitButtonClass} w-full`}
+          isDisabled={loading}
+        >
+          {loading ? 'Loading...' : getSubmitButtonText()}
+        </Button>
+
+        {/* Sign up link for signin mode */}
+        {mode === 'signin' && (
+          <div className="text-center mt-4">
+            <span className="text-muted-foreground text-sm">
+              Don't have an account?{' '}
               <Link
                 as="button"
                 type="button"
@@ -265,67 +252,104 @@ export default function LoginForm({
                 isDisabled={loading}
                 color="primary"
                 underline="hover"
-                className="text-sm"
+                className="text-sm font-medium text-sky-500 hover:text-sky-400"
               >
-                Create new account
+                Sign up
               </Link>
-              <div className="text-xs text-muted-foreground">or</div>
+            </span>
+          </div>
+        )}
+
+        {/* Or divider for signin mode */}
+        {mode === 'signin' && (
+          <div className="flex items-center my-6">
+            <div className="flex-1 border-t border-border"></div>
+            <span className="px-4 text-sm text-muted-foreground">Or</span>
+            <div className="flex-1 border-t border-border"></div>
+          </div>
+        )}
+
+        {/* Magic link button for signin mode */}
+        {mode === 'signin' && (
+          <Button
+            type="button"
+            onPress={() => setMode('magic-link')}
+            isDisabled={loading}
+            variant="bordered"
+            className="w-full py-3 border-border hover:bg-background-muted"
+          >
+            Sign in with magic link
+          </Button>
+        )}
+
+        {/* Mode switching options for other modes */}
+        {mode !== 'signin' && (
+          <div className="mt-6 pt-4 border-t border-border">
+            {mode === 'signup' && (
+              <div className="text-center text-muted-foreground text-sm">
+                Already have an account?{' '}
+                <Link
+                  as="button"
+                  type="button"
+                  onPress={() => setMode('signin')}
+                  isDisabled={loading}
+                  color="primary"
+                  underline="hover"
+                  className="text-sm font-medium text-sky-500 hover:text-sky-400"
+                >
+                  Sign in
+                </Link>
+              </div>
+            )}
+
+            {/* <span className="text-muted-foreground text-sm">
+              Don't have an account?{' '}
               <Link
                 as="button"
                 type="button"
-                onPress={() => setMode('forgot-password')}
+                onPress={() => setMode('signup')}
                 isDisabled={loading}
                 color="primary"
                 underline="hover"
-                className="text-sm"
+                className="text-sm font-medium text-sky-500 hover:text-sky-400"
               >
-                Forgot your password?
+                Sign up
               </Link>
-            </div>
-          )}
+            </span> */}
 
-          {mode === 'signup' && (
-            <Link
-              as="button"
-              type="button"
-              onPress={() => setMode('signin')}
-              isDisabled={loading}
-              color="primary"
-              underline="hover"
-              className="text-sm"
-            >
-              Already have an account? Sign in
-            </Link>
-          )}
+            {mode === 'magic-link' && (
+              <div className="text-center">
+                <Link
+                  as="button"
+                  type="button"
+                  onPress={() => setMode('signin')}
+                  isDisabled={loading}
+                  color="primary"
+                  underline="hover"
+                  className="text-sm"
+                >
+                  Prefer password? Sign in with password
+                </Link>
+              </div>
+            )}
 
-          {mode === 'magic-link' && (
-            <Link
-              as="button"
-              type="button"
-              onPress={() => setMode('signin')}
-              isDisabled={loading}
-              color="primary"
-              underline="hover"
-              className="text-sm"
-            >
-              Prefer password? Sign in with password
-            </Link>
-          )}
-
-          {mode === 'forgot-password' && (
-            <Link
-              as="button"
-              type="button"
-              onPress={() => setMode('signin')}
-              isDisabled={loading}
-              color="primary"
-              underline="hover"
-              className="text-sm"
-            >
-              Remember your password? Sign in
-            </Link>
-          )}
-        </div>
+            {mode === 'forgot-password' && (
+              <div className="text-center">
+                <Link
+                  as="button"
+                  type="button"
+                  onPress={() => setMode('signin')}
+                  isDisabled={loading}
+                  color="primary"
+                  underline="hover"
+                  className="text-sm"
+                >
+                  Remember your password? Sign in
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Messages */}
         {(message || authError) && (

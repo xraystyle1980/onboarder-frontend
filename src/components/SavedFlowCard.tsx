@@ -1,13 +1,52 @@
 import React from 'react';
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { OnboardingFlow } from '../types';
 
-export default function SavedFlowCard({ flow, onDelete, onSelect }) {
+interface SavedFlow {
+  id: string;
+  flow_json: OnboardingFlow;
+  prompt: string;
+  product_name?: string;
+  created_at: string;
+}
+
+interface SavedFlowCardProps {
+  flow: SavedFlow;
+  onDelete: (flowId: string) => void;
+  onSelect: (flow: SavedFlow) => void;
+}
+
+// CSS class constants
+const CARD_CLASSES = "bg-card border border-border rounded-lg p-4 flex flex-col relative cursor-pointer hover:border-accent transition-colors group";
+const MENU_BUTTON_CLASSES = "rounded-lg border-border hover:bg-background-muted";
+const FOOTER_CLASSES = "text-xs text-muted-foreground mt-auto pt-2 border-t border-border";
+
+// Utility function for date formatting
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return `Created ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
+};
+
+export default function SavedFlowCard({ flow, onDelete, onSelect }: SavedFlowCardProps) {
+  const handleCardClick = () => {
+    onSelect?.(flow);
+  };
+
+  const handleMenuAction = (key: string | number) => {
+    if (key === 'delete') {
+      onDelete?.(flow.id);
+    }
+  };
+
+  const handleMenuClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
     <div
-      className="bg-card border border-border rounded-lg p-4 flex flex-col relative cursor-pointer hover:border-accent transition-colors group"
-      onClick={() => onSelect && onSelect(flow)}
+      className={CARD_CLASSES}
+      onClick={handleCardClick}
     >
       <div className="flex justify-between items-start">
         <div className="flex-1 min-w-0">
@@ -18,7 +57,7 @@ export default function SavedFlowCard({ flow, onDelete, onSelect }) {
             {flow.prompt ? flow.prompt.charAt(0).toUpperCase() + flow.prompt.slice(1) : 'No description available'}
           </div>
         </div>
-        <div className="relative ml-4" onClick={e => e.stopPropagation()}>
+        <div className="relative ml-4" onClick={handleMenuClick}>
             <Dropdown 
               shouldBlockScroll={false}
               backdrop="transparent"
@@ -30,18 +69,14 @@ export default function SavedFlowCard({ flow, onDelete, onSelect }) {
                   variant="bordered"
                   size="sm"
                   aria-label="Open menu"
-                  className="rounded-lg border-border hover:bg-background-muted"
+                  className={MENU_BUTTON_CLASSES}
                 >
                   <Icon icon="lucide:more-vertical" width={16} height={16} className="text-muted-foreground" />
                 </Button>
               </DropdownTrigger>
             <DropdownMenu 
               aria-label="Flow actions" 
-              onAction={(key) => {
-                if (key === 'delete') {
-                  onDelete(flow.id);
-                }
-              }}
+              onAction={handleMenuAction}
               variant="flat"
               color="default"
               className="min-w-[200px]"
@@ -69,8 +104,8 @@ export default function SavedFlowCard({ flow, onDelete, onSelect }) {
           </Dropdown>
         </div>
       </div>
-      <div className="text-xs text-muted-foreground mt-auto pt-2 border-t border-border/50">
-        Created {new Date(flow.created_at).toLocaleDateString()} at {new Date(flow.created_at).toLocaleTimeString()}
+      <div className={FOOTER_CLASSES}>
+        {formatDate(flow.created_at)}
       </div>
     </div>
   );

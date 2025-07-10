@@ -16,7 +16,7 @@ export default function Toast({ message, type = 'info', onClose, className = '' 
   const color = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500';
 
   return (
-    <div className={`fixed top-6 right-6 z-50 px-4 py-3 rounded shadow text-white ${color} ${className}`}>
+    <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded shadow text-white ${color} ${className}`}>
       {message}
     </div>
   );

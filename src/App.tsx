@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { Tabs, Tab, Drawer, DrawerContent, DrawerHeader, DrawerBody, Button } from "@heroui/react";
+import { Tabs, Tab, Drawer, DrawerContent, DrawerHeader, DrawerBody, Button, Skeleton } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { OnboardingFlowCards } from "./components/onboarding-flow-cards";
 import Header from "./components/header";
@@ -216,7 +216,9 @@ function MainApp() {
             isGenerating={isGenerating}
             isExample={showSampleFlow}
             onToggleExample={setShowSampleFlow}
+            currentProgressMessage={currentProgressMessage}
           />
+          
           </div>
           
           {/* Drawer for My Flows - Only show if user is authenticated */}
@@ -263,14 +265,40 @@ function MainApp() {
             </Drawer>
           )}
 
-          {/* Main logic for generating and generated flow states */}
+          {/* Skeleton Loaders for Generating State */}
           {isGenerating && (
+            <section className="container mx-auto px-3 lg:px-0">
+              <div className="gradient-bg-card rounded-3xl max-w-5xl mx-auto mb-8 flex flex-col items-center relative border border-border p-8">
+                <div className="flex flex-row items-center justify-between w-full gap-4">
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Skeleton className="w-5 h-5 rounded" />
+                      <Skeleton className="w-12 h-3 rounded" />
+                    </div>
+                    <div className="space-y-2">
+                      <Skeleton className="w-full h-6 rounded" />
+                      <Skeleton className="w-3/4 h-6 rounded" />
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center gap-3 ml-4 shrink-0">
+                    <Skeleton className="w-8 h-8 rounded-full" />
+                    <div className="flex flex-col items-start gap-1">
+                      <Skeleton className="w-32 h-4 rounded" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* GeneratingFlowCard */}
+          {/* {isGenerating && (
             <GeneratingFlowCard 
               prompt={submittedPrompt} 
               steps={loadingSteps}
               currentProgressMessage={currentProgressMessage}
             />
-          )}
+          )} */}
 
           {!isGenerating && displayFlow && (
             <GeneratedFlowCard 
@@ -296,7 +324,7 @@ function MainApp() {
           )}
         </div>
         <div className="container mx-auto">
-          <div className="flex flex-col flex-1 md:p-6">
+          <div className="px-3 flex flex-col flex-1 md:p-6">
             {error && (
               <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
                 {error}
@@ -304,40 +332,40 @@ function MainApp() {
             )}
             
 
-              {!isGenerating && hasFlowToDisplay && (
-                <>
-                  {/* Tabs and Download Button Row */}
-                  <div className="flex-col md:flex-row flex mt-8 mb-6 justify-start items-center border-b border-divider">
-                    <Tabs
-                      selectedKey={selectedMainTab}
-                      onSelectionChange={(key) => setSelectedMainTab(key as string)}
-                      color="primary"
-                      variant="underlined"
-                      classNames={{
-                        tabList: "gap-6 w-full relative rounded-none p-0",
-                        cursor: "w-full bg-sky-400",
-                        tab: "max-w-fit px-0 h-12",
-                        tabContent: "group-data-[selected=true]:text-white text-lg",
-                      }}
-                    >
-                      <Tab key="summary" title={<span className="sm:inline">Summary</span>} />
-                      <Tab key="narrative" title={<span className="sm:inline">Narrative</span>} />
-                    </Tabs>
+            {!isGenerating && hasFlowToDisplay && (
+              <>
+                {/* Tabs and Download Button Row */}
+                <div className="flex-col md:flex-row flex mt-8 mb-6 justify-start items-center border-b border-divider">
+                  <Tabs
+                    selectedKey={selectedMainTab}
+                    onSelectionChange={(key) => setSelectedMainTab(key as string)}
+                    color="primary"
+                    variant="underlined"
+                    classNames={{
+                      tabList: "gap-6 w-full relative rounded-none p-0",
+                      cursor: "w-full bg-sky-400",
+                      tab: "max-w-fit px-0 h-12",
+                      tabContent: "group-data-[selected=true]:text-white text-lg",
+                    }}
+                  >
+                    <Tab key="summary" title={<span className="sm:inline">Summary</span>} />
+                    <Tab key="narrative" title={<span className="sm:inline">Narrative</span>} />
+                  </Tabs>
+                </div>
+
+                <div className="relative">
+                  <div className={getTabTransitionClass("summary")}>
+                    <OnboardingSummaryTab flow={displayFlow} onDownload={handleDownload} />
                   </div>
 
-                  <div className="relative">
-                    <div className={getTabTransitionClass("summary")}>
-                      <OnboardingSummaryTab flow={displayFlow} onDownload={handleDownload} />
-                    </div>
-
-                    <div className={getTabTransitionClass("narrative")}>
-                      <UXNarrativeTab flow={displayFlow} />
-                    </div>
+                  <div className={getTabTransitionClass("narrative")}>
+                    <UXNarrativeTab flow={displayFlow} />
                   </div>
-                </>
-              )}
-            </div>
+                </div>
+              </>
+            )}
           </div>
+        </div>
           <footer className="w-full text-center px-4 py-2 md:p-4">
             <div className="container mx-auto">
               <p>&copy; 2025 Onboarder. All rights reserved.</p>
@@ -348,7 +376,7 @@ function MainApp() {
               message={toastMsg}
               type={toastType as 'info' | 'success' | 'error'}
               onClose={() => setShowToast(false)}
-              className="animate-slide-in-right font-medium text-slate-900"
+              className="animate-slide-in-down font-medium text-slate-900"
             />
           )}
         </div>

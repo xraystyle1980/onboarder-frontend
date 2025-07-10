@@ -4,6 +4,7 @@ import { Button, Switch, cn } from "@heroui/react";
 import { Pill } from "./shared/Pill";
 import Lottie from 'lottie-react';
 import robotIcon from '../lottie/robot-hover.json';
+import { Icon } from "@iconify/react";
 
 interface SectionHeroProps {
   inputText: string;
@@ -13,6 +14,7 @@ interface SectionHeroProps {
   isGenerating: boolean;
   isExample: boolean;
   onToggleExample: (checked: boolean) => void;
+  currentProgressMessage?: string;
 }
 
 export default function SectionHero({
@@ -23,25 +25,33 @@ export default function SectionHero({
   isGenerating,
   isExample,
   onToggleExample,
+  currentProgressMessage,
 }: SectionHeroProps) {
   const playerRef = useRef<any>(null);
 
   const handleMouseEnter = () => {
-    if (playerRef.current) {
+    if (playerRef.current && !isGenerating) {
       playerRef.current.setDirection(1);
       playerRef.current.play();
     }
   };
 
   const handleMouseLeave = () => {
-    if (playerRef.current) {
+    if (playerRef.current && !isGenerating) {
       playerRef.current.setDirection(-1);
       playerRef.current.play();
     }
   };
 
+  // Handle Lottie animation for generating state
+  useEffect(() => {
+    if (playerRef.current && !isGenerating) {
+      playerRef.current.loop = false;
+    }
+  }, [isGenerating]);
+
   return (
-    <div className="container mx-auto gap-2 relative flex flex-col items-center overflow-clip pt-5 lg:pt-16 pb-4">
+    <div className="px-3 lg:px-0 container mx-auto gap-2 relative flex flex-col items-center overflow-clip pt-5 lg:pt-16 pb-4">
       <div className="mt-2 mb-0 lg:mt-4 lg:mb-5">
         <Pill>
           {/* <MdiIcon path={mdiRobot} size={0.9} color="#0369a1" /> */}
@@ -63,7 +73,7 @@ export default function SectionHero({
 
 
       {/* Prompt Box */}
-      <div className="px-3 lg:px-0 w-full max-w-5xl mx-auto flex flex-col pt-3">
+      <div className="w-full max-w-5xl mx-auto flex flex-col pt-3">
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -90,43 +100,53 @@ export default function SectionHero({
             disabled={isGenerating}
           />
           {/* Example toggle and Generate button row */}
-          <div className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-3 border-t border-solid border-neutral-600/50 py-4 w-full">
-            <div className="flex items-center gap-3 w-full text-sm">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-y-3 border-t border-solid border-neutral-600/50 py-4 w-full">
+            <div className="flex justify-center md:justify-start items-center gap-3 w-full text-sm">
               <Switch
                 isSelected={isExample}
                 onValueChange={onToggleExample}
                 classNames={{
                   label: [
-                    "text-sky-700", // OFF state
+                    "text-sky-700 text-sm", // OFF state
                     "group-data-[selected=true]:text-sky-500" // ON state
                   ].join(" ")
                 }}
               >
-                 Example
+                  Try your own flow or toggle the example
+             
               </Switch>
-              <span className="text-sky-500 text-sm">
-                Try your own flow or toggle the example
-              </span>
+              
             </div>
             <Button
-              className="btn-primary flex items-center gap-3 px-12 py-7 rounded-2xl drop-shadow-lg"
+              className="btn-primary flex items-center gap-3 min-w-[260px] transition-all duration-300 ease-in-out"
               type="submit"
               isDisabled={isGenerating}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               startContent={
                 <div className="mr-2">
-                  <Lottie
-                    lottieRef={playerRef}
-                    animationData={robotIcon}
-                    style={{ width: 40, height: 40 }}
-                    loop={false}
-                    autoplay={false}
-                  />
+                  {isGenerating ? (
+                    <Icon 
+                      icon="mdi:cog" 
+                      width={24} 
+                      height={24} 
+                      className="animate-spin text-black" 
+                    />
+                  ) : (
+                    <Lottie
+                      lottieRef={playerRef}
+                      animationData={robotIcon}
+                      style={{ width: 40, height: 40 }}
+                      loop={false}
+                      autoplay={false}
+                    />
+                  )}
                 </div>
               }
             >
-              <span className="text-lg leading-6">{isGenerating ? "Generating..." : "Generate Flow"}</span>
+              <span>
+                {isGenerating ? (currentProgressMessage || "Generating...") : "Generate Flow"}
+              </span>
             </Button>
           
           </div>
