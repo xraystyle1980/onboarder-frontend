@@ -117,20 +117,11 @@ export interface FeatureCallouts {
   features: FeatureCallout[];
 }
 
-export interface UserProfile {
-  id: string;
-  email?: string;
-  auth_user_id: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface AppState {
   onboardingFlow: OnboardingFlow | null;
   isLoading: boolean;
   error: string | null;
   currentStepIndex: number;
   user: User | null;
-  profile: UserProfile | null;
   showSampleData: boolean;
 } 

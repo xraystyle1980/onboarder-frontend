@@ -11,7 +11,7 @@ function Header({ onShowMyFlows }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
   const [showLogin, setShowLogin] = React.useState(false);
-  const { user, signOut } = useSupabaseAuth();
+  const { user, signOut, loading } = useSupabaseAuth();
 
   const handleShowMyFlows = () => {
     if (user && onShowMyFlows) {
@@ -34,6 +34,10 @@ function Header({ onShowMyFlows }) {
     }, 300);
   };
 
+  const handleFigmaPlugin = () => {
+    window.open('https://www.figma.com/community/plugin/1524960567886107631', '_blank');
+  };
+
   // Extracted nav buttons for reuse
   const navButtons = (
     <>
@@ -43,6 +47,7 @@ function Header({ onShowMyFlows }) {
         size="md"
         className="btn-utility px-3 py-0.5 rounded-full"
         startContent={<FigmaIcon />}
+        onPress={handleFigmaPlugin}
       >
         <span className="utility-btn-text">Try the plugin</span>
       </Button>
@@ -64,7 +69,7 @@ function Header({ onShowMyFlows }) {
         startContent={<UserIcon />}
         onPress={() => setShowLogin(true)}
       >
-        <span className="utility-btn-text">Sign in</span>
+        <span className="text-sm">Sign in</span>
       </Button>
     </>
   );
@@ -78,6 +83,7 @@ function Header({ onShowMyFlows }) {
         size="md"
         className="btn-utility"
         startContent={<FigmaIcon />}
+        onPress={handleFigmaPlugin}
       >
         <span className="utility-btn-text">Try the plugin</span>
       </Button>
@@ -154,8 +160,12 @@ function Header({ onShowMyFlows }) {
           <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border z-50 md:hidden ${isMobileMenuClosing ? 'mobile-menu-slide-out' : 'mobile-menu-slide-in'}`}>
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex justify-between items-center p-4 border-b border-border">
-                <span className="text-foreground font-semibold text-lg">Menu</span>
+              <div className="flex justify-between items-center pl-7 pr-4 py-4 border-b border-border">
+                <img 
+                  src="/Onboader-Logo.svg" 
+                  alt="Onboarder Logo" 
+                  className="header-logo max-w-[150px]"
+                />
                 <Button
                   isIconOnly
                   variant="light"
@@ -169,76 +179,111 @@ function Header({ onShowMyFlows }) {
               </div>
               
               {/* Menu Content */}
-              <div className="flex-1 p-4 space-y-4">
+              <div className="flex flex-col flex-1 overflow-hidden">
                 {user ? (
                   <>
-                    {/* User Profile Section */}
-                    <div className="pb-4 border-b border-border">
-                      <UserProfile />
-                    </div>
-                    
-                    {/* Navigation Buttons */}
-                    <div className="space-y-3">
+                    {/* Navigation Buttons - Top Section */}
+                    <div className="flex-1 p-4 space-y-3 overflow-y-auto">
                       <Button
                         variant="solid"
                         color="default"
                         size="md"
                         className="btn-utility w-full justify-start"
-                        startContent={<FigmaIcon />}
+                        startContent={<FigmaIcon className="w-5 h-5 flex-shrink-0" />}
+                        onPress={() => {
+                          closeMobileMenu();
+                          handleFigmaPlugin();
+                        }}
                       >
-                        <span className="utility-btn-text">Try the plugin</span>
+                        <span className="text-sm">Try the plugin</span>
                       </Button>
                       <Button
                         variant="solid"
                         color="default"
                         size="md"
                         className="btn-utility w-full justify-start"
-                        startContent={<MyFlowsIcon />}
+                        startContent={<MyFlowsIcon className="w-5 h-5 flex-shrink-0" />}
                         onPress={() => {
                           closeMobileMenu();
                           if (onShowMyFlows) onShowMyFlows();
                         }}
                       >
-                        <span className="utility-btn-text">My Flows</span>
+                        <span className="text-sm">My Flows</span>
+                      </Button>
+                    </div>
+                    
+                    {/* User Profile Section - Bottom */}
+                    <hr className="border-t border-border m-4" />
+                    <div className="p-4">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-medium">
+                          {user.email?.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate mb-0">
+                            {user.user_metadata?.full_name || 'User'}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate mb-0">
+                            {user.email}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        onPress={async () => {
+                          await signOut();
+                          closeMobileMenu();
+                        }}
+                        isDisabled={loading}
+                        className="w-full btn-utility justify-start"
+                        variant="light"
+                        startContent={
+                          <Icon icon="lucide:log-out" width={16} height={16} className="text-muted-foreground" />
+                        }
+                      >
+                        <span className="text-sm">{loading ? 'Signing out...' : 'Sign out'}</span>
                       </Button>
                     </div>
                   </>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="p-4 space-y-3">
                     <Button
                       variant="solid"
                       color="default"
                       size="md"
                       className="btn-utility w-full justify-start"
-                      startContent={<FigmaIcon />}
+                      startContent={<FigmaIcon className="w-5 h-5 flex-shrink-0" />}
+                      onPress={() => {
+                        closeMobileMenu();
+                        handleFigmaPlugin();
+                      }}
                     >
-                      <span className="utility-btn-text">Try the plugin</span>
+                      <span className="text-sm">Try the plugin</span>
                     </Button>
                     <Button
                       variant="solid"
                       color="default"
                       size="md"
                       className="btn-utility w-full justify-start"
-                      startContent={<MyFlowsIcon />}
+                      startContent={<MyFlowsIcon className="w-5 h-5 flex-shrink-0" />}
                       onPress={() => {
                         closeMobileMenu();
                         handleShowMyFlows();
                       }}
                     >
-                      <span className="utility-btn-text">My Flows</span>
+                      <span className="text-sm">My Flows</span>
                     </Button>
                     <Button
                       variant="solid"
                       color="default"
                       size="md"
                       className="btn-utility w-full justify-start"
-                      startContent={<UserIcon />}
+                      startContent={<UserIcon className="w-5 h-5 flex-shrink-0" />}
                       onPress={() => {
                         closeMobileMenu();
                         setShowLogin(true);
                       }}
                     >
-                      <span className="utility-btn-text">Sign in</span>
+                      <span className="text-sm">Sign in</span>
                     </Button>
                   </div>
                 )}
@@ -262,6 +307,9 @@ function Header({ onShowMyFlows }) {
             body: "px-8 py-8 text-foreground",
             closeButton: "absolute right-4 top-4 z-10 btn-utility rounded-lg transition-all duration-200"
           }}
+          style={{
+            '--modal-backdrop-opacity': '0.5'
+          } as any}
         >
           <ModalContent className="modal-animate-in">
             <ModalBody>

@@ -45,8 +45,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
   const safePrompt = typeof prompt === 'string' ? prompt : '';
   
   const handleFigmaPlugin = () => {
-    // Placeholder page for upcoming Figma plugin
-    window.open('https://www.figma.com/community/plugins', '_blank');
+    window.open('https://www.figma.com/community/plugin/1524960567886107631', '_blank');
   };
 
   const handleDownloadAction = (key: string | number) => {

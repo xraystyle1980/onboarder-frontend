@@ -60,11 +60,15 @@ export function useSupabaseAuth() {
     setAuthState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
+      const baseUrl = window.location.hostname === 'localhost' 
+        ? window.location.origin 
+        : 'https://auth.onboarder.design';
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${baseUrl}/auth/callback`,
         },
       });
       
@@ -101,10 +105,14 @@ export function useSupabaseAuth() {
     setAuthState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
+      const baseUrl = window.location.hostname === 'localhost' 
+        ? window.location.origin 
+        : 'https://auth.onboarder.design';
+      
       const { data, error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${baseUrl}/auth/callback`,
         },
       });
       
@@ -144,8 +152,12 @@ export function useSupabaseAuth() {
     setAuthState(prev => ({ ...prev, loading: true, error: null }));
     
     try {
+      const baseUrl = window.location.hostname === 'localhost' 
+        ? window.location.origin 
+        : 'https://auth.onboarder.design';
+      
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: `${baseUrl}/auth/callback`,
       });
       
       if (error) throw error;

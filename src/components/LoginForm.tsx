@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 import { Link, Button, Input } from '@heroui/react';
 import { Icon } from '@iconify/react';
+import Notification from './shared/Notification';
 
 interface LoginFormProps {
   submitButtonClass?: string;
@@ -79,6 +80,11 @@ export default function LoginForm({
             return;
           }
           result = await signUp(email, password);
+          // Check if user already exists (when email confirmation is enabled)
+          if (result.data?.user?.identities?.length === 0) {
+            setMessage('An account with this email already exists. Please sign in or reset your password if you\'ve forgotten it.');
+            return;
+          }
           break;
 
         case 'magic-link':
@@ -95,7 +101,12 @@ export default function LoginForm({
       }
 
       if (result.error) {
-        setMessage(result.error);
+        // Handle "User already registered" error specifically
+        if (result.error.includes('User already registered') || result.error.includes('already registered')) {
+          setMessage('An account with this email already exists. Please sign in or reset your password if you\'ve forgotten it.');
+        } else {
+          setMessage(result.error);
+        }
       } else {
         setIsSuccess(true);
         if (mode === 'signup') {
@@ -129,7 +140,7 @@ export default function LoginForm({
   const showConfirmPassword = mode === 'signup';
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto" style={{ pointerEvents: 'auto' }}>
       <div className="mb-8 text-center">
         <h2 className="text-xl font-medium text-foreground mb-2">
           {mode === 'signin' && "Sign In to save your flows"}
@@ -139,7 +150,8 @@ export default function LoginForm({
         </h2>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4" style={{ pointerEvents: 'auto' }}>     
+
         <div>
           <Input
             type="email"
@@ -182,7 +194,7 @@ export default function LoginForm({
               }}
             />
             {mode === 'signup' && (
-              <p className="text-xs text-muted-foreground mt-4 mx-2 text-center">
+              <p className="text-xs text-muted-foreground mt-4 mb-0 mx-2 text-center">
                 Password must be at least 8 characters with uppercase, lowercase, and number
               </p>
             )}
@@ -190,7 +202,7 @@ export default function LoginForm({
         )}
 
         {showConfirmPassword && (
-          <div>
+          <div className="mb-5">
             <Input
               type="password"
               label="Confirm Password"
@@ -218,7 +230,7 @@ export default function LoginForm({
 
         {/* Forgot Password Link - positioned above sign in button for signin mode */}
         {mode === 'signin' && (
-          <div className="text-left mx-2 mb-2">
+          <div className="text-left mx-2 mb-4">
             <Link
               as="button"
               type="button"
@@ -334,7 +346,8 @@ export default function LoginForm({
             )}
 
             {mode === 'forgot-password' && (
-              <div className="text-center">
+              <div className="text-center text-muted-foreground text-sm">
+                Remember your password?{' '}
                 <Link
                   as="button"
                   type="button"
@@ -342,9 +355,9 @@ export default function LoginForm({
                   isDisabled={loading}
                   color="primary"
                   underline="hover"
-                  className="text-sm"
+                  className="text-sm font-medium text-sky-500 hover:text-sky-400"
                 >
-                  Remember your password? Sign in
+                  Sign in
                 </Link>
               </div>
             )}
@@ -353,13 +366,50 @@ export default function LoginForm({
 
         {/* Messages */}
         {(message || authError) && (
-          <div className={`text-center text-sm mt-4 p-3 rounded-md ${
-            isSuccess || message.includes('Check your email') || message.includes('Successfully')
-              ? 'bg-green-50 text-green-700 border border-green-200'
-              : 'bg-red-50 text-red-700 border border-red-200'
-          }`}>
-            {message || authError}
-          </div>
+          <Notification 
+            type={isSuccess || message.includes('Check your email') || message.includes('Successfully') ? 'success' : 'error'}
+            className="z-[10000]"
+          >
+            {message?.includes('An account with this email already exists') ? (
+              <div style={{ pointerEvents: 'all' }}>
+                An account with this email already exists. Please{' '}
+                <Link
+                  as="button"
+                  type="button"
+                  onPress={() => {
+                    console.log('Sign in clicked');
+                    setMode('signin');
+                    setMessage('');
+                  }}
+                  isDisabled={loading}
+                  underline="hover"
+                  className="text-sm font-medium cursor-pointer relative z-[10001]"
+                  style={{ pointerEvents: 'all' }}
+                >
+                  sign in
+                </Link>
+                {' '}or{' '}
+                <Link
+                  as="button"
+                  type="button"
+                  onPress={() => {
+                    console.log('Reset password clicked');
+                    setMode('forgot-password');
+                    setMessage('');
+                  }}
+                  isDisabled={loading}
+                  underline="hover"
+                  className="text-sm font-medium cursor-pointer relative z-[10001]"
+                  style={{ pointerEvents: 'all' }}
+                >
+                  reset your password
+                </Link>
+                {' '}if you've forgotten it.
+              </div>
+            ) : (
+              message || authError
+            )}
+          </Notification>
         )}
       </form>
     </div>

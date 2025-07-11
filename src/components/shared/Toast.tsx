@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import Notification from './Notification';
 
 interface ToastProps {
   message: string;
-  type?: 'info' | 'success' | 'error';
+  type?: 'info' | 'success' | 'error' | 'warning';
   onClose: () => void;
   className?: string;
 }
@@ -13,11 +14,11 @@ export default function Toast({ message, type = 'info', onClose, className = '' 
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  const color = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500';
-
   return (
-    <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded shadow text-white ${color} ${className}`}>
-      {message}
+    <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-top-2 duration-300 ${className}`}>
+      <Notification type={type} className="mt-0 shadow-lg">
+        {message}
+      </Notification>
     </div>
   );
 } 
