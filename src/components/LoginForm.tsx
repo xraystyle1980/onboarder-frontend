@@ -330,7 +330,8 @@ export default function LoginForm({
             </span> */}
 
             {mode === 'magic-link' && (
-              <div className="text-center">
+              <div className="text-center text-muted-foreground text-sm">
+                Prefer password?{' '}
                 <Link
                   as="button"
                   type="button"
@@ -338,9 +339,9 @@ export default function LoginForm({
                   isDisabled={loading}
                   color="primary"
                   underline="hover"
-                  className="text-sm"
+                  className="text-sm font-medium text-sky-500 hover:text-sky-400"
                 >
-                  Prefer password? Sign in with password
+                  Sign in with password
                 </Link>
               </div>
             )}
