@@ -1,0 +1,22 @@
+{
+    "name": "Onboarder - AI-Powered UX Flow Generator",
+    "short_name": "Onboarder",
+    "description": "Transform your product ideas into structured onboarding flows with AI-powered UX insights",
+    "icons": [
+        {
+            "src": "/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#0EA5E9",
+    "background_color": "#0F172A",
+    "display": "standalone",
+    "start_url": "/",
+    "orientation": "portrait-primary"
+}
