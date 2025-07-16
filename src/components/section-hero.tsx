@@ -60,14 +60,14 @@ export default function SectionHero({
       </div>
       {/* Headline */}
       <div className="w-full max-w-3xl text-center mb-6">
-        <h1 className="text-[40px] lg:text-[60px] font-semibold leading-[50px] lg:leading-[60px] text-white block">Design Onboarding UX 
-        <span className="inline lg:block gradient-orange-pink"> Instantly</span></h1>
+        <h1 className="text-[40px] lg:text-[60px] font-semibold text-white block">Design onboarding UX flows 
+        <span className="gradient-orange-pink"> instantly</span></h1>
       </div>
       {/* Subheading */}
       <div className="w-full max-w-3xl mx-auto flex items-center justify-center mb-6 lg:mb-7">
         <p className="text-xl lg:text-2xl leading-7 lg:leading-8 text-white text-center w-full">
           <span className="font-semibold text-sky-400">Kickstart your UX. </span>
-          <span className="font-regular text-slate-300">Just describe your product and we'll generate a user-facing onboarding flow you can build on.</span>
+          <span className="font-regular text-slate-300">Just describe your product and Onboarder will generate a user-facing onboarding flow you can build on.</span>
         </p>
       </div>
 
