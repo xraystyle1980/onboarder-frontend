@@ -7,10 +7,9 @@ import { FigmaIcon, UserIcon, MyFlowsIcon } from "./shared/CustomIcons";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
 
-function Header({ onShowMyFlows }) {
+function Header({ onShowMyFlows, showLogin, setShowLogin }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
-  const [showLogin, setShowLogin] = React.useState(false);
   const { user, signOut, loading } = useSupabaseAuth();
 
   const handleShowMyFlows = () => {

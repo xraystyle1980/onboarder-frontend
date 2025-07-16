@@ -314,21 +314,6 @@ export default function LoginForm({
               </div>
             )}
 
-            {/* <span className="text-muted-foreground text-sm">
-              Don't have an account?{' '}
-              <Link
-                as="button"
-                type="button"
-                onPress={() => setMode('signup')}
-                isDisabled={loading}
-                color="primary"
-                underline="hover"
-                className="text-sm font-medium text-sky-500 hover:text-sky-400"
-              >
-                Sign up
-              </Link>
-            </span> */}
-
             {mode === 'magic-link' && (
               <div className="text-center text-muted-foreground text-sm">
                 Prefer password?{' '}

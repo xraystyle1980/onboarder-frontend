@@ -77,6 +77,24 @@ html {
   }
 }
 
+@keyframes slide-in-up {
+  0% {
+    transform: translateX(-50%) translateY(100%);
+    opacity: 0;
+    scale: 0.95;
+  }
+  60% {
+    transform: translateX(-50%) translateY(-8px);
+    opacity: 1;
+    scale: 1.02;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    scale: 1;
+  }
+}
+
 .mobile-menu-slide-in {
   animation: slide-in-right 0.3s ease-out;
 }
@@ -87,6 +105,10 @@ html {
 
 .animate-slide-in-down {
   animation: slide-in-down 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Dropdown item hover fixes */

@@ -15,7 +15,7 @@ export default function Toast({ message, type = 'info', onClose, className = '' 
   }, [onClose]);
 
   return (
-    <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-top-2 duration-300 ${className}`}>
+    <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[150] ${className}`}>
       <Notification type={type} className="mt-0 shadow-lg">
         {message}
       </Notification>

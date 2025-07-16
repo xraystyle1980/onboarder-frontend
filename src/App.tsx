@@ -60,6 +60,7 @@ function MainApp() {
   const [pendingPrompt, setPendingPrompt] = useState(null);
   const [isNewlyGenerated, setIsNewlyGenerated] = useState(false);
   const [currentFlowId, setCurrentFlowId] = useState<string | null>(null);
+  const [showLogin, setShowLogin] = useState(false);
 
   // Fetch user flow count on login
   React.useEffect(() => {
@@ -100,9 +101,7 @@ function MainApp() {
       setPendingPrompt(prompt);
       localStorage.setItem("pendingFlow", JSON.stringify(flow));
       localStorage.setItem("pendingPrompt", prompt);
-      setToastMsg("Sign in to save your flow!");
-      setToastType("info");
-      setShowToast(true);
+      setShowLogin(true);
       return;
     }
     // Save flow
@@ -206,7 +205,7 @@ function MainApp() {
       <MetaTags />
       <ErrorBoundary>
         <div className="min-h-screen bg-background flex flex-col">
-          <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} />
+          <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} showLogin={showLogin} setShowLogin={setShowLogin} />
           <div className="pt-16 hero-radial-bg">
             <SectionHero
             inputText={inputText}
@@ -258,6 +257,9 @@ function MainApp() {
                         setIsNewlyGenerated(false);
                         setCurrentFlowId(null);
                       }
+                      setToastMsg("Flow deleted successfully!");
+                      setToastType("success");
+                      setShowToast(true);
                     }}
                   />
                 </DrawerBody>
@@ -376,7 +378,7 @@ function MainApp() {
               message={toastMsg}
               type={toastType as 'info' | 'success' | 'error'}
               onClose={() => setShowToast(false)}
-              className="animate-slide-in-down font-medium text-slate-900"
+              className="animate-slide-in-up"
             />
           )}
         </div>
