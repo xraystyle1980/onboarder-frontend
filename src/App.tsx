@@ -21,6 +21,7 @@ import { GeneratingFlowCard, GeneratedFlowCard } from "./components/generating-f
 import { MetaTags } from './components/MetaTags';
 import AuthCallback from './components/AuthCallback';
 import ResetPasswordForm from './components/ResetPasswordForm';
+import Footer from './components/Footer';
 
 interface SavedFlow {
   id: string;
@@ -368,11 +369,10 @@ function MainApp() {
             )}
           </div>
         </div>
-          <footer className="w-full text-center px-4 py-2 md:p-4">
-            <div className="container mx-auto">
-              <p>&copy; 2025 Onboarder. All rights reserved.</p>
-            </div>
-          </footer>
+          <Footer 
+            onShowMyFlows={user ? () => setShowUserFlowsDrawer(true) : undefined}
+            onShowLogin={!user ? () => setShowLogin(true) : undefined}
+          />
           {showToast && (
             <Toast
               message={toastMsg}
