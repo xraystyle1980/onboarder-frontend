@@ -173,7 +173,8 @@ function MainApp() {
     if (!displayFlow) return;
     const content = exportFlow(displayFlow, { format });
     const blob = new Blob([content], { type: format === 'markdown' ? 'text/markdown' : format === 'html' ? 'text/html' : 'application/json' });
-    const filename = `${displayFlow.productInfo.productName.toLowerCase().replace(/\s+/g, '-')}-onboarding-flow.${format}`;
+    const fileExtension = format === 'markdown' ? 'md' : format;
+    const filename = `${displayFlow.productInfo.productName.toLowerCase().replace(/\s+/g, '-')}-onboarding-flow.${fileExtension}`;
     
     // Create download URL
     const url = window.URL.createObjectURL(blob);
@@ -236,7 +237,7 @@ function MainApp() {
             >
               <DrawerContent className="bg-background border-l border-border">
                 <DrawerHeader className="flex justify-between items-center border-b border-border bg-background">
-                  <span className="text-foreground font-semibold text-lg">My Flows</span>
+                  <span className="text-foreground font-medium text-sm">My Flows</span>
                   <Button
                     isIconOnly
                     variant="light"
@@ -326,7 +327,7 @@ function MainApp() {
             </div>
           )}
         </div>
-        <div className="container mx-auto">
+        <div className="container mx-auto max-w-5xl px-3 lg:px-0">
           <div className="px-3 flex flex-col flex-1 md:p-6">
             {error && (
               <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
@@ -338,7 +339,7 @@ function MainApp() {
             {!isGenerating && hasFlowToDisplay && (
               <>
                 {/* Tabs and Download Button Row */}
-                <div className="flex-col md:flex-row flex mt-8 mb-6 justify-start items-center border-b border-divider">
+                <div className="flex-col md:flex-row flex mt-8 mb-6 justify-start border-b border-divider">
                   <Tabs
                     selectedKey={selectedMainTab}
                     onSelectionChange={(key) => setSelectedMainTab(key as string)}
@@ -348,7 +349,7 @@ function MainApp() {
                       tabList: "gap-6 w-full relative rounded-none p-0",
                       cursor: "w-full bg-sky-400",
                       tab: "max-w-fit px-0 h-12",
-                      tabContent: "group-data-[selected=true]:text-white text-lg",
+                      tabContent: "group-data-[selected=true]:text-white text-sm",
                     }}
                   >
                     <Tab key="summary" title={<span className="sm:inline">Summary</span>} />

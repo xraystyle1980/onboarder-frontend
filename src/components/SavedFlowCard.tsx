@@ -50,7 +50,7 @@ export default function SavedFlowCard({ flow, onDelete, onSelect }: SavedFlowCar
     >
       <div className="flex justify-between items-start">
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-lg text-card-foreground mb-1 truncate">
+          <div className="font-medium text-lg text-card-foreground mb-1 truncate">
             {flow.product_name || 'Untitled Flow'}
           </div>
           <div className="text-muted-foreground text-sm mb-3 line-clamp-2">

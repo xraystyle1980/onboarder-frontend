@@ -8,16 +8,26 @@ const DOWNLOAD_OPTIONS = {
   MARKDOWN: {
     key: 'markdown',
     title: 'Markdown',
-    description: 'Import this into your workflow to keep building',
+    description: 'Use this in your workflow to keep building',
     icon: 'mdi:language-markdown',
     textValue: 'Download as Markdown'
-  },
+  }
+} as const;
+
+const FIGMA_OPTIONS = {
   JSON: {
     key: 'json', 
-    title: 'JSON',
-    description: 'For Figma plugin integration',
+    title: 'Download JSON',
+    description: 'Use this with the Figma plugin',
     icon: 'mdi:code-json',
-    textValue: 'Download as JSON'
+    textValue: 'Download JSON'
+  },
+  PLUGIN: {
+    key: 'plugin',
+    title: 'Get Plugin',
+    description: 'Open Figma plugin page',
+    icon: 'lucide:figma',
+    textValue: 'Get Plugin'
   }
 } as const;
 
@@ -44,13 +54,17 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
 }) => {
   const safePrompt = typeof prompt === 'string' ? prompt : '';
   
-  const handleFigmaPlugin = () => {
-    window.open('https://www.figma.com/community/plugin/1524960567886107631', '_blank');
+  const handleFigmaAction = (key: string | number) => {
+    if (key === 'json') {
+      onDownload('json');
+    } else if (key === 'plugin') {
+      window.open('https://www.figma.com/community/plugin/1524960567886107631', '_blank');
+    }
   };
 
   const handleDownloadAction = (key: string | number) => {
-    if (typeof key === 'string' && (key === 'markdown' || key === 'json')) {
-      onDownload(key as 'markdown' | 'json');
+    if (key === 'markdown') {
+      onDownload('markdown');
     }
   };
 
@@ -93,19 +107,15 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
                   size="lg"
                   className={BUTTON_CLASSES}
                   startContent={<Icon icon="lucide:download" width={22} height={22} className="text-muted-foreground" />}
-                  aria-label="Download flow options"
+                  aria-label="Download options"
                 />
               </DropdownTrigger>
               <DropdownMenu 
-                aria-label="Download flow options" 
+                aria-label="Download options" 
                 onAction={handleDownloadAction}
                 variant="flat"
                 color="default"
                 className={DROPDOWN_CLASSES}
-                classNames={{
-                  base: "bg-background border border-border",
-                  list: "py-2"
-                }}
               >
                 <DropdownItem 
                   key={DOWNLOAD_OPTIONS.MARKDOWN.key}
@@ -119,37 +129,68 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
                       className="text-muted-foreground" 
                     />
                   }
-                  className="text-foreground hover:bg-background-muted data-[hover=true]:bg-background-muted"
+                  className="text-foreground"
                 >
                   {DOWNLOAD_OPTIONS.MARKDOWN.title}
                 </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown 
+              shouldBlockScroll={false}
+              backdrop="transparent"
+              placement="bottom-end"
+            >
+              <DropdownTrigger>
+                <Button
+                  isIconOnly
+                  variant="bordered"
+                  size="lg"
+                  className={BUTTON_CLASSES}
+                  startContent={<Icon icon="lucide:figma" width={22} height={22} className="text-muted-foreground" />}
+                  aria-label="Figma options"
+                />
+              </DropdownTrigger>
+              <DropdownMenu 
+                aria-label="Figma options" 
+                onAction={handleFigmaAction}
+                variant="flat"
+                color="default"
+                className={DROPDOWN_CLASSES}
+              >
                 <DropdownItem 
-                  key={DOWNLOAD_OPTIONS.JSON.key}
-                  textValue={DOWNLOAD_OPTIONS.JSON.textValue}
-                  description={DOWNLOAD_OPTIONS.JSON.description}
+                  key={FIGMA_OPTIONS.JSON.key}
+                  textValue={FIGMA_OPTIONS.JSON.textValue}
+                  description={FIGMA_OPTIONS.JSON.description}
                   startContent={
                     <Icon 
-                      icon={DOWNLOAD_OPTIONS.JSON.icon} 
+                      icon={FIGMA_OPTIONS.JSON.icon} 
                       width={20} 
                       height={20} 
                       className="text-muted-foreground" 
                     />
                   }
-                  className="text-foreground hover:bg-background-muted data-[hover=true]:bg-background-muted"
+                  className="text-foreground"
                 >
-                  {DOWNLOAD_OPTIONS.JSON.title}
+                  {FIGMA_OPTIONS.JSON.title}
+                </DropdownItem>
+                <DropdownItem 
+                  key={FIGMA_OPTIONS.PLUGIN.key}
+                  textValue={FIGMA_OPTIONS.PLUGIN.textValue}
+                  description={FIGMA_OPTIONS.PLUGIN.description}
+                  startContent={
+                    <Icon 
+                      icon={FIGMA_OPTIONS.PLUGIN.icon} 
+                      width={20} 
+                      height={20} 
+                      className="text-muted-foreground" 
+                    />
+                  }
+                  className="text-foreground"
+                >
+                  {FIGMA_OPTIONS.PLUGIN.title}
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <Button
-              isIconOnly
-              variant="bordered"
-              size="lg"
-              className={BUTTON_CLASSES}
-              startContent={<Icon icon="lucide:figma" width={22} height={22} className="text-muted-foreground" />}
-              aria-label="Open Figma plugin page"
-              onClick={handleFigmaPlugin}
-            />
             
             {isNewlyGenerated && (
               <Button 

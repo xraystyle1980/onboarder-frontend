@@ -15,11 +15,11 @@ export default function Footer({ onShowMyFlows, onShowLogin }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-background">
-      <div className="container mx-auto px-4 py-8">
+    <footer className="w-full bg-background mt-8 lg:mt-16">
+      <div className="container mx-auto px-4 py-8 border-t border-border max-w-5xl">
         <div className="flex flex-col gap-4 items-center">
           {/* First Row: Logo, Version, and Navigation Links */}
-          <div className="flex items-center justify-center gap-6">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
             <div className="flex items-center gap-2">
               <LogomarkIcon className="h-6 w-6 text-muted-foreground" />
               <span className="text-xs text-muted-foreground">v0.5.0 beta</span>
@@ -61,9 +61,25 @@ export default function Footer({ onShowMyFlows, onShowLogin }: FooterProps) {
             </div>
           </div>
 
-          {/* Second Row: Copyright */}
-          <div className="text-xs text-gray-500">
-            &copy; {currentYear} Onboarder. All rights reserved.
+          {/* Second Row: Copyright and Legal Links */}
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-xs text-gray-500">
+            <span>&copy; {currentYear} Onboarder. All rights reserved.</span>
+            <div className="flex items-center gap-4">
+              <a 
+                href="/terms-of-service.md" 
+                download
+                className="text-gray-400 active:text-foreground focus:text-foreground hover:text-foreground transition-colors underline"
+              >
+                Terms of Service
+              </a>
+              <a 
+                href="/privacy-policy.md" 
+                download
+                className="text-gray-400 active:text-foreground focus:text-foreground hover:text-foreground transition-colors underline"
+              >
+                Privacy Policy
+              </a>
+            </div>
           </div>
         </div>
       </div>

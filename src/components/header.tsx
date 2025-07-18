@@ -10,7 +10,7 @@ import LoginForm from "./LoginForm";
 function Header({ onShowMyFlows, showLogin, setShowLogin }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
-  const { user, signOut, loading } = useSupabaseAuth();
+  const { user } = useSupabaseAuth();
 
   const handleShowMyFlows = () => {
     if (user && onShowMyFlows) {
@@ -214,33 +214,7 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }) {
                     {/* User Profile Section - Bottom */}
                     <hr className="border-t border-border m-4" />
                     <div className="p-4">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-8 h-8 bg-accent text-accent-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                          {user.email?.charAt(0).toUpperCase()}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-foreground truncate mb-0">
-                            {user.user_metadata?.full_name || 'User'}
-                          </p>
-                          <p className="text-xs text-muted-foreground truncate mb-0">
-                            {user.email}
-                          </p>
-                        </div>
-                      </div>
-                      <Button
-                        onPress={async () => {
-                          await signOut();
-                          closeMobileMenu();
-                        }}
-                        isDisabled={loading}
-                        className="w-full btn-utility justify-start"
-                        variant="light"
-                        startContent={
-                          <Icon icon="lucide:log-out" width={16} height={16} className="text-muted-foreground" />
-                        }
-                      >
-                        <span className="text-sm">{loading ? 'Signing out...' : 'Sign out'}</span>
-                      </Button>
+                      <UserProfile isMobile={true} onMobileMenuClose={closeMobileMenu} />
                     </div>
                   </>
                 ) : (
