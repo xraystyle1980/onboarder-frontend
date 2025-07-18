@@ -1,0 +1,299 @@
+{
+  "productInfo": {
+    "productName": "CommuniManage",
+    "targetAudience": "Enterprise businesses",
+    "productType": "SaaS",
+    "coreUserGoal": "Efficiently manage and oversee all employee communications",
+    "onboardingGoal": {
+      "education": "Teach users about the product's features and capabilities",
+      "featureSetup": "Guide users through setting up essential communication channels",
+      "activation": "Encourage immediate use of the platform to see its benefits"
+    },
+    "keyFeatures": [
+      "Unified inbox for all communication channels",
+      "Automated communication workflows",
+      "Advanced analytics and reporting",
+      "Customizable employee and department communication settings",
+      "Integration with existing enterprise systems"
+    ],
+    "launchContext": {
+      "timing": "After signup, during first dashboard visit",
+      "signupStrategy": "Early, to ensure user commitment",
+      "frictionReduction": "Provide a clear, step-by-step guide and avoid information overload",
+      "valueReinforcement": "Highlight quick wins and immediate improvements in communication management"
+    },
+    "flowType": "Wizard for initial setup followed by tooltip tour for feature discovery"
+  },
+  "pattern": {
+    "pattern": "Setup Wizard",
+    "rationale": "The Setup Wizard is the best fit for CommuniManage because it is a SaaS product aimed at enterprise businesses that require a structured approach to onboarding. Given the complexity of the platform, which includes features like a unified inbox, automated workflows, and advanced analytics, a multi-step setup process is essential to guide users through configuring these capabilities effectively. The onboarding goals emphasize both education about features and the setup of essential communication channels, which aligns perfectly with the setup wizard's purpose of facilitating initial configuration. In contrast, a Feature Discovery Tour would not adequately address the need for multi-step setup and could overwhelm users with information without ensuring they have completed the necessary configurations. Progressive Personalization is also less suitable as it is more appropriate for consumer apps that adapt based on user preferences, whereas CommuniManage focuses on enterprise-level communication management.",
+    "citation": "NNGroup"
+  },
+  "steps": [
+    {
+      "stepName": "Welcome to CommuniManage",
+      "uxGoal": "Introduce users to the platform and its purpose",
+      "userAction": "Click 'Continue' to proceed",
+      "uxPattern": "Setup Wizard",
+      "patternPurpose": "This pattern is appropriate as it allows users to understand the onboarding process and sets the stage for what they will learn.",
+      "layoutType": "modal_form",
+      "layoutPurpose": "The modal form captures user attention and provides a focused introduction without distractions.",
+      "modalType": "welcome",
+      "inputFields": [],
+      "rationale": "This step establishes a positive first impression, reducing anxiety and building excitement about the platform.",
+      "flowEnd": false,
+      "headline": "Start Your Communication Journey",
+      "subtitle": "Discover the power of seamless communication.",
+      "marketingCopy": "CommuniManage unifies all your communication channels in one place, making collaboration effortless. With automated workflows and advanced analytics, you can optimize your team's efficiency and focus on what truly matters.",
+      "cta": "Get Started",
+      "ctaType": "next page",
+      "featureCallouts": {
+        "features": [
+          {
+            "title": "Unified Inbox",
+            "description": "Streamline your communications by managing all channels in one place, enhancing collaboration and reducing response times."
+          },
+          {
+            "title": "Automated Communication Workflows",
+            "description": "Boost efficiency with automated workflows that ensure timely and consistent messaging across your organization."
+          },
+          {
+            "title": "Advanced Analytics and Reporting",
+            "description": "Gain valuable insights into your communication effectiveness with advanced analytics that drive informed decision-making."
+          },
+          {
+            "title": "Customizable Communication Settings",
+            "description": "Tailor communication preferences for employees and departments to enhance relevance and engagement in every interaction."
+          },
+          {
+            "title": "Integration with Existing Systems",
+            "description": "Seamlessly connect CommuniManage with your current enterprise systems for a cohesive and efficient communication experience."
+          }
+        ]
+      },
+      "id": "step-1"
+    },
+    {
+      "stepName": "Set Up Your Communication Channels",
+      "uxGoal": "Guide users to configure essential communication channels",
+      "userAction": "Select preferred communication channels and click 'Next'",
+      "uxPattern": "Setup Wizard",
+      "patternPurpose": "This pattern helps users systematically set up their channels, ensuring they don't miss important configurations.",
+      "layoutType": "modal_form",
+      "layoutPurpose": "The modal form allows for a focused setup experience, minimizing distractions while users make important choices.",
+      "modalType": "form",
+      "inputFields": [
+        "Email Integration",
+        "Chat Integration",
+        "Phone Integration"
+      ],
+      "rationale": "Configuring channels is crucial for effective communication management, ensuring users can immediately start using the platform.",
+      "flowEnd": false,
+      "headline": "Connect Your Communication Tools",
+      "subtitle": "Choose the channels that matter most.",
+      "marketingCopy": "Easily integrate your email, chat, and phone systems with CommuniManage. By setting up your preferred channels, you’ll ensure no message goes unanswered and that your team stays connected at all times.",
+      "cta": "Select Channels",
+      "ctaType": "next page",
+      "featureCallouts": {
+        "features": [
+          {
+            "title": "Unified Inbox",
+            "description": "Streamline your communications by managing all channels in one place, enhancing collaboration and reducing response times."
+          },
+          {
+            "title": "Automated Communication Workflows",
+            "description": "Boost efficiency with automated workflows that ensure timely and consistent messaging across your organization."
+          },
+          {
+            "title": "Advanced Analytics and Reporting",
+            "description": "Gain valuable insights into your communication effectiveness with advanced analytics that drive informed decision-making."
+          },
+          {
+            "title": "Customizable Communication Settings",
+            "description": "Tailor communication preferences for employees and departments to enhance relevance and engagement in every interaction."
+          },
+          {
+            "title": "Integration with Existing Systems",
+            "description": "Seamlessly connect CommuniManage with your current enterprise systems for a cohesive and efficient communication experience."
+          }
+        ]
+      },
+      "id": "step-2"
+    },
+    {
+      "stepName": "Automate Your Workflows",
+      "uxGoal": "Encourage users to set up automated communication workflows",
+      "userAction": "Choose workflow preferences and click 'Next'",
+      "uxPattern": "Setup Wizard",
+      "patternPurpose": "This pattern supports users in understanding and implementing automation, which is key to enhancing efficiency.",
+      "layoutType": "modal_form",
+      "layoutPurpose": "The modal form allows users to focus on specific automation settings without being overwhelmed by other options.",
+      "modalType": "form",
+      "inputFields": [
+        "Select Workflow Types",
+        "Set Automation Triggers"
+      ],
+      "rationale": "Automated workflows are a significant feature that can drastically improve communication efficiency, reinforcing the product's value.",
+      "flowEnd": false,
+      "headline": "Streamline Your Processes",
+      "subtitle": "Set up automation for efficiency.",
+      "marketingCopy": "With CommuniManage, you can automate communication workflows to save time and reduce manual tasks. Tailor your automation triggers to fit your team's needs, ensuring that essential messages are sent at the right moments.",
+      "cta": "Automate Now",
+      "ctaType": "next page",
+      "featureCallouts": {
+        "features": [
+          {
+            "title": "Unified Inbox",
+            "description": "Streamline your communications by managing all channels in one place, enhancing collaboration and reducing response times."
+          },
+          {
+            "title": "Automated Communication Workflows",
+            "description": "Boost efficiency with automated workflows that ensure timely and consistent messaging across your organization."
+          },
+          {
+            "title": "Advanced Analytics and Reporting",
+            "description": "Gain valuable insights into your communication effectiveness with advanced analytics that drive informed decision-making."
+          },
+          {
+            "title": "Customizable Communication Settings",
+            "description": "Tailor communication preferences for employees and departments to enhance relevance and engagement in every interaction."
+          },
+          {
+            "title": "Integration with Existing Systems",
+            "description": "Seamlessly connect CommuniManage with your current enterprise systems for a cohesive and efficient communication experience."
+          }
+        ]
+      },
+      "id": "step-3"
+    },
+    {
+      "stepName": "Customize Your Settings",
+      "uxGoal": "Allow users to personalize their communication settings",
+      "userAction": "Adjust settings and click 'Next'",
+      "uxPattern": "Setup Wizard",
+      "patternPurpose": "This pattern ensures users can tailor the platform to their needs, enhancing user satisfaction and engagement.",
+      "layoutType": "modal_form",
+      "layoutPurpose": "The modal form provides a clear, distraction-free environment for users to make personalized adjustments.",
+      "modalType": "form",
+      "inputFields": [
+        "User Roles",
+        "Department Settings"
+      ],
+      "rationale": "Customization fosters a sense of ownership, making users more likely to engage with the platform actively.",
+      "flowEnd": false,
+      "headline": "Personalize Your Experience",
+      "subtitle": "Adjust settings to fit your team.",
+      "marketingCopy": "CommuniManage lets you customize user roles and department settings for a tailored communication experience. Configure settings to match your team dynamics, making it easier to collaborate and communicate effectively.",
+      "cta": "Customize Now",
+      "ctaType": "next page",
+      "featureCallouts": {
+        "features": [
+          {
+            "title": "Unified Inbox",
+            "description": "Streamline your communications by managing all channels in one place, enhancing collaboration and reducing response times."
+          },
+          {
+            "title": "Automated Communication Workflows",
+            "description": "Boost efficiency with automated workflows that ensure timely and consistent messaging across your organization."
+          },
+          {
+            "title": "Advanced Analytics and Reporting",
+            "description": "Gain valuable insights into your communication effectiveness with advanced analytics that drive informed decision-making."
+          },
+          {
+            "title": "Customizable Communication Settings",
+            "description": "Tailor communication preferences for employees and departments to enhance relevance and engagement in every interaction."
+          },
+          {
+            "title": "Integration with Existing Systems",
+            "description": "Seamlessly connect CommuniManage with your current enterprise systems for a cohesive and efficient communication experience."
+          }
+        ]
+      },
+      "id": "step-4"
+    },
+    {
+      "stepName": "Review and Confirm Setup",
+      "uxGoal": "Summarize the setup process and confirm settings",
+      "userAction": "Review the settings and click 'Finish'",
+      "uxPattern": "Setup Wizard",
+      "patternPurpose": "This pattern helps users review their choices, ensuring they feel confident in their setup before proceeding.",
+      "layoutType": "modal_form",
+      "layoutPurpose": "The modal form allows users to easily review their selections in a clear and concise manner.",
+      "modalType": "summary",
+      "inputFields": [],
+      "rationale": "This step reinforces user confidence and satisfaction, ensuring they feel ready to start using CommuniManage effectively.",
+      "flowEnd": true,
+      "headline": "Confirm Your Setup",
+      "subtitle": "Double-check your settings before starting.",
+      "marketingCopy": "Take a moment to review your setup and ensure everything is configured to your liking. With CommuniManage, you’re ready to transform your communication process into a seamless experience.",
+      "cta": "Finish Setup",
+      "ctaType": "submit",
+      "featureCallouts": {
+        "features": [
+          {
+            "title": "Unified Inbox",
+            "description": "Streamline your communications by managing all channels in one place, enhancing collaboration and reducing response times."
+          },
+          {
+            "title": "Automated Communication Workflows",
+            "description": "Boost efficiency with automated workflows that ensure timely and consistent messaging across your organization."
+          },
+          {
+            "title": "Advanced Analytics and Reporting",
+            "description": "Gain valuable insights into your communication effectiveness with advanced analytics that drive informed decision-making."
+          },
+          {
+            "title": "Customizable Communication Settings",
+            "description": "Tailor communication preferences for employees and departments to enhance relevance and engagement in every interaction."
+          },
+          {
+            "title": "Integration with Existing Systems",
+            "description": "Seamlessly connect CommuniManage with your current enterprise systems for a cohesive and efficient communication experience."
+          }
+        ]
+      },
+      "id": "step-5"
+    }
+  ],
+  "featureCallouts": {
+    "features": [
+      {
+        "title": "Unified Inbox",
+        "description": "Streamline your communications by managing all channels in one place, enhancing collaboration and reducing response times."
+      },
+      {
+        "title": "Automated Communication Workflows",
+        "description": "Boost efficiency with automated workflows that ensure timely and consistent messaging across your organization."
+      },
+      {
+        "title": "Advanced Analytics and Reporting",
+        "description": "Gain valuable insights into your communication effectiveness with advanced analytics that drive informed decision-making."
+      },
+      {
+        "title": "Customizable Communication Settings",
+        "description": "Tailor communication preferences for employees and departments to enhance relevance and engagement in every interaction."
+      },
+      {
+        "title": "Integration with Existing Systems",
+        "description": "Seamlessly connect CommuniManage with your current enterprise systems for a cohesive and efficient communication experience."
+      }
+    ]
+  },
+  "integrationOverview": {
+    "narrative": "Integrating onboarding into CommuniManage should create a seamless and engaging experience that empowers enterprise users to efficiently manage their employee communications from the moment they sign up. The onboarding process will begin with a structured Setup Wizard immediately following the user’s first dashboard visit. This wizard will guide users step-by-step through the essential setup of communication channels, ensuring they grasp the product's capabilities without feeling overwhelmed. By focusing on friction reduction, the onboarding will provide clear, concise instructions and highlight immediate benefits, reinforcing the value of the platform right from the start.\n\nPositioning the onboarding in the launch context after signup allows for early user commitment, setting the stage for a successful adoption journey. The Setup Wizard will address the complexity of CommuniManage’s features, such as the unified inbox and automated workflows, by breaking down the setup into manageable steps. Following the initial configuration, users will benefit from a tooltip tour that encourages feature discovery, further enhancing their understanding and engagement with the platform. This dual approach not only educates users on the product's functionalities but also drives immediate activation by showcasing quick wins, making it an ideal fit for the enterprise audience that CommuniManage serves.",
+    "implementationNotes": "Ensure proper user guidance and feedback throughout the flow."
+  },
+  "copy": {
+    "tone": "Empathetic and encouraging",
+    "voice": "Clear, concise, and action-oriented",
+    "keyPhrases": [
+      "Streamline your communications",
+      "Set up in minutes, benefit for a lifetime",
+      "Unlock the power of unified messaging",
+      "Automate to elevate your workflow",
+      "Discover insights that drive success"
+    ]
+  },
+  "generatedAt": "2025-07-18T14:30:11.577Z"
+}

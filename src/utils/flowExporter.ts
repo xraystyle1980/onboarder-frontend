@@ -52,8 +52,8 @@ const generateMarkdown = (flow: OnboardingFlow, includeAllTabs: boolean): string
   sections.push('## Onboarding Steps\n');
   flow.steps.forEach((step, index) => {
     sections.push(`### Step ${index + 1}: ${step.stepName}\n`);
-    sections.push(`**Layout:** ${step.layout}\n`);
-    sections.push(`**Pattern:** ${step.pattern}\n`);
+    sections.push(`**Layout:** ${step.layoutType}\n`);
+    sections.push(`**Pattern:** ${step.uxPattern}\n`);
     
     if (step.headline) {
       sections.push(`**Headline:** ${step.headline}\n`);
@@ -70,7 +70,7 @@ const generateMarkdown = (flow: OnboardingFlow, includeAllTabs: boolean): string
       sections.push(`**Goal:** ${step.uxGoal}\n`);
       sections.push(`**User Action:** ${step.userAction}\n`);
       sections.push(`**Rationale:** ${step.rationale}\n`);
-      sections.push(`**Pattern Rationale:** ${step.patternRationale}\n`);
+      sections.push(`**Pattern Rationale:** ${step.patternPurpose}\n`);
     }
     
     sections.push('---\n');
