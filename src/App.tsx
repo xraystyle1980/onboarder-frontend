@@ -422,8 +422,6 @@ function MainApp() {
   );
 }
 
-
-
 // Main App Router
 export default function App() {
   return (
