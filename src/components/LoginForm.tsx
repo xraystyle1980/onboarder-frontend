@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 import { Link, Button, Input } from '@heroui/react';
 import { Icon } from '@iconify/react';
@@ -21,6 +21,8 @@ export default function LoginForm({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const {
     signInWithPassword,
@@ -30,6 +32,32 @@ export default function LoginForm({
     loading,
     error: authError
   } = useSupabaseAuth();
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkIsMobile = () => {
+      const userAgent = navigator.userAgent;
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth <= 768;
+      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+      setIsMobile(isTouchDevice && (isSmallScreen || isMobileUA));
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Optional delayed focus for better mobile UX
+  useEffect(() => {
+    if (!isMobile && emailInputRef.current) {
+      // Only auto-focus on non-mobile devices
+      const timer = setTimeout(() => {
+        emailInputRef.current?.focus({ preventScroll: true });
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [isMobile, mode]);
 
 
   const validateEmail = (email: string) => {
@@ -154,6 +182,7 @@ export default function LoginForm({
 
         <div>
           <Input
+            ref={emailInputRef}
             type="email"
             label="Email"
             labelPlacement="inside"
@@ -162,6 +191,8 @@ export default function LoginForm({
             required
             isDisabled={loading}
             variant="bordered"
+            autoComplete="email"
+            inputMode="email"
             classNames={{
               input: "text-foreground",
               inputWrapper: "bg-background border-border"
@@ -180,6 +211,7 @@ export default function LoginForm({
               required
               isDisabled={loading}
               variant="bordered"
+              autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
               endContent={
                 <Icon 
                   icon="lucide:lock" 
@@ -212,6 +244,7 @@ export default function LoginForm({
               required
               isDisabled={loading}
               variant="bordered"
+              autoComplete="new-password"
               endContent={
                 <Icon 
                   icon="lucide:lock-keyhole" 

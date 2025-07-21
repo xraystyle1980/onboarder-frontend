@@ -273,11 +273,12 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }) {
           onOpenChange={setShowLogin}
           backdrop="blur"
           hideCloseButton={false}
+          scrollBehavior="inside"
           classNames={{
-            wrapper: "z-[120]",
-            base: "bg-popover border border-border shadow-xl rounded-2xl",
-            backdrop: "backdrop-blur-md",
-            body: "px-8 py-8 text-foreground",
+            wrapper: "z-[120] !h-[100dvh] overflow-y-auto p-4 md:p-6",
+            base: "bg-popover border border-border shadow-xl rounded-2xl max-h-[calc(100dvh-2rem)] md:max-h-[calc(100dvh-3rem)]",
+            backdrop: "backdrop-blur-md !h-[100dvh]",
+            body: "px-8 py-8 text-foreground overflow-y-auto",
             closeButton: "absolute right-4 top-4 z-10 btn-utility rounded-lg transition-all duration-200"
           }}
           style={{
@@ -285,13 +286,30 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }) {
           } as any}
         >
           <ModalContent className="modal-animate-in">
+            <ModalHeader className="sr-only" id="signin-modal-title">
+              Sign In
+            </ModalHeader>
             <ModalBody>
-              <LoginForm 
-                onSuccess={() => {
-                  setShowLogin(false);
-                  // If there was a pending flow, it will be saved automatically
+              <div 
+                role="dialog" 
+                aria-labelledby="signin-modal-title"
+                aria-modal="true"
+                tabIndex={-1}
+                ref={(el) => {
+                  if (el && showLogin) {
+                    setTimeout(() => {
+                      el.focus({ preventScroll: true });
+                    }, 100);
+                  }
                 }}
-              />
+                className="outline-none"
+              >
+                <LoginForm 
+                  onSuccess={() => {
+                    setShowLogin(false);
+                  }}
+                />
+              </div>
             </ModalBody>
           </ModalContent>
         </Modal>
