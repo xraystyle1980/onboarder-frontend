@@ -13,9 +13,19 @@
 @tailwind utilities;
 
 
+:root {
+  background-color: rgb(2, 2, 11) !important;
+}
+
 html {
   scrollbar-gutter: stable;
-  background-color: #0B0B14 !important;
+  background-color: rgb(2, 2, 11) !important;
+  /* iOS Safari safe area support */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  /* Prevent iOS Safari background color issues */
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* Header Component Styles */
@@ -597,8 +607,27 @@ body {
   font-weight: var(--font-weight-normal);
   color: #18181b;
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif; /* Use Poppins as primary font */
-  background: #02020b;
+  background-color: rgb(2, 2, 11) !important;
   margin: 0;
+  padding: 0;
+  /* Prevent overscroll bounce on iOS */
+  overscroll-behavior: none;
+  /* Ensure body covers full viewport */
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Additional iOS Safari background coverage */
+#root {
+  background-color: rgb(2, 2, 11) !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* Cover safe areas on iOS */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 h1, h2, h3, h4, h5, h6 {

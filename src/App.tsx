@@ -206,7 +206,7 @@ function MainApp() {
     <>
       <MetaTags />
       <ErrorBoundary>
-        <div className="min-h-screen bg-background flex flex-col">
+        <div className="min-h-screen bg-[rgb(2,2,11)] flex flex-col">
           <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} showLogin={showLogin} setShowLogin={setShowLogin} />
           <div className="pt-16 hero-radial-bg">
             <SectionHero
