@@ -7,7 +7,14 @@ import { FigmaIcon, UserIcon, MyFlowsIcon } from "./shared/CustomIcons";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
 
-function Header({ onShowMyFlows, showLogin, setShowLogin }) {
+interface HeaderProps {
+  onShowMyFlows?: () => void;
+  showLogin: boolean;
+  setShowLogin: (show: boolean) => void;
+  onShowToast?: (message: string, type: 'success' | 'error' | 'info') => void;
+}
+
+function Header({ onShowMyFlows, showLogin, setShowLogin, onShowToast }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
   const { user } = useSupabaseAuth();
@@ -305,8 +312,9 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }) {
                 className="outline-none"
               >
                 <LoginForm 
-                  onSuccess={() => {
+                  onSuccess={(email) => {
                     setShowLogin(false);
+                    onShowToast?.(`Signed in as ${email}`, 'success');
                   }}
                 />
               </div>

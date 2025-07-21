@@ -6,7 +6,7 @@ import Notification from './shared/Notification';
 
 interface LoginFormProps {
   submitButtonClass?: string;
-  onSuccess?: () => void;
+  onSuccess?: (email: string) => void;
 }
 
 type AuthMode = 'signin' | 'signup' | 'magic-link' | 'forgot-password';
@@ -145,7 +145,7 @@ export default function LoginForm({
           setMessage('Check your email for password reset instructions!');
         } else {
           setMessage('Successfully signed in!');
-          onSuccess?.();
+          onSuccess?.(email);
         }
       }
     } catch (error) {

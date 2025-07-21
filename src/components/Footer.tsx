@@ -15,7 +15,7 @@ export default function Footer({ onShowMyFlows, onShowLogin }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-background mt-8 lg:mt-16">
+    <footer className="w-full mt-8 lg:mt-16">
       <div className="container mx-auto px-4 py-8 border-t border-border max-w-5xl">
         <div className="flex flex-col gap-4 items-center">
           {/* First Row: Logo, Version, and Navigation Links */}

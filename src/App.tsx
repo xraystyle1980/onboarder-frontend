@@ -63,16 +63,50 @@ function MainApp() {
   const [currentFlowId, setCurrentFlowId] = useState<string | null>(null);
   const [showLogin, setShowLogin] = useState(false);
 
-  // Fetch user flow count on login
+  const handleShowToast = (message: string, type: 'success' | 'error' | 'info') => {
+    setToastMsg(message);
+    setToastType(type);
+    setShowToast(true);
+  };
+
+  // Watch for user state changes (sign in/out)
+  const [previousUser, setPreviousUser] = React.useState(user);
+  
   React.useEffect(() => {
-    async function fetchCount() {
-      if (user) {
-        const { data } = await getUserFlows(user.id);
-        setUserFlowCount(data ? data.length : 0);
-      }
+    // Handle sign out
+    if (previousUser && !user) {
+      // User signed out
+      handleShowToast('Signed out', 'success');
+      
+      // Clear UI state
+      setCurrentFlow(null);
+      setSubmittedPrompt(null);
+      setIsNewlyGenerated(false);
+      setCurrentFlowId(null);
+      setUserFlowCount(0);
+      setShowUserFlowsDrawer(false);
+      
+      // Clear any pending flows
+      setPendingFlow(null);
+      setPendingPrompt(null);
+      localStorage.removeItem("pendingFlow");
+      localStorage.removeItem("pendingPrompt");
     }
-    fetchCount();
-  }, [user]);
+    
+    // Handle sign in (fetch user flow count)
+    if (!previousUser && user) {
+      // User signed in
+      async function fetchCount() {
+        if (user) {
+          const { data } = await getUserFlows(user.id);
+          setUserFlowCount(data ? data.length : 0);
+        }
+      }
+      fetchCount();
+    }
+    
+    setPreviousUser(user);
+  }, [user, previousUser]);
 
   // Auto-save pending flow after login
   React.useEffect(() => {
@@ -206,8 +240,8 @@ function MainApp() {
     <>
       <MetaTags />
       <ErrorBoundary>
-        <div className="min-h-screen bg-[rgb(2,2,11)] flex flex-col">
-          <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} showLogin={showLogin} setShowLogin={setShowLogin} />
+        <div className="min-h-screen flex flex-col">
+          <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} showLogin={showLogin} setShowLogin={setShowLogin} onShowToast={handleShowToast} />
           <div className="pt-16 hero-radial-bg">
             <SectionHero
             inputText={inputText}
