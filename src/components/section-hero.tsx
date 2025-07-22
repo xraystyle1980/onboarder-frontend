@@ -14,6 +14,7 @@ interface SectionHeroProps {
   isGenerating: boolean;
   isExample: boolean;
   onToggleExample: (checked: boolean) => void;
+  hasGeneratedFlow: boolean;
   currentProgressMessage?: string;
 }
 
@@ -25,6 +26,7 @@ export default function SectionHero({
   isGenerating,
   isExample,
   onToggleExample,
+  hasGeneratedFlow,
   currentProgressMessage,
 }: SectionHeroProps) {
   const playerRef = useRef<any>(null);
@@ -105,7 +107,7 @@ export default function SectionHero({
               <Switch
                 isSelected={isExample}
                 onValueChange={onToggleExample}
-                isDisabled={isGenerating}
+                isDisabled={isGenerating || hasGeneratedFlow}
                 classNames={{
                   label: [
                     "text-sky-700 text-sm", // OFF state

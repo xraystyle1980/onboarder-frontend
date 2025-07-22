@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Icon } from "@iconify/react";
-import { Modal, ModalContent, ModalHeader, ModalBody, Button } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, addToast } from "@heroui/react";
 import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
 import { FigmaIcon, UserIcon, MyFlowsIcon } from "./shared/CustomIcons";
 import UserProfile from "./UserProfile";
@@ -11,10 +11,9 @@ interface HeaderProps {
   onShowMyFlows?: () => void;
   showLogin: boolean;
   setShowLogin: (show: boolean) => void;
-  onShowToast?: (message: string, type: 'success' | 'error' | 'info') => void;
 }
 
-function Header({ onShowMyFlows, showLogin, setShowLogin, onShowToast }: HeaderProps) {
+function Header({ onShowMyFlows, showLogin, setShowLogin }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
   const { user } = useSupabaseAuth();
@@ -314,7 +313,10 @@ function Header({ onShowMyFlows, showLogin, setShowLogin, onShowToast }: HeaderP
                 <LoginForm 
                   onSuccess={(email) => {
                     setShowLogin(false);
-                    onShowToast?.(`Signed in as ${email}`, 'success');
+                    addToast({
+                      title: `Signed in as ${email}`,
+                      color: 'success'
+                    });
                   }}
                 />
               </div>

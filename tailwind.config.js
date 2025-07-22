@@ -117,6 +117,7 @@ export default {
 					'88': '22rem',  // 352px
 				},
 			},
+			
 			keyframes: {
 				'slide-in-right': {
 					'0%': { transform: 'translateX(100%)', opacity: '0' },

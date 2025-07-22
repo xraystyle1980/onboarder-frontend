@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { Tabs, Tab, Drawer, DrawerContent, DrawerHeader, DrawerBody, Button, Skeleton } from "@heroui/react";
+import { Tabs, Tab, Drawer, DrawerContent, DrawerHeader, DrawerBody, Button, Skeleton, addToast } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { OnboardingFlowCards } from "./components/onboarding-flow-cards";
 import Header from "./components/header";
@@ -15,7 +15,6 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useTabTransition } from "./hooks/useTabTransition";
 import { useSupabaseAuth } from "./hooks/useSupabaseAuth";
 import { saveUserFlow, getUserFlows } from "./services/flows";
-import Toast from "./components/shared/Toast";
 import UserFlows from "./components/UserFlows";
 import { GeneratingFlowCard, GeneratedFlowCard } from "./components/generating-flow-card";
 import { MetaTags } from './components/MetaTags';
@@ -52,9 +51,6 @@ function MainApp() {
   } = useTabTransition("summary");
 
   const { user } = useSupabaseAuth();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-  const [toastType, setToastType] = useState("info");
   const [showUserFlowsDrawer, setShowUserFlowsDrawer] = useState(false);
   const [userFlowCount, setUserFlowCount] = useState(0);
   const [pendingFlow, setPendingFlow] = useState(null);
@@ -63,11 +59,6 @@ function MainApp() {
   const [currentFlowId, setCurrentFlowId] = useState<string | null>(null);
   const [showLogin, setShowLogin] = useState(false);
 
-  const handleShowToast = (message: string, type: 'success' | 'error' | 'info') => {
-    setToastMsg(message);
-    setToastType(type);
-    setShowToast(true);
-  };
 
   // Watch for user state changes (sign in/out)
   const [previousUser, setPreviousUser] = React.useState(user);
@@ -76,7 +67,9 @@ function MainApp() {
     // Handle sign out
     if (previousUser && !user) {
       // User signed out
-      handleShowToast('Signed out', 'success');
+      addToast({
+        title: 'Signed out'
+      });
       
       // Clear UI state
       setCurrentFlow(null);
@@ -148,13 +141,16 @@ function MainApp() {
       product_name: flow.productInfo?.productName,
     });
     if (error) {
-      setToastMsg("Error saving flow: " + error.message);
-      setToastType("error");
-      setShowToast(true);
+      addToast({
+        title: 'Error saving flow',
+        description: error.message,
+        color: 'danger'
+      });
     } else {
-      setToastMsg("Flow saved to your account!");
-      setToastType("success");
-      setShowToast(true);
+      addToast({
+        title: 'Flow saved to your account!',
+        color: 'success'
+      });
       setUserFlowCount((c) => c + 1);
     }
   };
@@ -241,7 +237,7 @@ function MainApp() {
       <MetaTags />
       <ErrorBoundary>
         <div className="min-h-screen flex flex-col">
-          <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} showLogin={showLogin} setShowLogin={setShowLogin} onShowToast={handleShowToast} />
+          <Header onShowMyFlows={() => setShowUserFlowsDrawer(true)} showLogin={showLogin} setShowLogin={setShowLogin} />
           <div className="pt-16 hero-radial-bg">
             <SectionHero
             inputText={inputText}
@@ -251,6 +247,7 @@ function MainApp() {
             isGenerating={isGenerating}
             isExample={showSampleFlow}
             onToggleExample={setShowSampleFlow}
+            hasGeneratedFlow={hasFlowToDisplay}
             currentProgressMessage={currentProgressMessage}
           />
           
@@ -293,9 +290,10 @@ function MainApp() {
                         setIsNewlyGenerated(false);
                         setCurrentFlowId(null);
                       }
-                      setToastMsg("Flow deleted successfully!");
-                      setToastType("success");
-                      setShowToast(true);
+                      addToast({
+                        title: 'Flow deleted successfully!',
+                        color: 'danger'
+                      });
                     }}
                   />
                 </DrawerBody>
@@ -408,14 +406,6 @@ function MainApp() {
             onShowMyFlows={user ? () => setShowUserFlowsDrawer(true) : undefined}
             onShowLogin={!user ? () => setShowLogin(true) : undefined}
           />
-          {showToast && (
-            <Toast
-              message={toastMsg}
-              type={toastType as 'info' | 'success' | 'error'}
-              onClose={() => setShowToast(false)}
-              className="animate-slide-in-up"
-            />
-          )}
         </div>
       </ErrorBoundary>
     </>

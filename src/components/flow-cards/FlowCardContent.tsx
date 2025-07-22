@@ -59,7 +59,12 @@ export const FlowCardContent: React.FC<FlowCardContentProps> = React.memo(({
                 <div key={index} className="flex-1 items-start gap-2 text-sm">
                   <div className="border border-border bg-black/50 rounded-lg p-2 max-w-full">
                     <span className="font-medium text-foreground">{field.label}</span>
-                    <span className="text-muted-foreground text-xs ml-2">({field.type})</span>
+                    {field.type && <span className="text-muted-foreground text-xs ml-2">({field.type})</span>}
+                    {(field.placeholder || typeof field === 'string' || field.label) && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Placeholder: "{field.placeholder || `Enter ${(typeof field === 'string' ? field : field.label).toLowerCase()}`}"
+                      </div>
+                    )}
                     {field.options && (
                       <div className="text-xs text-muted-foreground mt-1">
                         Options: {field.options.join(', ')}

@@ -739,3 +739,9 @@ small {
 .modal-animate-in {
   animation: modal-pop-in-elastic 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+
+/* default (no explicit color-value) or explicit “0” */
+[data-toast="true"].bg-content1 svg.fill-current {
+  fill: var(--color-foreground) !important;
+}
