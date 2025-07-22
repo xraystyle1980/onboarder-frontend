@@ -145,6 +145,19 @@ export default function LoginForm({
           setMessage('Check your email for password reset instructions!');
         } else {
           setMessage('Successfully signed in!');
+          
+          // Reset viewport scale on mobile to prevent zoom issues
+          if (isMobile) {
+            const viewportMeta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement;
+            if (viewportMeta) {
+              const originalContent = viewportMeta.content;
+              viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+              setTimeout(() => {
+                viewportMeta.content = originalContent;
+              }, 100);
+            }
+          }
+          
           onSuccess?.(email);
         }
       }

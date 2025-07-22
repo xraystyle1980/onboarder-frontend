@@ -745,3 +745,25 @@ small {
 [data-toast="true"].bg-content1 svg.fill-current {
   fill: var(--color-foreground) !important;
 }
+
+/* ========================================
+   MOBILE ZOOM FIX
+   ======================================== */
+
+/* Prevent iOS zoom on input focus by ensuring font-size is at least 16px */
+@supports (-webkit-touch-callout: none) {
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    transform: translateZ(0);
+  }
+  
+  /* HeroUI Input components */
+  [data-slot="input"] input {
+    font-size: 16px !important;
+    transform: translateZ(0);
+  }
+}
