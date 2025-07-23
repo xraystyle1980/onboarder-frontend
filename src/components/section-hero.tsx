@@ -107,7 +107,7 @@ export default function SectionHero({
               <Switch
                 isSelected={isExample}
                 onValueChange={onToggleExample}
-                isDisabled={isGenerating || hasGeneratedFlow}
+                isDisabled={isGenerating || (hasGeneratedFlow && !isExample)}
                 classNames={{
                   label: [
                     "text-sky-700 text-sm", // OFF state
