@@ -291,7 +291,7 @@ function MainApp() {
                         setCurrentFlowId(null);
                       }
                       addToast({
-                        title: 'Flow deleted successfully!',
+                        title: 'Flow deleted',
                         color: 'danger'
                       });
                     }}
