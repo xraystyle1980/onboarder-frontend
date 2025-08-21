@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
 import { Link, Button, Input } from '@heroui/react';
 import { Icon } from '@iconify/react';
 import Notification from './shared/Notification';
@@ -9,7 +9,7 @@ interface LoginFormProps {
   onSuccess?: (email: string) => void;
 }
 
-type AuthMode = 'signin' | 'signup' | 'magic-link' | 'forgot-password';
+type AuthMode = 'signin' | 'signup' | 'forgot-password';
 
 export default function LoginForm({ 
   submitButtonClass = "btn-primary",
@@ -22,16 +22,19 @@ export default function LoginForm({
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   const {
-    signInWithPassword,
+    signIn,
     signUp,
-    signInWithMagicLink,
     resetPassword,
+    signOut,
+    user,
     loading,
     error: authError
-  } = useSupabaseAuth();
+  } = useFirebaseAuth();
 
   // Detect mobile devices
   useEffect(() => {
@@ -91,9 +94,11 @@ export default function LoginForm({
             setMessage('Please enter your password');
             return;
           }
-          result = await signInWithPassword(email, password);
+          await signIn(email, password);
+          setIsSuccess(true);
+          setMessage('Successfully signed in!');
+          if (onSuccess) onSuccess(email);
           break;
-
         case 'signup':
           if (!password) {
             setMessage('Please enter a password');
@@ -107,59 +112,19 @@ export default function LoginForm({
             setMessage('Passwords do not match');
             return;
           }
-          result = await signUp(email, password);
-          // Check if user already exists (when email confirmation is enabled)
-          if (result.data?.user?.identities?.length === 0) {
-            setMessage('An account with this email already exists. Please sign in or reset your password if you\'ve forgotten it.');
-            return;
-          }
+          await signUp(email, password);
+          setIsSuccess(true);
+          setMessage('Account created successfully!');
+          if (onSuccess) onSuccess(email);
           break;
-
-        case 'magic-link':
-          result = await signInWithMagicLink(email);
-          break;
-
         case 'forgot-password':
-          result = await resetPassword(email);
+          await resetPassword(email);
+          setIsSuccess(true);
+          setMessage('Password reset email sent! Check your inbox.');
           break;
-
         default:
           setMessage('Invalid authentication mode');
           return;
-      }
-
-      if (result.error) {
-        // Handle "User already registered" error specifically
-        if (result.error.includes('User already registered') || result.error.includes('already registered')) {
-          setMessage('An account with this email already exists. Please sign in or reset your password if you\'ve forgotten it.');
-        } else {
-          setMessage(result.error);
-        }
-      } else {
-        setIsSuccess(true);
-        if (mode === 'signup') {
-          setMessage('Check your email to confirm your account!');
-        } else if (mode === 'magic-link') {
-          setMessage('Check your email for the magic link!');
-        } else if (mode === 'forgot-password') {
-          setMessage('Check your email for password reset instructions!');
-        } else {
-          setMessage('Successfully signed in!');
-          
-          // Reset viewport scale on mobile to prevent zoom issues
-          if (isMobile) {
-            const viewportMeta = document.querySelector('meta[name="viewport"]') as HTMLMetaElement;
-            if (viewportMeta) {
-              const originalContent = viewportMeta.content;
-              viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-              setTimeout(() => {
-                viewportMeta.content = originalContent;
-              }, 100);
-            }
-          }
-          
-          onSuccess?.(email);
-        }
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'An unexpected error occurred');
@@ -171,14 +136,13 @@ export default function LoginForm({
     switch (mode) {
       case 'signin': return 'Sign In';
       case 'signup': return 'Create Account';
-      case 'magic-link': return 'Send Magic Link';
       case 'forgot-password': return 'Send Reset Link';
       default: return 'Submit';
     }
   };
 
   const showPasswordFields = mode === 'signin' || mode === 'signup';
-  const showConfirmPassword = mode === 'signup';
+  const showConfirmPasswordField = mode === 'signup';
 
   return (
     <div className="w-full max-w-md mx-auto" style={{ pointerEvents: 'auto' }}>
@@ -186,7 +150,6 @@ export default function LoginForm({
         <h2 className="text-xl font-medium text-foreground mb-2">
           {mode === 'signin' && "Sign In to save your flows"}
           {mode === 'signup' && "Create your account"}
-          {mode === 'magic-link' && "Magic Link Sign In"}
           {mode === 'forgot-password' && "Reset your password"}
         </h2>
       </div>
@@ -216,7 +179,7 @@ export default function LoginForm({
         {showPasswordFields && (
           <div>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               label="Password"
               labelPlacement="inside"
               value={password}
@@ -226,12 +189,18 @@ export default function LoginForm({
               variant="bordered"
               autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
               endContent={
-                <Icon 
-                  icon="lucide:lock" 
-                  width={20} 
-                  height={20} 
-                  className="text-muted-foreground" 
-                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  disabled={loading}
+                >
+                  <Icon 
+                    icon={showPassword ? "lucide:eye-off" : "lucide:eye"} 
+                    width={20} 
+                    height={20} 
+                  />
+                </button>
               }
               classNames={{
                 input: "text-foreground",
@@ -246,10 +215,10 @@ export default function LoginForm({
           </div>
         )}
 
-        {showConfirmPassword && (
+        {showConfirmPasswordField && (
           <div className="mb-5">
             <Input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               label="Confirm Password"
               labelPlacement="inside"
               value={confirmPassword}
@@ -259,12 +228,18 @@ export default function LoginForm({
               variant="bordered"
               autoComplete="new-password"
               endContent={
-                <Icon 
-                  icon="lucide:lock-keyhole" 
-                  width={20} 
-                  height={20} 
-                  className="text-muted-foreground" 
-                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  disabled={loading}
+                >
+                  <Icon 
+                    icon={showConfirmPassword ? "lucide:eye-off" : "lucide:eye"} 
+                    width={20} 
+                    height={20} 
+                  />
+                </button>
               }
               classNames={{
                 input: "text-foreground",
@@ -318,27 +293,6 @@ export default function LoginForm({
           </div>
         )}
 
-        {/* Or divider for signin mode */}
-        {mode === 'signin' && (
-          <div className="flex items-center my-6">
-            <div className="flex-1 border-t border-border"></div>
-            <span className="px-4 text-sm text-muted-foreground">Or</span>
-            <div className="flex-1 border-t border-border"></div>
-          </div>
-        )}
-
-        {/* Magic link button for signin mode */}
-        {mode === 'signin' && (
-          <Button
-            type="button"
-            onPress={() => setMode('magic-link')}
-            isDisabled={loading}
-            variant="bordered"
-            className="w-full py-3 border-border hover:bg-background-muted"
-          >
-            Sign in with magic link
-          </Button>
-        )}
 
         {/* Mode switching options for other modes */}
         {mode !== 'signin' && (
@@ -360,22 +314,6 @@ export default function LoginForm({
               </div>
             )}
 
-            {mode === 'magic-link' && (
-              <div className="text-center text-muted-foreground text-sm">
-                Prefer password?{' '}
-                <Link
-                  as="button"
-                  type="button"
-                  onPress={() => setMode('signin')}
-                  isDisabled={loading}
-                  color="primary"
-                  underline="hover"
-                  className="text-sm font-medium text-sky-500 hover:text-sky-400"
-                >
-                  Sign in with password
-                </Link>
-              </div>
-            )}
 
             {mode === 'forgot-password' && (
               <div className="text-center text-muted-foreground text-sm">

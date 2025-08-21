@@ -1,200 +1,101 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
-import type { Session, User, AuthError } from "@supabase/supabase-js";
-
-export interface AuthState {
-  session: Session | null;
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-}
+import { useEffect, useState } from 'react';
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  signOut,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  User,
+  UserCredential
+} from 'firebase/auth';
+import { app } from '../../firebase';
 
 export function useSupabaseAuth() {
-  const [authState, setAuthState] = useState<AuthState>({
-    session: null,
-    user: null,
-    loading: true,
-    error: null,
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get current session on mount
-    const getInitialSession = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) throw error;
-        
-        setAuthState({
-          session,
-          user: session?.user ?? null,
-          loading: false,
-          error: null,
-        });
-      } catch (error) {
-        setAuthState(prev => ({
-          ...prev,
-          loading: false,
-          error: error instanceof Error ? error.message : 'Authentication error',
-        }));
-      }
-    };
-
-    getInitialSession();
-
-    // Listen for changes
-    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setAuthState({
-        session,
-        user: session?.user ?? null,
-        loading: false,
-        error: null,
-      });
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
     });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
+  const signIn = async (email: string, password: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const auth = getAuth(app);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      return { data: { user }, error: null };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Sign in failed';
+      setError(message);
+      return { data: null, error: message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const signUp = async (email: string, password: string) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }));
-    
+    setLoading(true);
+    setError(null);
     try {
-      const baseUrl = window.location.hostname === 'localhost' 
-        ? window.location.origin 
-        : 'https://auth.onboarder.design';
-      
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${baseUrl}/auth/callback`,
-        },
-      });
-      
-      if (error) throw error;
-      
-      return { data, error: null };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Sign up failed';
-      setAuthState(prev => ({ ...prev, loading: false, error: errorMessage }));
-      return { data: null, error: errorMessage };
-    }
-  };
-
-  const signInWithPassword = async (email: string, password: string) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }));
-    
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      
-      return { data, error: null };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Sign in failed';
-      setAuthState(prev => ({ ...prev, loading: false, error: errorMessage }));
-      return { data: null, error: errorMessage };
-    }
-  };
-
-  const signInWithMagicLink = async (email: string) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }));
-    
-    try {
-      const baseUrl = window.location.hostname === 'localhost' 
-        ? window.location.origin 
-        : 'https://auth.onboarder.design';
-      
-      const { data, error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${baseUrl}/auth/callback`,
-        },
-      });
-      
-      if (error) throw error;
-      
-      return { data, error: null };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Magic link failed';
-      setAuthState(prev => ({ ...prev, loading: false, error: errorMessage }));
-      return { data: null, error: errorMessage };
-    }
-  };
-
-  const signOut = async () => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }));
-    
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      setAuthState({
-        session: null,
-        user: null,
-        loading: false,
-        error: null,
-      });
-      
-      return { error: null };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Sign out failed';
-      setAuthState(prev => ({ ...prev, loading: false, error: errorMessage }));
-      return { error: errorMessage };
+      const auth = getAuth(app);
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      return { data: { user }, error: null };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Sign up failed';
+      setError(message);
+      return { data: null, error: message };
+    } finally {
+      setLoading(false);
     }
   };
 
   const resetPassword = async (email: string) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }));
-    
+    setLoading(true);
+    setError(null);
     try {
-      const baseUrl = window.location.hostname === 'localhost' 
-        ? window.location.origin 
-        : 'https://auth.onboarder.design';
-      
-      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${baseUrl}/auth/callback`,
-      });
-      
-      if (error) throw error;
-      
-      return { data, error: null };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Password reset failed';
-      setAuthState(prev => ({ ...prev, loading: false, error: errorMessage }));
-      return { data: null, error: errorMessage };
+      const auth = getAuth(app);
+      await sendPasswordResetEmail(auth, email);
+      return { data: {}, error: null };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Password reset failed';
+      setError(message);
+      return { data: null, error: message };
+    } finally {
+      setLoading(false);
     }
   };
 
-  const updatePassword = async (password: string) => {
-    setAuthState(prev => ({ ...prev, loading: true, error: null }));
-    
+  const signOutUser = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const { data, error } = await supabase.auth.updateUser({
-        password,
-      });
-      
-      if (error) throw error;
-      
-      return { data, error: null };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Password update failed';
-      setAuthState(prev => ({ ...prev, loading: false, error: errorMessage }));
-      return { data: null, error: errorMessage };
+      const auth = getAuth(app);
+      await signOut(auth);
+      return { error: null };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Sign out failed';
+      setError(message);
+      return { error: message };
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
-    ...authState,
+    user,
+    loading,
+    error,
+    signInWithPassword: signIn, // alias for backward compatibility
     signUp,
-    signInWithPassword,
-    signInWithMagicLink,
-    signOut,
     resetPassword,
-    updatePassword,
+    signOut: signOutUser,
   };
-} 
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState('');
@@ -9,7 +9,7 @@ export default function ResetPasswordForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   
-  const { updatePassword, loading, error: authError } = useSupabaseAuth();
+  const { loading, error: authError } = useFirebaseAuth();
 
   const validatePassword = (password: string) => {
     // At least 8 characters, 1 uppercase, 1 lowercase, 1 number

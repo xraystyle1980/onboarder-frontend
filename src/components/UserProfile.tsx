@@ -1,4 +1,4 @@
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
 import { Icon } from '@iconify/react';
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
 
@@ -8,7 +8,7 @@ interface UserProfileProps {
 }
 
 export default function UserProfile({ isMobile = false, onMobileMenuClose }: UserProfileProps) {
-  const { user, signOut, loading } = useSupabaseAuth();
+  const { user, signOut, loading } = useFirebaseAuth();
 
   if (!user) return null;
 
@@ -33,7 +33,7 @@ export default function UserProfile({ isMobile = false, onMobileMenuClose }: Use
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-foreground truncate mb-0">
-              {user.user_metadata?.full_name || 'User'}
+              {user.displayName || 'User'}
             </p>
             <p className="text-xs text-muted-foreground truncate mb-0">
               {user.email}
@@ -93,7 +93,7 @@ export default function UserProfile({ isMobile = false, onMobileMenuClose }: Use
             </div>
             <div>
               <p className="text-sm font-medium text-foreground mb-0">
-                {user.user_metadata?.full_name || 'User'}
+                {user.displayName || 'User'}
               </p>
               <p className="text-xs text-muted-foreground mb-0">
                 {user.email}

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
 import { LoadingSpinner } from './LoadingSpinner';
 
 interface ProtectedRouteProps {
@@ -14,7 +14,7 @@ export default function ProtectedRoute({
   requireAuth = true,
   redirectTo = '/'
 }: ProtectedRouteProps) {
-  const { user, loading } = useSupabaseAuth();
+  const { user, loading } = useFirebaseAuth();
   const location = useLocation();
 
   // Show loading spinner while checking authentication

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
+import { useFirebaseAuth } from '../hooks/useFirebaseAuth';
 import { getUserFlows, deleteUserFlow } from '../services/flows';
 import SavedFlowCard from './SavedFlowCard';
 import { OnboardingFlow } from '../types';
@@ -27,7 +27,7 @@ const LOADING_STATES = {
 } as const;
 
 export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () => {} }: UserFlowsProps) {
-  const { user } = useSupabaseAuth();
+  const { user } = useFirebaseAuth();
   const [flows, setFlows] = useState<SavedFlow[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,7 +36,7 @@ export default function UserFlows({ onSelectFlow = () => {}, onDeleteFlow = () =
     if (!user) return;
     setLoading(true);
     setError('');
-    const { data, error } = await getUserFlows(user.id);
+    const { data, error } = await getUserFlows(user.uid);
     if (error) setError(error.message);
     setFlows(data || []);
     setLoading(false);

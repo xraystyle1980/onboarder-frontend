@@ -13,7 +13,7 @@ import { exportFlow } from "./utils/flowExporter";
 import { onboardingService } from "./services/api";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useTabTransition } from "./hooks/useTabTransition";
-import { useSupabaseAuth } from "./hooks/useSupabaseAuth";
+import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
 import { saveUserFlow, getUserFlows } from "./services/flows";
 import UserFlows from "./components/UserFlows";
 import { GeneratingFlowCard, GeneratedFlowCard } from "./components/generating-flow-card";
@@ -50,7 +50,7 @@ function MainApp() {
     getTabTransitionClass,
   } = useTabTransition("summary");
 
-  const { user } = useSupabaseAuth();
+  const { user } = useFirebaseAuth();
   const [showUserFlowsDrawer, setShowUserFlowsDrawer] = useState(false);
   const [userFlowCount, setUserFlowCount] = useState(0);
   const [pendingFlow, setPendingFlow] = useState(null);
@@ -91,7 +91,7 @@ function MainApp() {
       // User signed in
       async function fetchCount() {
         if (user) {
-          const { data } = await getUserFlows(user.id);
+          const { data } = await getUserFlows(user.uid);
           setUserFlowCount(data ? data.length : 0);
         }
       }
@@ -134,7 +134,7 @@ function MainApp() {
     }
     // Save flow
     const { error } = await saveUserFlow({
-      userId: user.id,
+      userId: user.uid,
       prompt,
       flow_json: flow,
       flow_type: flow.productInfo?.flowType,

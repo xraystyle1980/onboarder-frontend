@@ -1,4 +1,3 @@
-import { User } from '@supabase/supabase-js';
 
 export interface LaunchContext {
   timing: string;
@@ -122,6 +121,6 @@ export interface AppState {
   isLoading: boolean;
   error: string | null;
   currentStepIndex: number;
-  user: User | null;
+  user: any;
   showSampleData: boolean;
 } 

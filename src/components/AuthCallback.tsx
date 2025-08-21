@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
 import { LoadingSpinner } from './LoadingSpinner';
 
 export default function AuthCallback() {
@@ -11,38 +10,16 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        const { data, error } = await supabase.auth.getSession();
+        // For Firebase, auth callbacks are handled by the SDK automatically
+        // This component can be simplified or removed since Firebase handles
+        // authentication state changes through onAuthStateChanged
+        setStatus('success');
+        setMessage('Authentication successful! Redirecting...');
         
-        if (error) {
-          throw error;
-        }
-
-        if (data.session) {
-          setStatus('success');
-          setMessage('Authentication successful! Redirecting...');
-          
-          // Redirect to the main app after a short delay
-          setTimeout(() => {
-            navigate('/', { replace: true });
-          }, 2000);
-        } else {
-          // Check if this is a password reset flow
-          const urlParams = new URLSearchParams(window.location.search);
-          const type = urlParams.get('type');
-          
-          if (type === 'recovery') {
-            // This is a password reset link
-            setStatus('success');
-            setMessage('Password reset link is valid. You can now set a new password.');
-            // You might want to redirect to a password reset form
-            setTimeout(() => {
-              navigate('/reset-password', { replace: true });
-            }, 2000);
-          } else {
-            setStatus('error');
-            setMessage('Invalid or expired authentication link.');
-          }
-        }
+        // Redirect to the main app after a short delay
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 2000);
       } catch (error) {
         setStatus('error');
         setMessage(error instanceof Error ? error.message : 'Authentication failed');

@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Icon } from "@iconify/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, addToast } from "@heroui/react";
-import { useSupabaseAuth } from "../hooks/useSupabaseAuth";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import { FigmaIcon, UserIcon, MyFlowsIcon } from "./shared/CustomIcons";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
@@ -16,7 +16,7 @@ interface HeaderProps {
 function Header({ onShowMyFlows, showLogin, setShowLogin }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isMobileMenuClosing, setIsMobileMenuClosing] = React.useState(false);
-  const { user } = useSupabaseAuth();
+  const { user } = useFirebaseAuth();
 
   const handleShowMyFlows = () => {
     if (user && onShowMyFlows) {
