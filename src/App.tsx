@@ -57,6 +57,7 @@ function MainApp() {
   const [pendingPrompt, setPendingPrompt] = useState(null);
   const [isNewlyGenerated, setIsNewlyGenerated] = useState(false);
   const [currentFlowId, setCurrentFlowId] = useState<string | null>(null);
+  const [isFlowSaved, setIsFlowSaved] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
 
@@ -76,6 +77,7 @@ function MainApp() {
       setSubmittedPrompt(null);
       setIsNewlyGenerated(false);
       setCurrentFlowId(null);
+      setIsFlowSaved(false);
       setUserFlowCount(0);
       setShowUserFlowsDrawer(false);
       
@@ -132,6 +134,17 @@ function MainApp() {
       setShowLogin(true);
       return;
     }
+
+    // Check if flow is already saved
+    if (isFlowSaved && !isFromPending) {
+      addToast({
+        title: 'Flow already saved',
+        description: 'This flow has already been saved to your account.',
+        color: 'warning'
+      });
+      return;
+    }
+
     // Save flow
     const { error } = await saveUserFlow({
       userId: user.uid,
@@ -152,6 +165,7 @@ function MainApp() {
         color: 'success'
       });
       setUserFlowCount((c) => c + 1);
+      setIsFlowSaved(true);
     }
   };
 
@@ -165,6 +179,7 @@ function MainApp() {
     setLoadingSteps([]);
     setCurrentProgressMessage("");
     setIsNewlyGenerated(false);
+    setIsFlowSaved(false);
     try {
       const flow = await onboardingService.generateFlowStream(inputText, (stepData) => {
         console.log('Received stepData:', stepData);
@@ -191,6 +206,7 @@ function MainApp() {
     setShowSampleFlow(false);
     setSubmittedPrompt(null);
     setLoadingSteps([]);
+    setIsFlowSaved(false);
     if (eventSourceRef.current) {
       eventSourceRef.current.close();
     }
@@ -229,7 +245,13 @@ function MainApp() {
     setSubmittedPrompt(flow.prompt);
     setCurrentFlowId(flow.id);
     setIsNewlyGenerated(false);
+    setIsFlowSaved(true); // Mark as saved since it's from saved flows
     setShowUserFlowsDrawer(false);
+  };
+
+  const handleToggleExample = (value: boolean) => {
+    setShowSampleFlow(value);
+    setIsFlowSaved(false); // Reset saved state when toggling example
   };
 
   return (
@@ -246,7 +268,7 @@ function MainApp() {
             onClear={handleClear}
             isGenerating={isGenerating}
             isExample={showSampleFlow}
-            onToggleExample={setShowSampleFlow}
+            onToggleExample={handleToggleExample}
             hasGeneratedFlow={hasFlowToDisplay}
             currentProgressMessage={currentProgressMessage}
           />
@@ -341,6 +363,7 @@ function MainApp() {
               prompt={showSampleFlow ? EXAMPLE_PROMPT : submittedPrompt} 
               flow={displayFlow}
               isNewlyGenerated={isNewlyGenerated}
+              isFlowSaved={isFlowSaved}
               onSaveFlow={handleSaveFlow}
               onDownload={handleDownload}
               onClose={handleClear}

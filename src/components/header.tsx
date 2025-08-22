@@ -107,7 +107,7 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }: HeaderProps) {
   );
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex w-full flex-col bg-background border-b border-border py-2 lg:py-3">
+    <header className="fixed top-0 left-0 right-0 z-[120] flex w-full flex-col bg-background border-b border-border py-2 lg:py-3">
       <div className="flex items-center justify-center container mx-auto" >
         <div className="flex flex-grow items-center justify-between px-4 lg:px-8" >
           {/* Logo Section */}
@@ -157,12 +157,12 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }: HeaderProps) {
         <>
           {/* Backdrop */}
           <div 
-            className={`fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${isMobileMenuClosing ? 'opacity-0' : 'opacity-100'}`}
+            className={`fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] md:hidden transition-opacity duration-300 ${isMobileMenuClosing ? 'opacity-0' : 'opacity-100'}`}
             onClick={closeMobileMenu}
           />
           
           {/* Mobile Menu Panel */}
-          <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border z-50 md:hidden ${isMobileMenuClosing ? 'mobile-menu-slide-out' : 'mobile-menu-slide-in'}`}>
+          <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-background border-l border-border z-[110] md:hidden ${isMobileMenuClosing ? 'mobile-menu-slide-out' : 'mobile-menu-slide-in'}`}>
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="flex justify-between items-center pl-7 pr-4 py-4 border-b border-border">
@@ -219,7 +219,7 @@ function Header({ onShowMyFlows, showLogin, setShowLogin }: HeaderProps) {
                     
                     {/* User Profile Section - Bottom */}
                     <hr className="border-t border-border m-4" />
-                    <div className="p-4">
+                    <div className="p-4" style={{ pointerEvents: 'auto' }}>
                       <UserProfile isMobile={true} onMobileMenuClose={closeMobileMenu} />
                     </div>
                   </>

@@ -39,6 +39,7 @@ interface GeneratedFlowCardProps {
   prompt?: string;
   flow: OnboardingFlow;
   isNewlyGenerated?: boolean;
+  isFlowSaved?: boolean;
   onSaveFlow: (prompt: string, flow: OnboardingFlow) => void;
   onDownload: (format: 'markdown' | 'html' | 'json') => void;
   onClose: () => void;
@@ -48,6 +49,7 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
   prompt, 
   flow,
   isNewlyGenerated,
+  isFlowSaved = false,
   onSaveFlow,
   onDownload,
   onClose
@@ -194,14 +196,25 @@ export const GeneratedFlowCard: React.FC<GeneratedFlowCardProps> = ({
             
             {isNewlyGenerated && (
               <Button 
-                color="primary"
-                variant="solid"
+                color={isFlowSaved ? "success" : "primary"}
+                variant={isFlowSaved ? "flat" : "solid"}
                 size="lg"
-                className="rounded-xl px-6 font-semibold bg-accent text-accent-foreground hover:bg-accent/90"
-                startContent={<Icon icon="lucide:save" width={20} height={20} className="text-accent-foreground" />}
+                className={`rounded-xl px-6 font-semibold ${isFlowSaved 
+                  ? "bg-success/20 text-success border-success/30" 
+                  : "bg-accent text-accent-foreground hover:bg-accent/90"
+                }`}
+                startContent={
+                  <Icon 
+                    icon={isFlowSaved ? "lucide:check" : "lucide:save"} 
+                    width={20} 
+                    height={20} 
+                    className={isFlowSaved ? "text-success" : "text-accent-foreground"} 
+                  />
+                }
                 onPress={() => onSaveFlow(safePrompt, flow)}
+                isDisabled={isFlowSaved}
               >
-                Save Flow
+                {isFlowSaved ? "Flow Saved" : "Save Flow"}
               </Button>
             )}
           </div>

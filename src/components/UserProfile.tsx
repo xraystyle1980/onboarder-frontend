@@ -43,7 +43,7 @@ export default function UserProfile({ isMobile = false, onMobileMenuClose }: Use
         <Button
           onPress={handleSignOut}
           isDisabled={loading}
-          className="w-full btn-utility justify-start"
+          className="w-full btn-utility justify-start relative z-[120]"
           variant="light"
           startContent={
             <Icon icon="lucide:log-out" width={16} height={16} className="text-muted-foreground" />
